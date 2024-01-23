@@ -3,11 +3,30 @@
 import { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { act } from 'react-dom/test-utils';
+import { cn } from '@/lib/utils';
+
+const people = [
+  { id: 1, name: 'Wade Cooper' },
+  { id: 2, name: 'Arlene Mccoy' },
+  { id: 3, name: 'Devon Webb' },
+  { id: 4, name: 'Tom Cook' },
+  { id: 5, name: 'Tanya Fox' },
+  { id: 6, name: 'Hellen Schmidt' },
+];
 
 export default function Home() {
-  const [selected, setSelected] = useState(people[0]);
+  const [selected, setSelected] = useState();
   const [query, setQuery] = useState('');
+
+  const filteredPeople =
+    query === ''
+      ? people
+      : people.filter((person) =>
+          person.name
+            .toLowerCase()
+            .replace(/\s+/g, '')
+            .includes(query.toLowerCase().replace(/\s+/g, ''))
+        );
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -21,7 +40,8 @@ export default function Home() {
             >
               <Combobox.Input
                 className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                displayValue={(person) => person.name}
+                displayValue={(person) => (person ? person.name : undefined)}
+                placeholder={'Search for a place...'}
                 onChange={(event) => setQuery(event.target.value)}
               />
               <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -50,12 +70,12 @@ export default function Home() {
                   filteredPeople.map((person) => (
                     <Combobox.Option
                       key={person.id}
-                      className={({ active }) => {
-                        const bla = active
-                          ? 'bg-teal-600 text-white'
-                          : 'text-gray-900';
-                        return `relative cursor-default select-none py-2 pl-10 pr-4 ${bla}`;
-                      }}
+                      className={({ active }) =>
+                        cn(
+                          'relative cursor-default select-none py-2 pl-10 pr-4',
+                          active ? 'bg-teal-600 text-white' : 'text-gray-900'
+                        )
+                      }
                       value={person}
                     >
                       {({ selected, active }) => (
