@@ -3,6 +3,14 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchCoordinatesFilter from '@/components/SearchCoordinatesFilter';
+import DatePickerFilter from '@/components/DatePickerFilter';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import SearchBoxDrawer from '@/components/SearchBoxDrawer';
 
 type QueryParams = {
   location: string;
@@ -41,10 +49,53 @@ function Page() {
     });
   };
 
+  const [searchBoxDrawerState, setSearchBoxDrawerState] = useState(false);
+
   return (
-    <div className={'p-2'}>
-      <SearchCoordinatesFilter {...filterValues} updateParams={updateParams} />
-      <button onClick={handleSearch}>Search</button>
+    <div className={'bg-gray-100 p-6'}>
+      <Accordion
+        type="single"
+        collapsible
+        className={'flex w-full flex-col gap-6'}
+      >
+        <AccordionItem value="item-1">
+          <AccordionTrigger>
+            <h1 className={'text-lg font-bold text-primary'}>Where to?</h1>
+          </AccordionTrigger>
+          <AccordionContent>
+            <button
+              onClick={() => setSearchBoxDrawerState((prevState) => !prevState)}
+            >
+              Search
+            </button>
+            <SearchBoxDrawer
+              isOpen={searchBoxDrawerState}
+              setIsOpen={setSearchBoxDrawerState}
+            />
+
+            <SearchCoordinatesFilter
+              {...filterValues}
+              updateParams={updateParams}
+            />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>Is it styled?</AccordionTrigger>
+          <AccordionContent>
+            <DatePickerFilter />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>Is it animated?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It's animated by default, but you can disable it if you prefer.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <button className={'fixed bottom-6 right-6'} onClick={handleSearch}>
+        Search
+      </button>
     </div>
   );
 }
