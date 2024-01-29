@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -11,84 +10,43 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { Minus, Plus } from 'lucide-react';
-import { Combobox } from '@headlessui/react';
-import SearchBox from '@/components/SearchBox';
+import SearchBox, { SearchBoxOptionType } from '@/components/SearchBox';
 
-const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
+const places: SearchBoxOptionType[] = [
+  { value: 'Osijek, Croatia' },
+  { value: 'Zagreb, Croatia' },
+  { value: 'Zadar, Croatia' },
+  { value: 'Split, Croatia' },
+  { value: 'Rijeka, Croatia' },
 ];
 
 function SearchBoxDrawer({
   isOpen,
   setIsOpen,
+  setSelected,
+  location,
 }: {
   isOpen: boolean;
-  setIsOpen: () => void;
+  setIsOpen: React.Dispatch<any>;
+  setSelected: React.Dispatch<any>;
+  location: unknown;
 }) {
-  const [goal, setGoal] = React.useState(350);
-
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
+  function onSelected(selected: unknown) {
+    setSelected(selected);
+    setIsOpen(false);
   }
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerContent className={'min-h-[90%]'}>
-        <div className="mx-auto flex w-full max-w-sm flex-1 flex-col">
+      <DrawerContent>
+        <div className="mx-auto flex h-[48rem] w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
           <DrawerHeader>
             <DrawerTitle>Where to?</DrawerTitle>
-            <DrawerDescription>
-              Select a location where you want to search listings.
-            </DrawerDescription>
+            <DrawerDescription>Select a location where you want to search listings.</DrawerDescription>
           </DrawerHeader>
-          <div className="grow p-4 pb-0">
-            <SearchBox />
+          <div className={'flex-1 flex-col'}>
+            <SearchBox options={places} handleSelection={onSelected} />
           </div>
-          <DrawerFooter className={'fixed bottom-0'}>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
         </div>
       </DrawerContent>
     </Drawer>

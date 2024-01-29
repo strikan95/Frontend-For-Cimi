@@ -2,7 +2,7 @@
 
 /** @type {import("prettier").Config} */
 const config = {
-  printWidth: 120, // max 120 chars in line, code is easy to read
+  printWidth: 80, // max 80 chars in line, code is easy to read
   useTabs: false, // use spaces instead of tabs
   tabWidth: 2, // "visual width" of of the "tab"
   trailingComma: 'es5', // add trailing commas in objects, arrays, etc.
@@ -13,11 +13,7 @@ const config = {
   jsxSingleQuote: false, // "" for react props, like in html
   bracketSameLine: false, // pretty JSX
   endOfLine: 'lf', // 'lf' for linux, 'crlf' for windows, we need to use 'lf' for git
-  plugins: [
-    'prettier-plugin-tailwindcss',
-    'prettier-plugin-classnames',
-    'prettier-plugin-merge',
-  ],
+  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-classnames', 'prettier-plugin-merge'],
 };
 
 module.exports = config;
