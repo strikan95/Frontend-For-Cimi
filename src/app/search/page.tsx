@@ -1,8 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { MapBoxLocationDetails } from '@/app/search/actions';
 import MainSearchModal from '@/components/search/MainSearchModal';
+
+type FilterParams = {
+  location: {
+    details: MapBoxLocationDetails;
+    data: {
+      lat: string;
+      lon: string;
+    };
+  };
+  price: {
+    priceMin: number;
+    priceMax: number;
+  };
+};
 
 type QueryParams = {
   location: string;
@@ -41,10 +56,16 @@ function Page() {
     });
   };
 
+  useEffect(() => {
+    console.log(filterValues);
+  }, [filterValues]);
+
   return (
-    <div className={'p-2'}>
+    <div className={'bg-gray-100 p-6'}>
       <MainSearchModal />
-      <button onClick={handleSearch}>Search</button>
+      <button className={'fixed bottom-6 right-6'} onClick={handleSearch}>
+        Search
+      </button>
     </div>
   );
 }
