@@ -3,10 +3,7 @@
 import type {
   SearchBoxSuggestionResponse,
   SearchBoxFeatureSuggestion,
-  SearchBoxSuggestion,
 } from '@mapbox/search-js-core';
-import { SearchBoxFeatureProperties } from '@mapbox/search-js-core/dist/searchbox/types';
-import { FeatureCollection } from 'geojson';
 
 export type MapBoxSearchResponse = {
   suggestions: MapBoxSuggestionType[];
