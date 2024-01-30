@@ -1,5 +1,10 @@
 'use server';
 
+import type {
+  SearchBoxSuggestionResponse,
+  SearchBoxFeatureSuggestion,
+} from '@mapbox/search-js-core';
+
 export type MapBoxSearchResponse = {
   suggestions: MapBoxSuggestionType[];
 };
@@ -37,8 +42,8 @@ export async function getLocationSuggestions(query: string) {
       throw new Error('Error while fetching suggestions');
     }
 
-    const data: MapBoxSearchResponse = await res.json();
-    return [...data.suggestions];
+    const SBResponse: SearchBoxSuggestionResponse = await res.json();
+    return [...SBResponse.suggestions];
   } catch (e) {
     console.error(e);
     return [];
@@ -59,9 +64,10 @@ export async function getLocationDetails(id: string) {
       throw new Error('Error while fetching suggestion details');
     }
 
-    const data: MapBoxLocationDetails = await res.json();
+    const data = await res.json();
+    const features: SearchBoxFeatureSuggestion[] = data.features;
 
-    return data;
+    return features[0];
   } catch (e) {
     console.error(e);
     return null;

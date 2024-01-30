@@ -13,11 +13,7 @@ const config = {
   jsxSingleQuote: false, // "" for react props, like in html
   bracketSameLine: false, // pretty JSX
   endOfLine: 'lf', // 'lf' for linux, 'crlf' for windows, we need to use 'lf' for git
-  plugins: [
-    'prettier-plugin-tailwindcss',
-    'prettier-plugin-classnames',
-    'prettier-plugin-merge',
-  ],
+  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-classnames', 'prettier-plugin-merge'],
 };
 
 module.exports = config;

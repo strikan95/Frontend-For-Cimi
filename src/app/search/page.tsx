@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SearchCoordinatesFilter from '@/components/SearchCoordinatesFilter';
+import MainSearchModal from '@/components/search/MainSearchModal';
 
 type QueryParams = {
   location: string;
@@ -43,7 +43,7 @@ function Page() {
 
   return (
     <div className={'p-2'}>
-      <SearchCoordinatesFilter {...filterValues} updateParams={updateParams} />
+      <MainSearchModal />
       <button onClick={handleSearch}>Search</button>
     </div>
   );
