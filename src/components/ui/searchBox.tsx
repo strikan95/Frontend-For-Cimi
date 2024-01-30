@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import * as HeadlessUIPrimitives from '@headlessui/react';
 import { Combobox } from '@headlessui/react';
 import { cn } from '@/lib/utils';
@@ -15,7 +15,46 @@ const SearchBox = ({
 );
 SearchBox.displayName = 'SearchBox';
 
-const NewSearchInput = ({
+interface BlaProps extends InputHTMLAttributes<HTMLInputElement> {
+  handleClear: () => void;
+  displayClear: boolean;
+}
+
+const NewSearchInput = React.forwardRef<
+  React.ElementRef<typeof ComboboxPrimitive.Input>,
+  BlaProps & React.ComponentPropsWithoutRef<typeof ComboboxPrimitive.Input>
+>(({ className, handleClear, displayClear, ...props }, ref) => {
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+  React.useEffect(() => {
+    if (inputRef.current && displayClear) {
+      inputRef.current.focus();
+    }
+  }, [displayClear]);
+
+  return (
+    <div className={'relative w-full'}>
+      <ComboboxPrimitive.Input
+        className={cn(
+          className,
+          `w-full rounded-lg rounded-b-none border border-b-0 border-gray-300 p-4 shadow
+            outline-none`
+        )}
+        ref={inputRef as React.RefObject<HTMLInputElement> | null}
+        {...props}
+      />
+      <button
+        hidden={displayClear}
+        className={'absolute inset-y-0 right-2'}
+        onClick={handleClear}
+      >
+        <X />
+      </button>
+    </div>
+  );
+});
+
+const NewNewSearchInput = ({
   className,
   handleClear,
   displayClear,
@@ -46,22 +85,6 @@ const NewSearchInput = ({
   );
 };
 
-const NewNewSearchInput = ({
-  className,
-  ...props
-}: React.ComponentProps<typeof ComboboxPrimitive.Input>) => (
-  <>
-    <ComboboxPrimitive.Input
-      className={cn(
-        className,
-        `w-full rounded-lg rounded-b-none border border-b-0 border-gray-300 p-4 shadow
-          outline-none`
-      )}
-      {...props}
-    />
-  </>
-);
-
 const SearchInput = React.forwardRef<
   React.ElementRef<typeof ComboboxPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof ComboboxPrimitive.Input>
@@ -84,8 +107,8 @@ const SearchOptions = React.forwardRef<
   <ComboboxPrimitive.Options
     className={cn(
       className,
-      `max-h-64 w-full grow overflow-y-scroll rounded-lg rounded-t-none border
-        border-t-0 border-gray-300 p-2`
+      `max-h-64 w-full overflow-y-scroll rounded-lg rounded-t-none border border-t-0
+        border-gray-300 p-2`
     )}
     {...props}
   >
