@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { cn } from '@/lib/utils';
+import { FilterProvider } from '@/lib/filter/useFilter';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className={cn(inter.className, 'h-screen antialiased')}>
-          <main className={'h-full'}>{children}</main>
-        </body>
+        <FilterProvider>
+          <body className={cn(inter.className, 'h-screen antialiased')}>
+            <main className={'h-full'}>{children}</main>
+          </body>
+        </FilterProvider>
       </UserProvider>
     </html>
   );
