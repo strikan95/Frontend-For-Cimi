@@ -16,21 +16,29 @@ const SearchBox = ({
 SearchBox.displayName = 'SearchBox';
 
 interface BlaProps extends InputHTMLAttributes<HTMLInputElement> {
-  handleClear: () => void;
-  displayClear: boolean;
+  handleClear?: () => void;
+  displayClear?: boolean;
 }
 
-const NewSearchInput = React.forwardRef<
+const SearchInput = React.forwardRef<
   React.ElementRef<typeof ComboboxPrimitive.Input>,
   BlaProps & React.ComponentPropsWithoutRef<typeof ComboboxPrimitive.Input>
->(({ className, handleClear, displayClear, ...props }, ref) => {
+>(({ className, handleClear, displayClear, ...props }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  React.useEffect(() => {
+  //  React.useEffect(() => {
+  //    if (inputRef.current && displayClear) {
+  //      inputRef.current.focus();
+  //    }
+  //    console.log('focusing');
+  //  }, [displayClear]);
+
+  function onClear() {
     if (inputRef.current && displayClear) {
       inputRef.current.focus();
+      handleClear?.();
     }
-  }, [displayClear]);
+  }
 
   return (
     <div className={'relative w-full'}>
@@ -44,66 +52,21 @@ const NewSearchInput = React.forwardRef<
         {...props}
       />
       <button
-        hidden={displayClear}
+        hidden={!displayClear}
         className={'absolute inset-y-0 right-2'}
-        onClick={handleClear}
+        onClick={onClear}
       >
         <X />
       </button>
     </div>
   );
 });
-
-const NewNewSearchInput = ({
-  className,
-  handleClear,
-  displayClear,
-  ...props
-}: React.ComponentProps<typeof ComboboxPrimitive.Input> &
-  React.InputHTMLAttributes<HTMLInputElement> & {
-    handleClear: () => void;
-    displayClear: boolean;
-  }) => {
-  return (
-    <div className={'relative w-full'}>
-      <ComboboxPrimitive.Input
-        className={cn(
-          className,
-          `w-full rounded-lg rounded-b-none border border-b-0 border-gray-300 p-4 shadow
-            outline-none`
-        )}
-        {...props}
-      />
-      <button
-        hidden={displayClear}
-        className={'absolute inset-y-0 right-2'}
-        onClick={handleClear}
-      >
-        <X />
-      </button>
-    </div>
-  );
-};
-
-const SearchInput = React.forwardRef<
-  React.ElementRef<typeof ComboboxPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof ComboboxPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <ComboboxPrimitive.Input
-    className={cn(
-      className,
-      `w-full rounded-lg rounded-b-none border border-b-0 border-gray-300 p-4 shadow-lg
-        outline-none`
-    )}
-    {...props}
-  />
-));
 SearchInput.displayName = 'SearchInput';
 
 const SearchOptions = React.forwardRef<
   React.ElementRef<typeof ComboboxPrimitive.Options>,
   React.ComponentPropsWithoutRef<typeof ComboboxPrimitive.Options>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, ...props }) => (
   <ComboboxPrimitive.Options
     className={cn(
       className,
@@ -128,6 +91,7 @@ const SearchItem = React.forwardRef<
         active ? 'lg:bg-teal-600 lg:text-white' : 'lg:text-gray-900'
       )
     }
+    ref={ref}
     {...props}
   >
     {children}
@@ -135,4 +99,4 @@ const SearchItem = React.forwardRef<
 ));
 SearchInput.displayName = 'SearchItem';
 
-export { SearchBox, SearchInput, NewSearchInput, SearchOptions, SearchItem };
+export { SearchBox, SearchInput, SearchOptions, SearchItem };
