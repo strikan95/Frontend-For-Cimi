@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import { DateRange } from 'react-day-picker';
-import { useRouter } from 'next/navigation';
 import { SearchBoxSuggestion } from '@mapbox/search-js-core';
 
 export interface LocationFilterData extends SearchBoxSuggestion {
@@ -10,24 +8,10 @@ export interface LocationFilterData extends SearchBoxSuggestion {
   lon: number;
 }
 
-interface FilterDataType {
-  location?: Partial<LocationFilterData>;
-  date?: DateRange;
-}
-
-const DefaultFilterData: FilterDataType = {
-  location: {},
-  date: undefined,
-};
-
-type TFilterState = {
-  selectedLocation: object;
-  selectedDateRange: object;
-};
-
 type TLocation = {
-  lat: number;
-  lon: number;
+  query: string;
+  lat?: number;
+  lon?: number;
 };
 
 type TDateRange = {
@@ -40,15 +24,17 @@ type TPriceRange = {
   max?: number;
 };
 
-type TQueryParams = TLocation & TDateRange & TPriceRange;
+type TFilterParams = TLocation & TDateRange & TPriceRange;
 
 const FilterContext = React.createContext<
-  | [FilterDataType, React.Dispatch<React.SetStateAction<FilterDataType>>]
+  | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]
   | undefined
 >(undefined);
 
 export function FilterProvider({ children }: { children: React.ReactNode }) {
-  const [filterData, setFilterData] = React.useState(DefaultFilterData);
+  const [filterData, setFilterData] = React.useState<TFilterParams>({
+    query: '',
+  });
 
   return (
     <FilterContext.Provider value={[filterData, setFilterData]}>
@@ -60,27 +46,21 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
 export function useFilter() {
   const [filterData, setFilterData] = React.useContext(FilterContext) || [];
 
-  const router = useRouter();
-
   if (filterData === undefined || setFilterData === undefined) {
     throw new Error('useCounter must be used within a CounterProvider');
   }
 
-  const updateParams = (params: Partial<FilterDataType>) => {
+  const updateParams = (params: Partial<TFilterParams>) => {
     setFilterData((prev) => {
       return { ...prev, ...params };
     });
   };
 
   function handleSearch() {
-    let query = '';
-
     if (filterData) {
-      Object.keys(filterData)
-        .filter((key: string) => {
-          return filterData[key as keyof typeof filterData] !== undefined;
-        })
-        .map((key) => {});
+      Object.keys(filterData).filter((key: string) => {
+        return filterData[key as keyof typeof filterData] !== undefined;
+      });
     }
 
     //router.push(`/results`);

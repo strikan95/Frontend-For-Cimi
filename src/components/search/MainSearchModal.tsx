@@ -18,113 +18,44 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import {
-  NewSearchInput,
-  SearchBox,
-  SearchItem,
-  SearchOptions,
-} from '@/components/ui/searchBox';
-import { SearchBoxSuggestion } from '@mapbox/search-js-core';
-import { DateRange } from 'react-day-picker';
-import {
-  getLocationDetails,
-  getLocationSuggestions,
-} from '@/app/search/actions';
-import { formatDateToDDMMYY } from '@/lib/utils';
-import { LocationFilterData, useFilter } from '@/lib/filter/useFilter';
 
-function locationToString(
-  location?: Partial<LocationFilterData>,
-  placeholder = ''
-) {
-  if (!location || (!location.name && !location.place_formatted)) {
-    return placeholder;
-  }
-
-  return `${location.name}, ${location.place_formatted}`;
-}
-
-export function dateRangeToString(range: DateRange, placeholder = '') {
-  if (!range.from && !range.to) {
-    return placeholder;
-  }
-
-  return `From: ${formatDateToDDMMYY(range.from)} - To: ${formatDateToDDMMYY(range.to)}`;
-}
-
-function ModalTrigger({
-  location,
-  range,
-}: {
-  location?: Partial<LocationFilterData>;
-  range?: DateRange;
-}) {
-  return (
-    <Dialog.Trigger asChild>
-      <Button
-        className={'flex h-fit w-full justify-start rounded-lg p-2'}
-        variant="outline"
-      >
-        <Search />
-        <div className={'flex flex-col items-start pl-4'}>
-          <h1 className={'font-bold'}>
-            {locationToString(location, 'Find a place...')}
-          </h1>
-          {range && (
-            <p className={'text-xs text-gray-500'}>
-              {dateRangeToString(range)}
-            </p>
-          )}
-        </div>
-      </Button>
-    </Dialog.Trigger>
-  );
-}
-
+import { useFilter } from '@/lib/filter/useFilter';
+import MapBoxSearch from '@/components/search/MapBoxSearch';
+import { format, parse } from 'date-fns';
 function MainSearchModal() {
   const [accordionItem, setAccordionItem] = useState('one');
   const [searchDrawerState, setSearchDrawerState] = useState(false);
-  const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>([]);
+
   const { data, handleSearch, updateParams } = useFilter();
 
-  async function handleSelection(value: SearchBoxSuggestion) {
-    const feature = await getLocationDetails(value.mapbox_id);
-
-    updateParams({
-      location: {
-        ...value,
-        lat: feature?.properties.coordinates.latitude,
-        lon: feature?.properties.coordinates.longitude,
-      },
-    });
-
-    setSearchDrawerState(false);
-    setAccordionItem('two');
-  }
-
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      return await getLocationSuggestions(query);
-    };
+    console.log(data);
+  }, [data]);
 
-    if (query !== '') {
-      fetchSuggestions().then((r) => setSuggestions(r));
-    }
-  }, [query]);
-
-  function renderHelper() {
-    if (query === '') {
-      return null;
-    }
-
-    return <p className={'text-center'}>Not found...</p>;
+  function dateToString(date?: Date) {
+    if (!date) return undefined;
+    return format(date, 'yyyy-MM-dd');
+  }
+  function stringToDate(str?: string) {
+    if (!str) return undefined;
+    return parse(str, 'yyyy-MM-dd', new Date());
   }
 
   return (
     <>
       <Dialog.Root>
-        <ModalTrigger location={data.location} range={data.date} />
+        <Dialog.Trigger asChild>
+          <Button
+            className={'flex h-fit w-full justify-start rounded-lg p-2'}
+            variant="outline"
+          >
+            <Search />
+            <div className={'flex flex-col items-start pl-4'}>
+              <h1 className={'font-bold'}>{data.query || 'Find a place...'}</h1>
+              {data.from && <p className={'text-xs text-gray-500'}>{''}</p>}
+            </div>
+          </Button>
+        </Dialog.Trigger>
         <Dialog.Content className="fixed left-0 top-0 h-full w-full bg-gray-100 p-2">
           <div className={'flex flex-col'}>
             <div
@@ -150,7 +81,7 @@ function MainSearchModal() {
                       Where to?
                     </h1>
                     <span className={'text-xs font-normal text-gray-500'}>
-                      {locationToString(data.location)}
+                      {data.query}
                     </span>
                   </AccordionTrigger>
                   <AccordionContent>
@@ -160,10 +91,7 @@ function MainSearchModal() {
                       }
                       onClick={() => setSearchDrawerState(true)}
                     >
-                      {locationToString(
-                        data.location,
-                        'Search for a destination...'
-                      )}
+                      {data.query || 'Search for a destination...'}
                     </button>
                     <Drawer
                       open={searchDrawerState}
@@ -181,37 +109,16 @@ function MainSearchModal() {
                               listings.
                             </DrawerDescription>
                           </DrawerHeader>
-                          <SearchBox
-                            value={data.location}
-                            onChange={handleSelection}
-                          >
-                            <NewSearchInput
-                              handleClear={() => {
-                                setQuery('');
-                                updateParams({
-                                  location: { name: '', place_formatted: '' },
-                                });
-                              }}
-                              displayValue={(location: SearchBoxSuggestion) =>
-                                locationToString(location)
-                              }
-                              onChange={(e) => setQuery(e.target.value)}
-                              displayClear={query === ''}
-                              placeholder={'Search for a destination...'}
-                            />
-                            <SearchOptions>
-                              {suggestions.length > 0
-                                ? suggestions.map((suggestion, index) => (
-                                    <SearchItem
-                                      key={`${suggestion.name}-${index}`}
-                                      value={suggestion}
-                                    >
-                                      {locationToString(suggestion)}
-                                    </SearchItem>
-                                  ))
-                                : renderHelper()}
-                            </SearchOptions>
-                          </SearchBox>
+                          <MapBoxSearch
+                            value={data.query}
+                            onChange={(value) => updateParams({ query: value })}
+                            onFeature={(feature) =>
+                              updateParams({
+                                lat: feature.properties.coordinates.latitude,
+                                lon: feature.properties.coordinates.longitude,
+                              })
+                            }
+                          />
                         </div>
                       </DrawerContent>
                     </Drawer>
@@ -220,18 +127,24 @@ function MainSearchModal() {
                 <AccordionItem value="two">
                   <AccordionTrigger>
                     <h1 className={'text-lg font-bold text-primary'}>When?</h1>
-                    {data.date && (
+                    {data.from && (
                       <span className={'text-xs font-normal text-gray-500'}>
-                        {dateRangeToString(data.date)}
+                        {data.from} to {data.to}
                       </span>
                     )}
                   </AccordionTrigger>
                   <AccordionContent>
                     <Calendar
                       mode="range"
-                      selected={data.date}
+                      selected={{
+                        from: stringToDate(data.from),
+                        to: stringToDate(data.to),
+                      }}
                       onSelect={(range) => {
-                        updateParams({ date: range });
+                        updateParams({
+                          from: dateToString(range?.from),
+                          to: dateToString(range?.to),
+                        });
                       }}
                       className="rounded-md border shadow"
                     />
@@ -249,4 +162,6 @@ function MainSearchModal() {
   );
 }
 
+//setSearchDrawerState(false);
+//setAccordionItem('two');
 export default MainSearchModal;
