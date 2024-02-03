@@ -12,8 +12,8 @@ import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
 type MapBoxSearchProps = {
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
   onSelect?: (item: SearchBoxSuggestion) => void;
   onFeature?: (item: SearchBoxFeatureSuggestion) => void;
 };

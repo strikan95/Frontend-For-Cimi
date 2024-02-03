@@ -1,17 +1,12 @@
 'use client';
 
 import React from 'react';
-import { SearchBoxSuggestion } from '@mapbox/search-js-core';
-
-export interface LocationFilterData extends SearchBoxSuggestion {
-  lat: number;
-  lon: number;
-}
+import { useRouter } from 'next/navigation';
 
 type TLocation = {
-  query: string;
-  lat?: number;
-  lon?: number;
+  query?: string;
+  lat?: string;
+  lon?: string;
 };
 
 type TDateRange = {
@@ -20,11 +15,11 @@ type TDateRange = {
 };
 
 type TPriceRange = {
-  min?: number;
-  max?: number;
+  min?: string;
+  max?: string;
 };
 
-type TFilterParams = TLocation & TDateRange & TPriceRange;
+export type TFilterParams = TLocation & TDateRange & TPriceRange;
 
 const FilterContext = React.createContext<
   | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]
@@ -32,9 +27,7 @@ const FilterContext = React.createContext<
 >(undefined);
 
 export function FilterProvider({ children }: { children: React.ReactNode }) {
-  const [filterData, setFilterData] = React.useState<TFilterParams>({
-    query: '',
-  });
+  const [filterData, setFilterData] = React.useState<TFilterParams>({});
 
   return (
     <FilterContext.Provider value={[filterData, setFilterData]}>
@@ -43,8 +36,16 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useFilter() {
+export function useFilter(initialValues?: TFilterParams) {
   const [filterData, setFilterData] = React.useContext(FilterContext) || [];
+
+  React.useEffect(() => {
+    if (initialValues) {
+      updateParams(initialValues);
+    }
+  }, []);
+
+  const router = useRouter();
 
   if (filterData === undefined || setFilterData === undefined) {
     throw new Error('useCounter must be used within a CounterProvider');
@@ -58,9 +59,22 @@ export function useFilter() {
 
   function handleSearch() {
     if (filterData) {
-      Object.keys(filterData).filter((key: string) => {
-        return filterData[key as keyof typeof filterData] !== undefined;
-      });
+      const query = Object.keys(filterData)
+        .filter((key: string) => {
+          return (
+            filterData[key as keyof typeof filterData] !== undefined ||
+            filterData[key as keyof typeof filterData] !== null ||
+            filterData[key as keyof typeof filterData] !== ''
+          );
+        })
+        .map((key: string) => {
+          const value = filterData[key as keyof typeof filterData];
+          return `${key}=${encodeURIComponent(value as string)}`;
+        })
+        .join('&');
+
+      console.log(query);
+      router.push(`/results?${query}`);
     }
 
     //router.push(`/results`);
