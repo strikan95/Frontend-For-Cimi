@@ -28,10 +28,6 @@ function MainSearchModal() {
 
   const { data, handleSearch, updateParams } = useFilter();
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   function dateToString(date?: Date) {
     if (!date) return undefined;
     return format(date, 'yyyy-MM-dd');
