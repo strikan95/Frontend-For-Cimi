@@ -73,11 +73,10 @@ export function useFilter(initialValues?: TFilterParams) {
         })
         .join('&');
 
-      console.log(query);
       router.push(`/results?${query}`);
     }
 
-    //router.push(`/results`);
+    //Show some error...
   }
   return {
     data: filterData,
@@ -85,15 +84,3 @@ export function useFilter(initialValues?: TFilterParams) {
     handleSearch,
   };
 }
-
-//const search = () => {
-//  const searchQuery = Object.keys(filterValues)
-//    .filter((key) => filterValues[key as keyof typeof filterValues] !== '')
-//    .map(
-//      (key) =>
-//        `${key}=${encodeURIComponent(filterValues[key as keyof typeof filterValues])}`
-//    )
-//    .join('&');
-
-//  router.push(`/results?${searchQuery}`);
-//};

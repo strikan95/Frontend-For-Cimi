@@ -61,7 +61,7 @@ function MapBoxSearch({
     if (!state.isClearing && state.query !== '') {
       updateSuggestions(state.query);
     }
-  }, [state.query, state.isClearing]);
+  }, [state.query]);
 
   useEffect(() => {
     const updateFeature = async (id: string) => {

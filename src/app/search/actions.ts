@@ -5,30 +5,6 @@ import type {
   SearchBoxFeatureSuggestion,
 } from '@mapbox/search-js-core';
 
-export type MapBoxSearchResponse = {
-  suggestions: MapBoxSuggestionType[];
-};
-
-export type MapBoxSuggestionType = {
-  name: string;
-  place_formatted: string;
-  mapbox_id: string;
-};
-
-export type MapBoxLocationDetails = {
-  features: [
-    {
-      geometry: {
-        coordinates: [string, string];
-      };
-      properties: {
-        name: string;
-        place_formatted: string;
-      };
-    },
-  ];
-};
-
 export async function getLocationSuggestions(query: string) {
   const session_token: string = '03cfb233-e02b-4b08-818d-318bf4c30851';
   const access_token: string =
@@ -39,7 +15,8 @@ export async function getLocationSuggestions(query: string) {
     );
 
     if (!res.ok) {
-      throw new Error('Error while fetching suggestions');
+      console.error(await res.json());
+      return [];
     }
 
     const SBResponse: SearchBoxSuggestionResponse = await res.json();
@@ -61,7 +38,7 @@ export async function getLocationDetails(id: string) {
 
     if (!res.ok) {
       console.error(await res.json());
-      throw new Error('Error while fetching suggestion details');
+      return null;
     }
 
     const data = await res.json();
