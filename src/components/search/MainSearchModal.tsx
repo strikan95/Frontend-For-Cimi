@@ -114,8 +114,8 @@ function MainSearchModal() {
                             onChange={(value) => updateParams({ query: value })}
                             onFeature={(feature) =>
                               updateParams({
-                                lat: feature.properties.coordinates.latitude,
-                                lon: feature.properties.coordinates.longitude,
+                                lat: feature.properties.coordinates.latitude.toString(),
+                                lon: feature.properties.coordinates.longitude.toString(),
                               })
                             }
                           />
