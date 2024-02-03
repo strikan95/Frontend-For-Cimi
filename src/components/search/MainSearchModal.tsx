@@ -108,12 +108,14 @@ function MainSearchModal() {
                           <MapBoxSearch
                             value={data.query}
                             onChange={(value) => updateParams({ query: value })}
-                            onFeature={(feature) =>
+                            onFeature={(feature) => {
                               updateParams({
                                 lat: feature.properties.coordinates.latitude.toString(),
                                 lon: feature.properties.coordinates.longitude.toString(),
-                              })
-                            }
+                              });
+                              setSearchDrawerState(false);
+                              setAccordionItem('two');
+                            }}
                           />
                         </div>
                       </DrawerContent>
