@@ -4,10 +4,7 @@ import {
   SearchBoxSuggestion,
 } from '@mapbox/search-js-core';
 import { Combobox } from '@headlessui/react';
-import {
-  getLocationDetails,
-  getLocationSuggestions,
-} from '@/app/search/actions';
+import { getLocationDetails, getLocationSuggestions } from '@/app/actions';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 

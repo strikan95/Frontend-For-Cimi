@@ -73,7 +73,7 @@ export function useFilter(initialValues?: TFilterParams) {
         })
         .join('&');
 
-      router.push(`/results?${query}`);
+      router.push(`/search?${query}`);
     }
 
     //Show some error...
