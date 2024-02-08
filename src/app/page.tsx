@@ -1,11 +1,10 @@
 'use client';
-import MainSearchModal from '@/components/search/MainSearchModal';
+import React from 'react';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Home Page Here
-      <MainSearchModal />
-    </main>
+    <div className="mx-auto h-64 max-w-7xl border bg-white px-4 pb-12 sm:px-6 lg:px-8">
+      <div className={'h-[2000px]'}></div>
+    </div>
   );
 }
