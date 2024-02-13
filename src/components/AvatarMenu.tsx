@@ -42,6 +42,9 @@ function MenuContentLoggedIn() {
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={'/create-a-listing/1'}>Create a listing</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuItem>Keyboard shortcuts</DropdownMenuItem>
@@ -76,10 +79,6 @@ function MenuContentLoggedIn() {
 
 export function AvatarMenu() {
   const { user, isLoading } = useUser();
-
-  useEffect(() => {
-    console.log(user);
-  }, [user, isLoading]);
 
   return (
     <DropdownMenu>

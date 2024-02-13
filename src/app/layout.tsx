@@ -19,21 +19,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={'h-full bg-gray-100'}>
+    <html lang="en" className={'h-[100vh] bg-gray-100'}>
       <UserProvider>
         <FilterProvider>
           <body className={cn(inter.className, 'h-full antialiased')}>
-            <div className="min-h-full">
-              <Navbar />
-              <div className="py-10">
-                <Header />
-                <main>
-                  <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {children}
-                  </div>
-                </main>
-              </div>
-            </div>
+            {children}
           </body>
         </FilterProvider>
       </UserProvider>

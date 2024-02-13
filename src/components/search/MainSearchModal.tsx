@@ -22,6 +22,9 @@ import {
 import { useFilter } from '@/lib/filter/useFilter';
 import MapBoxSearch from '@/components/search/MapBoxSearch';
 import { format, parse } from 'date-fns';
+import dynamic from 'next/dynamic';
+import { FormStepProps } from '@/app/(wizard)/create-a-listing/components/Form1';
+
 function MainSearchModal() {
   const [accordionItem, setAccordionItem] = useState('one');
   const [searchDrawerState, setSearchDrawerState] = useState(false);

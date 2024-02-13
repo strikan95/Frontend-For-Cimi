@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import MainSearchModal from '@/components/search/MainSearchModal';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import { TFilterParams, useFilter } from '@/lib/filter/useFilter';
 
-function Page() {
+function SearchFilter() {
   const filterParams = resolveQueryParams(useSearchParams());
 
   useFilter(filterParams);
@@ -33,6 +33,14 @@ function Page() {
         <MainSearchModal />
       </div>
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense>
+      <SearchFilter />
+    </Suspense>
   );
 }
 

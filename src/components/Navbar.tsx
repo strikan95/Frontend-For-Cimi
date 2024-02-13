@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 function Navbar() {
   return (
-    <nav className="sticky left-0 top-0 bg-white shadow-sm">
+    <nav className="sticky left-0 top-0 h-16 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between">
           <div className="flex">
