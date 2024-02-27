@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { WizardMachineContext } from '@/app/(wizard)/create-a-listing/machine/WizardMachineContext';
+import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 
 function Page({ params }: { params: { id: string } }) {
   const state = WizardMachineContext.useSelector((s) => s);
@@ -10,18 +10,8 @@ function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   useEffect(() => {
-    switch (true) {
-      case state?.matches('title'):
-        router.push(`${pathname}/title`);
-        break;
-      case state?.matches('description'):
-        router.push(`${pathname}/description`);
-        break;
-      case state?.matches('location'):
-        router.push(`${pathname}/location`);
-        break;
-      default:
-        break;
+    if (!state?.matches('loadingDraft') && !state.matches('loaded')) {
+      router.push(`${pathname}/${state.value}`);
     }
   }, [state]);
 

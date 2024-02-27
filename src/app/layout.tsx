@@ -5,8 +5,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { cn } from '@/lib/utils';
 import { FilterProvider } from '@/lib/filter/useFilter';
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import Header from '@/components/Header';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,11 +18,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={'h-[100vh] bg-gray-100'}>
+    <html lang="en" className={'min-h-[100vh] bg-gray-100'}>
       <UserProvider>
         <FilterProvider>
-          <body className={cn(inter.className, 'h-full antialiased')}>
-            {children}
+          <body
+            className={cn(
+              inter.className,
+              'mx-auto h-full max-w-7xl antialiased sm:px-6 lg:px-8'
+            )}
+          >
+            <div className="max-w-7xl sm:px-6 lg:px-8">{children}</div>
+            <Toaster />
           </body>
         </FilterProvider>
       </UserProvider>

@@ -1,6 +1,6 @@
 'use client';
 import { createActorContext } from '@xstate/react';
-import { WizardMachine } from '@/app/(wizard)/create-a-listing/machine/wizardMachine';
+import { WizardMachine } from '@/components/wizard/machine/wizardMachine';
 import React from 'react';
 
 export const WizardMachineContext = createActorContext(WizardMachine);

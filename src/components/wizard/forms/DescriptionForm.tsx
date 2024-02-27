@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import FormWrapper from '@/app/(wizard)/create-a-listing/components/FormWrapper';
-import { WizardMachineContext } from '@/app/(wizard)/create-a-listing/machine/WizardMachineContext';
+import FormWrapper from '@/components/wizard/forms/FormWrapper';
+import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import {
   Form,
   FormControl,
@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Draft } from '@/types/draftData.types';
-import { updateDraft } from '@/app/(wizard)/create-a-listing/actions';
+import { updateDraft } from '@/components/wizard/actions';
 
 const formSchema = z.object({
   description: z.string().min(10).max(64),
@@ -51,16 +51,18 @@ function DescriptionForm() {
         setIsLoading(false);
         return;
       }
+
+      setIsLoading(false);
+      ref.send({ type: 'NEXT', draft: res.result });
     } catch (e) {
       console.error(e);
     }
-
-    setIsLoading(false);
-    ref.send({ type: 'NEXT' });
   }
 
   return (
-    <div>
+    <div
+      className={'flex min-h-svh flex-col items-center justify-center pb-16'}
+    >
       <Form {...form}>
         <form
           className={'flex flex-col gap-6'}
@@ -83,7 +85,7 @@ function DescriptionForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className={'text-center'}>
                     This is a public description for your property listing
                   </FormDescription>
                   <FormMessage />

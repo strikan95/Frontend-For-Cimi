@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import FormWrapper from '@/app/(wizard)/create-a-listing/components/FormWrapper';
-import { WizardMachineContext } from '@/app/(wizard)/create-a-listing/machine/WizardMachineContext';
+import FormWrapper from '@/components/wizard/forms/FormWrapper';
+import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import {
   Form,
   FormControl,
@@ -16,7 +16,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Draft } from '@/types/draftData.types';
-import { updateDraft } from '@/app/(wizard)/create-a-listing/actions';
+import { updateDraft } from '@/components/wizard/actions';
+import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
   title: z.string().min(10).max(64),
@@ -43,26 +44,32 @@ function TitleForm() {
 
       if (res.error) {
         //bla bla resolve backend errors
-        form.setError('title', { message: 'Title is wrong' });
+        form.setError('title', { message: res.error });
         setIsLoading(false);
         return;
       }
+
+      setIsLoading(false);
+      ref.send({ type: 'NEXT', draft: res.result });
     } catch (e) {
       console.error(e);
     }
-
-    setIsLoading(false);
-    ref.send({ type: 'NEXT' });
   }
 
   return (
-    <div>
+    <div
+      className={'flex min-h-svh flex-col items-center justify-center pb-16'}
+    >
       <Form {...form}>
         <form
           className={'flex flex-col gap-6'}
           onSubmit={form.handleSubmit(handleSubmit)}
         >
-          <FormWrapper onNext={() => {}} isLoading={isLoading}>
+          <FormWrapper
+            onNext={() => {}}
+            onBack={() => ref.send({ type: 'BACK' })}
+            isLoading={isLoading}
+          >
             <FormField
               control={form.control}
               name="title"

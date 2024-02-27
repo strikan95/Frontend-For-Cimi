@@ -66,6 +66,11 @@
   }
 }
 
+.mapboxgl-ctrl-geocoder {
+  background-color: blue;
+  width: 75% !important;
+}
+
 @layer base {
   * {
     @apply border-border;
