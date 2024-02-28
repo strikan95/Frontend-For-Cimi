@@ -212,6 +212,14 @@ export const WizardMachine = setup({
         BACK: {
           target: 'location',
         },
+        UPDATED_IMAGES: {
+          actions: assign(({ context, event }) => {
+            console.log('updating draft context data with: ', event);
+            return {
+              draft: event.draft,
+            };
+          }),
+        },
       },
     },
     title: {

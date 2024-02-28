@@ -6,11 +6,13 @@ function FormWrapper({
   onNext,
   onBack,
   isLoading,
+  disabled = false,
   children,
 }: {
   onNext: () => void;
   onBack?: () => void;
   isLoading: boolean;
+  disabled?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -36,7 +38,7 @@ function FormWrapper({
         <Button
           className={'w-32'}
           type={'submit'}
-          disabled={isLoading}
+          disabled={disabled || isLoading}
           onClick={onNext}
         >
           {isLoading ? <Loader2 className={'animate-spin'} /> : 'Next'}

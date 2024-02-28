@@ -1,21 +1,12 @@
 'use server';
 
 import { getSession } from '@auth0/nextjs-auth0';
-import {
-  Amenity,
-  Draft,
-  StructureType,
-  StructureTypes,
-} from '@/types/draftData.types';
-import { json } from 'node:stream/consumers';
+import { Draft, DraftAmenity, DraftImage } from '@/types/draftData.types';
+import { Amenity, StructureType } from '@/types/listingData.types';
 
 type ServerActionResponse<T> = {
   error: string | null;
   result: T | null;
-};
-
-type AmenitiesListResponse = {
-  amenities: Amenity[];
 };
 
 export async function getAmenities(): Promise<ServerActionResponse<Amenity[]>> {
@@ -30,7 +21,7 @@ export async function getAmenities(): Promise<ServerActionResponse<Amenity[]>> {
       return { error: 'Ops, something went wrong.', result: null };
     }
 
-    const data: AmenitiesListResponse = await res.json();
+    const data = await res.json();
     return { error: null, result: [...data.amenities] };
   } catch (e) {
     console.error(e);
@@ -55,7 +46,7 @@ export async function getStructureTypes(): Promise<
       return { error: 'Ops, something went wrong.', result: null };
     }
 
-    const data: StructureTypes = await res.json();
+    const data = await res.json();
     return { error: null, result: [...data.options] };
   } catch (e) {
     console.error(e);
@@ -92,7 +83,7 @@ export async function getDraft(
 }
 
 export async function updateDraft(
-  data: Partial<Draft>,
+  data: unknown,
   id: string,
   step: string
 ): Promise<ServerActionResponse<Draft>> {
@@ -124,10 +115,36 @@ export async function updateDraft(
   }
 }
 
+export async function getDraftImages(
+  id: string
+): Promise<ServerActionResponse<DraftImage[]>> {
+  const session = await getSession();
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/v1/draft/${id}/image`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      cache: 'no-cache',
+    });
+
+    if (!res.ok) {
+      console.log(await res.json());
+      return { error: 'Ops, something went wrong.', result: null };
+    }
+
+    return { error: null, result: await res.json() };
+  } catch (e) {
+    console.error(e);
+    return { error: 'Network Error: Failed to fetch draft data', result: null };
+  }
+}
+
 export async function addDraftImage(
   data: FormData,
   id: string
-): Promise<ServerActionResponse<Draft>> {
+): Promise<ServerActionResponse<{ message: string }>> {
   const session = await getSession();
 
   try {

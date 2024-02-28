@@ -1,63 +1,224 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Image, ImagePreview, Uploader } from '@/components/ImageUploader';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { updateDraft } from '@/components/wizard/actions';
-import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
-import { Form } from '@/components/ui/form';
+import React, { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Loader2, X } from 'lucide-react';
+import {
+  addDraftImage,
+  getDraftImages,
+  removeDraftImage,
+} from '@/components/wizard/actions';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
-import { Draft } from '@/types/draftData.types';
+import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 
-const formSchema = z.object({
-  images: z
-    .array(z.string().url('Not url'))
-    .min(2, 'At least 5 photos are needed.'),
-});
+type PhotoResponse = {
+  id: string;
+  thumbnailUrl: string;
+  url: string;
+};
+
+type Photo = {
+  id: string;
+  url: string;
+};
+
+function ImagePreview(props: { src: string; onRemove: () => Promise<void> }) {
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  async function onRemoveHandler() {
+    setIsRemoving(() => true);
+    await props.onRemove();
+    setIsRemoving(false);
+  }
+
+  return (
+    <>
+      {isRemoving && <Loader2 className={'h-32 w-32 animate-spin'} />}
+      <div className={'aspect-square w-64'}>
+        <div className={'col-span-1 h-64 w-64 object-contain'}>
+          <div className="flex w-full items-center justify-center">
+            <label
+              className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
+                justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
+                hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
+                dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            >
+              <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
+                <img
+                  src={props.src}
+                  alt="Uploaded"
+                  className="rounded-lg object-cover"
+                />
+                <Button
+                  className={'absolute right-2 top-2'}
+                  type={'button'}
+                  onClick={onRemoveHandler}
+                >
+                  X
+                </Button>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
+  const [file, setFile] = useState<File>();
+  const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    console.log('file', file);
+  }, [file]);
+
+  function clear() {
+    setFile(undefined);
+    setIsUploading(false);
+  }
+
+  async function onUploadHandler(event: React.FormEvent<HTMLInputElement>) {
+    const currentFile = event.currentTarget?.files?.[0];
+
+    if (currentFile) {
+      setFile(currentFile);
+      setIsUploading(true);
+
+      await props.onUpload(currentFile);
+    }
+
+    clear();
+  }
+
+  return (
+    <div className={'col-span-1 h-64 w-64 object-contain'}>
+      <div className="flex w-full items-center justify-center">
+        <label
+          className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
+            justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
+            hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
+            dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          <div className="z-10 flex h-full w-full flex-col items-center justify-center">
+            {file && isUploading ? (
+              <div className={'relative h-full w-full'}>
+                <Loader2
+                  className={'absolute left-2 top-2 m-0 animate-spin p-0'}
+                />
+                <div
+                  className={
+                    'absolute right-0 top-0 h-full w-full bg-gray-500 bg-opacity-50'
+                  }
+                ></div>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="Uploaded"
+                  className="h-full w-full rounded-lg object-cover"
+                />
+              </div>
+            ) : (
+              <>
+                <svg
+                  className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-semibold">Click to upload</span> or drag
+                  and drop
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                </p>
+              </>
+            )}
+            <form>
+              <input
+                type="file"
+                name="image"
+                className="hidden"
+                onInput={onUploadHandler}
+              />
+            </form>
+          </div>
+        </label>
+      </div>
+    </div>
+  );
+}
 
 function ImagesForm() {
   const ref = WizardMachineContext.useActorRef();
-  const state = WizardMachineContext.useSelector((s) => s);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { images: [] },
-  });
-  const [images, setImages] = useState<Image[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [photos, setPhotos] = useState<Photo[]>([]);
 
-  function handleRemove(image: Image) {
-    form.reset();
-    form.unregister(`images.${images.indexOf(image)}`);
-    setImages(images.filter((img) => img !== image));
-  }
+  useEffect(() => {
+    getDraftImages('1').then(async (res) => {
+      if (res.result) {
+        const photos = res.result?.reduce((acc: Photo[], photo) => {
+          return [...acc, { id: photo.id, url: photo.thumbnailUrl }] as Photo[];
+        }, []);
 
-  function handleUpload(image: Image) {
-    setImages((prevState) => [...prevState, image]);
-  }
-
-  const handleOnSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (
-    values
-  ) => {
-    setIsLoading(true);
-
-    try {
-      const res = await updateDraft(values, '1', 'images');
-
-      if (res.error) {
-        //bla bla
-        setIsLoading(false);
-        return;
+        setPhotos((prevState) => {
+          return photos;
+        });
       }
+    });
+  }, []);
 
-      setIsLoading(false);
-      ref.send({ type: 'NEXT', draft: res.result });
+  async function addPhoto(file: File) {
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await addDraftImage(formData, '1');
+
+      console.log('added image', res);
+
+      if (!res.error) {
+        setPhotos((prevState) => {
+          if (!res.result) return prevState;
+
+          return [
+            ...prevState,
+            { id: res.result.id, url: res.result.thumbnailUrl },
+          ];
+        });
+      }
     } catch (e) {
       console.error(e);
-      setIsLoading(false);
     }
-  };
+  }
+
+  async function removePhoto(id: string) {
+    try {
+      const res = await removeDraftImage('1', id);
+      console.log('removed image', res);
+      if (!res.error) {
+        setPhotos((prevState) => {
+          return prevState.filter((value, index, array) => {
+            return value.id !== id;
+          });
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function handleNext() {
+    ref.send({ type: 'NEXT' });
+  }
 
   return (
     <div
@@ -65,34 +226,25 @@ function ImagesForm() {
         'flex min-h-svh flex-col items-center justify-center pb-16 pt-16'
       }
     >
-      <Form {...form}>
+      <FormWrapper
+        onNext={() => ref.send({ type: 'NEXT' })}
+        onBack={() => ref.send({ type: 'BACK' })}
+        isLoading={false}
+        disabled={photos.length < 4}
+      >
         <div className={'grid grid-cols-1 gap-6 lg:grid-cols-2'}>
-          {images.map((img, index) => (
-            <ImagePreview key={index} image={img} onRemove={handleRemove} />
-          ))}
-          <Uploader onUpload={handleUpload} />
-        </div>
-        <form onSubmit={form.handleSubmit(handleOnSubmit)}>
-          <FormWrapper
-            onNext={() => {}}
-            onBack={() => ref.send({ type: 'BACK' })}
-            isLoading={isLoading}
-          >
-            {images.map((img, index) => (
-              <input
-                {...form.register(`images.${index}`)}
-                className={'border'}
+          {photos.map((photo, index) => {
+            return (
+              <ImagePreview
                 key={index}
-                value={img.url}
-                hidden
+                src={photo.url}
+                onRemove={() => removePhoto(photo.id)}
               />
-            ))}
-            {form.formState.errors.images && (
-              <span>{form.formState.errors.images.root?.message}</span>
-            )}
-          </FormWrapper>
-        </form>
-      </Form>
+            );
+          })}
+          <ImageUploader onUpload={addPhoto} />
+        </div>
+      </FormWrapper>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import {
   removeFromCloudinary,
   uploadToCloudinary,
 } from '@/lib/cloudinary/actions';
+import { removeDraftImage } from '@/components/wizard/actions';
 
 export type Image = {
   id: string;
@@ -21,7 +22,7 @@ export function ImagePreview({
 }) {
   async function handleRemove() {
     try {
-      const res = await removeFromCloudinary(image.id);
+      const res = await removeDraftImage(image.id);
 
       if (res.error) {
         console.error(res.error);
@@ -108,19 +109,6 @@ export function Uploader({ onUpload }: { onUpload: (image: Image) => void }) {
 
     clear();
   }
-
-  // useEffect(() => {
-  //   if (isUploading) {
-  //    setTimeout(() => setIsUploading(false), 3000);
-  //  }
-  // }, [isUploading]);
-
-  //useEffect(() => {
-  //  if (file && !isUploading) {
-  //    onUpload({ url: URL.createObjectURL(file) });
-  //    setFile(null);
-  //  }
-  // }, [file, isUploading]);
 
   return (
     <div className={'col-span-1 h-64 w-64 object-contain'}>

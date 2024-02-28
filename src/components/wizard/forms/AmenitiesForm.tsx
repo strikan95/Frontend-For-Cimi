@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/form';
 import React, { useEffect, useState } from 'react';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { Amenity, Draft } from '@/types/draftData.types';
 import { getAmenities, updateDraft } from '@/components/wizard/actions';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { Check } from 'lucide-react';
+import { Amenity } from '@/types/listingData.types';
 
 const formSchema = z.object({
   amenities: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -52,7 +52,10 @@ function StructureTypeForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       // @ts-ignore
-      amenities: [],
+      amenities:
+        state.context.draft?.amenities.reduce((acc: string[], val) => {
+          return [...acc, val.name];
+        }, []) || [],
     },
   });
 
@@ -60,7 +63,7 @@ function StructureTypeForm() {
     setIsLoading(true);
 
     try {
-      const res = await updateDraft(values as Partial<Draft>, '1', 'amenities');
+      const res = await updateDraft(values, '1', 'amenities');
 
       if (res.error) {
         //bla bla resolve backend errors
