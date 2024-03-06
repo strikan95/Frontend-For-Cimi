@@ -15,7 +15,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
-import { Draft } from '@/types/draftData.types';
+import { Draft } from '@/lib/cimi/types/draftData.types';
 import { updateDraft } from '@/components/wizard/actions';
 
 const formSchema = z.object({

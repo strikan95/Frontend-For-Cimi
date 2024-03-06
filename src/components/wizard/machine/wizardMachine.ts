@@ -1,6 +1,6 @@
 import { assign, EventObject, fromCallback, fromPromise, setup } from 'xstate';
 import { ChildMachine } from '@/components/wizard/machine/childMachine';
-import { Draft } from '@/types/draftData.types';
+import { Draft } from '@/lib/cimi/types/draftData.types';
 import { getDraft } from '@/components/wizard/actions';
 
 async function fetchDraftData(id: string) {

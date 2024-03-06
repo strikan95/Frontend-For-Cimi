@@ -19,7 +19,7 @@ import { getAmenities, updateDraft } from '@/components/wizard/actions';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { Check } from 'lucide-react';
-import { Amenity } from '@/types/listingData.types';
+import { Amenity } from '@/lib/cimi/types/listingData.types';
 
 const formSchema = z.object({
   amenities: z.array(z.string()).refine((value) => value.some((item) => item), {

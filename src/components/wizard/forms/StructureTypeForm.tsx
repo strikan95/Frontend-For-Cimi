@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form';
 import React, { useEffect, useState } from 'react';
 import * as RadioGroup from '@radix-ui/react-radio-group';
-import { Draft, StructureType } from '@/types/draftData.types';
+import { Draft, StructureType } from '@/lib/cimi/types/draftData.types';
 import { getStructureTypes, updateDraft } from '@/components/wizard/actions';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';

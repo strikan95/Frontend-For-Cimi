@@ -1,8 +1,12 @@
 'use server';
 
 import { getSession } from '@auth0/nextjs-auth0';
-import { Draft, DraftAmenity, DraftImage } from '@/types/draftData.types';
-import { Amenity, StructureType } from '@/types/listingData.types';
+import {
+  Draft,
+  DraftAmenity,
+  DraftImage,
+} from '@/lib/cimi/types/draftData.types';
+import { Amenity, StructureType } from '@/lib/cimi/types/listingData.types';
 
 type ServerActionResponse<T> = {
   error: string | null;
