@@ -119,9 +119,14 @@ function MainSearchModal() {
                             value={data.query}
                             onChange={(value) => updateParams({ query: value })}
                             onFeature={(feature) => {
+                              const lat =
+                                feature.properties.coordinates.latitude.toString();
+                              const lon =
+                                feature.properties.coordinates.longitude.toString();
                               updateParams({
-                                lat: feature.properties.coordinates.latitude.toString(),
-                                lon: feature.properties.coordinates.longitude.toString(),
+                                lat: lat,
+                                lon: lon,
+                                poi: lat + ',' + lon,
                               });
                               setSearchDrawerState(false);
                               setAccordionItem('two');

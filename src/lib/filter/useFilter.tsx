@@ -9,6 +9,10 @@ type TLocation = {
   lon?: string;
 };
 
+type TPoi = {
+  poi?: string;
+};
+
 type TDateRange = {
   from?: string;
   to?: string;
@@ -19,7 +23,7 @@ type TPriceRange = {
   max?: string;
 };
 
-export type TFilterParams = TLocation & TDateRange & TPriceRange;
+export type TFilterParams = TLocation & TPoi & TDateRange & TPriceRange;
 
 const FilterContext = React.createContext<
   | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]

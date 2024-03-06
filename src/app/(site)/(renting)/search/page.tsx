@@ -1,7 +1,8 @@
 import React from 'react';
 import PropertyList from '@/app/(site)/(renting)/search/PropertyList';
+import { QueryParams } from '@/lib/cimi/api/search';
 
-function Page({
+async function Page({
   searchParams,
 }: {
   searchParams: Partial<{
@@ -14,10 +15,10 @@ function Page({
 }) {
   return (
     <div
-      className={`flex min-h-[calc(100svh-4rem)] flex-col flex-wrap items-center justify-center
+      className={`flex min-h-[calc(100svh-4rem)] flex-col flex-wrap items-start justify-center
         md:flex-row`}
     >
-      <PropertyList query={searchParams} />
+      <PropertyList params={searchParams as Partial<QueryParams>} />
     </div>
   );
 }
