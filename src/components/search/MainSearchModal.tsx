@@ -22,8 +22,6 @@ import {
 import { useFilter } from '@/lib/filter/useFilter';
 import MapBoxSearch from '@/components/search/MapBoxSearch';
 import { format, parse } from 'date-fns';
-import dynamic from 'next/dynamic';
-import { FormStepProps } from '@/app/(wizard)/create-a-listing/components/Form1';
 
 function MainSearchModal() {
   const [accordionItem, setAccordionItem] = useState('one');
@@ -41,21 +39,30 @@ function MainSearchModal() {
   }
 
   return (
-    <>
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <Button
-            className={'flex h-fit w-full justify-start rounded-lg p-2'}
-            variant="outline"
-          >
-            <Search />
-            <div className={'flex flex-col items-start pl-4'}>
-              <h1 className={'font-bold'}>{data.query || 'Find a place...'}</h1>
-              {data.from && <p className={'text-xs text-gray-500'}>{''}</p>}
-            </div>
-          </Button>
-        </Dialog.Trigger>
-        <Dialog.Content className="fixed left-0 top-0 h-full w-full bg-gray-100 p-2">
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <Button
+          className={'flex h-fit w-full justify-start rounded-lg p-2'}
+          variant="outline"
+        >
+          <Search />
+          <div className={'flex flex-col items-start pl-4'}>
+            <h1 className={'font-bold'}>{data.query || 'Find a place...'}</h1>
+            {data.from && <p className={'text-xs text-gray-500'}>{''}</p>}
+          </div>
+        </Button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className={`fixed inset-0 z-40 bg-black/80 data-[state=open]:animate-in
+            data-[state=closed]:animate-out data-[state=closed]:fade-out-0
+            data-[state=open]:fade-in-0`}
+        />
+        <Dialog.Content
+          className="fixed left-0 top-0 z-40 h-full w-full bg-gray-100 p-2 md:left-[50%] md:top-[50%]
+            md:aspect-square md:h-fit md:max-h-fit md:max-w-lg md:translate-x-[-50%]
+            md:translate-y-[-50%] md:rounded-lg md:pb-16"
+        >
           <div className={'flex flex-col'}>
             <div
               className={
@@ -158,8 +165,8 @@ function MainSearchModal() {
             Search
           </button>
         </Dialog.Content>
-      </Dialog.Root>
-    </>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 
