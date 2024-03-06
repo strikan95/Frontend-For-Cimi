@@ -18,16 +18,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={'min-h-[100vh] bg-gray-100'}>
+    <html lang="en">
       <UserProvider>
         <FilterProvider>
-          <body
-            className={cn(
-              inter.className,
-              'mx-auto h-full max-w-7xl antialiased sm:px-6 lg:px-8'
-            )}
-          >
-            <div className="max-w-7xl sm:px-6 lg:px-8">{children}</div>
+          <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
+            {children}
             <Toaster />
           </body>
         </FilterProvider>
