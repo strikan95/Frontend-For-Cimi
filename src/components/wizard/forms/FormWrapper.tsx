@@ -28,7 +28,6 @@ function FormWrapper({
             type={'button'}
             //disabled={isLoading}
             onClick={() => {
-              console.log('going back');
               onBack?.();
             }}
           >

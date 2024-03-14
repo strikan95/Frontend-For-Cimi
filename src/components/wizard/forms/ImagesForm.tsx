@@ -69,10 +69,6 @@ function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
   const [file, setFile] = useState<File>();
   const [isUploading, setIsUploading] = useState(false);
 
-  useEffect(() => {
-    console.log('file', file);
-  }, [file]);
-
   function clear() {
     setFile(undefined);
     setIsUploading(false);
@@ -183,14 +179,13 @@ function ImagesForm() {
 
       const res = await addDraftImage(formData, '1');
 
-      console.log('added image', res);
-
       if (!res.error) {
         setPhotos((prevState) => {
           if (!res.result) return prevState;
 
           return [
             ...prevState,
+            // @ts-ignore
             { id: res.result.id, url: res.result.thumbnailUrl },
           ];
         });
@@ -203,7 +198,6 @@ function ImagesForm() {
   async function removePhoto(id: string) {
     try {
       const res = await removeDraftImage('1', id);
-      console.log('removed image', res);
       if (!res.error) {
         setPhotos((prevState) => {
           return prevState.filter((value, index, array) => {

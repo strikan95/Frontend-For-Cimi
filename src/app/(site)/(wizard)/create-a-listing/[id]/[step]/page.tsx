@@ -25,11 +25,10 @@ function Page({ params }: { params: { id: string; step: string } }) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(state.value);
     if (!state?.matches('loadingDraft') && !state.matches('loaded')) {
       router.push(`/create-a-listing/${params.id}/${state.value}`);
     }
-  }, [state]);
+  }, [state, params.id, router]);
 
   return <div>{params.step === state.value && Forms[state.value]}</div>;
 }

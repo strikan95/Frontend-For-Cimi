@@ -108,7 +108,6 @@ export async function updateDraft(
     );
 
     if (!res.ok) {
-      console.log(await res.json());
       return { error: 'Ops, something went wrong.', result: null };
     }
 
@@ -134,7 +133,6 @@ export async function getDraftImages(
     });
 
     if (!res.ok) {
-      console.log(await res.json());
       return { error: 'Ops, something went wrong.', result: null };
     }
 
@@ -163,7 +161,6 @@ export async function addDraftImage(
     });
 
     if (!res.ok) {
-      console.log(await res.json());
       return { error: 'Ops, something went wrong.', result: null };
     }
 
@@ -195,7 +192,6 @@ export async function removeDraftImage(
     );
 
     if (!res.ok) {
-      console.log(await res.json());
       return { error: 'Ops, something went wrong.', result: null };
     }
 

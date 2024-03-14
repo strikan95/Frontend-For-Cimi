@@ -142,7 +142,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'place-type',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -155,7 +154,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'amenities',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -171,7 +169,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'location',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -187,7 +184,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'images',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -203,7 +199,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'title',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -214,7 +209,6 @@ export const WizardMachine = setup({
         },
         UPDATED_IMAGES: {
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -227,7 +221,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'description',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -243,7 +236,6 @@ export const WizardMachine = setup({
         NEXT: {
           target: 'pricing',
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };
@@ -258,7 +250,6 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           actions: assign(({ context, event }) => {
-            console.log('updating draft context data with: ', event);
             return {
               draft: event.draft,
             };

@@ -6,9 +6,7 @@ export const ChildMachine = createMachine({
   states: {
     idle: {
       invoke: {
-        src: fromPromise(async () => {
-          console.log('child machine started');
-        }),
+        src: fromPromise(async () => {}),
       },
       on: {
         doJob: { target: 'doingJob' },
@@ -17,7 +15,6 @@ export const ChildMachine = createMachine({
     doingJob: {
       invoke: {
         src: fromPromise(async () => {
-          console.log('doing job...');
           await new Promise((resolve) => {
             setTimeout(resolve, 5000);
           });
