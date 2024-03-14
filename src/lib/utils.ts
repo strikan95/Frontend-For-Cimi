@@ -44,3 +44,13 @@ export function getAddress(selection: MapboxGeocoder.Result): {
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+function rangeToDateArray(startDate: Date, endDate: Date): Date[] {
+  let currentDate = new Date(startDate);
+  let dates = [];
+  while (currentDate <= endDate) {
+    dates.push(currentDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
+}

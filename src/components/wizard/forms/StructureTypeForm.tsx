@@ -14,11 +14,12 @@ import {
 } from '@/components/ui/form';
 import React, { useEffect, useState } from 'react';
 import * as RadioGroup from '@radix-ui/react-radio-group';
-import { Draft, StructureType } from '@/lib/cimi/types/draftData.types';
+import { Draft } from '@/lib/cimi/types/draftData.types';
 import { getStructureTypes, updateDraft } from '@/components/wizard/actions';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { Check } from 'lucide-react';
+import { StructureType } from '@/lib/cimi/types/listingData.types';
 
 function StructureTypeForm() {
   const [options, setOptions] = useState<StructureType[]>([]);
@@ -67,18 +68,12 @@ function StructureTypeForm() {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    console.log(values);
     try {
-      const res = await updateDraft(
-        values as Partial<Draft>,
-        '1',
-        'structure-type'
-      );
+      const res = await updateDraft(values, '1', 'structure-type');
 
       if (res.error) {
         //bla bla resolve backend errors
         form.setError('structureType', { message: 'description is wrong' });
-        console.log(res.error);
         setIsLoading(false);
         return;
       }

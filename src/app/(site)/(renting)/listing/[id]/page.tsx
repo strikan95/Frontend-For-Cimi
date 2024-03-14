@@ -5,8 +5,9 @@ import { Heart, Share } from 'lucide-react';
 import InlineSVG from 'react-inlinesvg';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import InquiryForm from '@/app/(site)/(renting)/listing/[id]/InquiryForm';
-import MyMap from '@/app/(site)/(renting)/listing/[id]/MyMap';
+import InquiryForm from '@/components/InquiryForm';
+import AvailabilityCalendar from '@/components/AvailabilityCalendar';
+import SimpleMap from '@/components/map/SimpleMap';
 
 function ListingGallery({
   images,
@@ -32,12 +33,39 @@ function ListingGallery({
                 <Image
                   fill={true}
                   src={image.thumbnailUrl}
-                  alt={''}
+                  alt={'property-image'}
                   style={{ objectFit: 'cover' }}
                 />
               </div>
             ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ListingTitleBar({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className={'flex justify-between'}>
+      <div>
+        <h1 className={'text-4xl font-bold'}>{title}</h1>
+        <h2 className={'text-xl font-bold text-gray-500'}>{description}</h2>
+      </div>
+      <div className={'flex items-center gap-4'}>
+        <button className={'flex gap-2 align-bottom font-bold'}>
+          Share
+          <Share className={'inline h-5 w-5'} />
+        </button>
+        <button className={'flex gap-2 align-bottom font-bold'}>
+          Save
+          <Heart className={'inline h-5 w-5'} />
+        </button>
       </div>
     </div>
   );
@@ -56,26 +84,10 @@ async function Page({ params }: { params: { id: string } }) {
     <div
       className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
     >
-      {/* Title bar */}
-      <div className={'flex justify-between'}>
-        <div>
-          <h1 className={'text-4xl font-bold'}>{listing.title}</h1>
-          <h2 className={'text-xl font-bold text-gray-500'}>
-            {listing.description}
-          </h2>
-        </div>
-        <div className={'flex items-center gap-4'}>
-          <button className={'flex gap-2 align-bottom font-bold'}>
-            Share
-            <Share className={'inline h-5 w-5'} />
-          </button>
-          <button className={'flex gap-2 align-bottom font-bold'}>
-            Save
-            <Heart className={'inline h-5 w-5'} />
-          </button>
-        </div>
-      </div>
-      {/* Gallery */}
+      <ListingTitleBar
+        title={listing.title}
+        description={listing.description}
+      />
       <ListingGallery images={listing.images} />
       <Separator />
       {/* Basic Info Box */}
@@ -86,15 +98,15 @@ async function Page({ params }: { params: { id: string } }) {
         </p>
       </div>
       <div className={'flex flex-wrap'}>
-        <div className={'flex w-full flex-col gap-6 md:w-[70%]'}>
+        <div className={'flex w-full flex-col gap-6 lg:w-[70%]'}>
           <div>
             <h2 className={'pb-2 text-xl font-bold'}>About this property:</h2>
             <p className={'pb-4'}>
               Affordable, modern design in an incredible First Hill location.
-              That's the promise of The Rise on Madison. Our selection of
+              That&aposs the promise of The Rise on Madison. Our selection of
               income-restricted studio, one, two, and three-bedroom apartment
               homes offers Seattle living at its most vibrant. While our
-              location doesn't have on-site parking, there is limited street
+              location doesn&apost have on-site parking, there is limited street
               parking available. Fortunately, our location is extremely
               walkable, bike-friendly, and conveniently close to public
               transportation options! Grocery, medical facilities, schools,
@@ -121,6 +133,7 @@ async function Page({ params }: { params: { id: string } }) {
                 )
                 .map((amenity, index) => (
                   <div
+                    key={index}
                     className={
                       'flex w-full flex-nowrap items-center gap-2 sm:w-1/3'
                     }
@@ -147,15 +160,15 @@ async function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <Separator className={'my-6 md:hidden'} />
+        <Separator className={'my-6 lg:hidden'} />
         <div
           className={
-            'h-fit w-full md:sticky md:right-0 md:top-[4.5rem] md:w-[30%]'
+            'h-fit w-full lg:sticky lg:right-0 lg:top-[4.5rem] lg:w-[30%]'
           }
         >
           <div
             className={
-              'mx-2 rounded-lg border border-gray-300 bg-white p-8 shadow-lg md:ml-16'
+              'mx-2 rounded-lg border border-gray-300 bg-white p-8 shadow-lg lg:ml-16'
             }
           >
             <InquiryForm />
@@ -163,8 +176,12 @@ async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
       <Separator />
-
-      <MyMap className={'h-96 w-full'} />
+      <div>
+        <h1 className={'pb-2 text-xl font-bold'}>Availability</h1>
+        <AvailabilityCalendar disabled={listing.rentPeriods} />
+      </div>
+      <Separator />
+      <SimpleMap className={'h-96 w-full'} />
     </div>
   );
 }

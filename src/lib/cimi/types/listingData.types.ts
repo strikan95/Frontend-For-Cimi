@@ -20,7 +20,10 @@ export type Listing = {
   id: number;
   title: string;
   description: string;
+  coverImageUrl: string;
   structureType: { name: string; iconUrl: string };
   images: { id: string; thumbnailUrl: string }[];
   amenities: { name: string; iconUrl: string }[];
+  rentPeriods: { startDate: string; endDate: string }[];
+  status: 'approved' | 'draft' | 'pending';
 };

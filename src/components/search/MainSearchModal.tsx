@@ -148,6 +148,8 @@ function MainSearchModal() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <Calendar
+                      showOutsideDays
+                      fixedWeeks
                       mode="range"
                       selected={{
                         from: stringToDate(data.from),

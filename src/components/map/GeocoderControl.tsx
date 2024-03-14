@@ -32,9 +32,12 @@ export default function GeocoderControl(props: GeocoderControlProps) {
         marker: false,
         accessToken: props.mapboxAccessToken,
       });
+      // @ts-ignore
       ctrl.on('loading', props.onLoading);
+      // @ts-ignore
       ctrl.on('results', props.onResults);
       ctrl.on('result', (evt) => {
+        // @ts-ignore
         props.onResult(evt.result);
         geocoder.getAutocomplete();
         const { result } = evt;
@@ -44,7 +47,9 @@ export default function GeocoderControl(props: GeocoderControlProps) {
             (result.geometry?.type === 'Point' && result.geometry.coordinates));
         if (location && props.marker) {
           setMarker(
+            // @ts-ignore
             <Marker
+              // @ts-ignore
               {...props.marker}
               longitude={location[0]}
               latitude={location[1]}
@@ -54,6 +59,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
           setMarker(null);
         }
       });
+      // @ts-ignore
       ctrl.on('error', props.onError);
       return ctrl;
     },

@@ -9,7 +9,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZ29zdG96byIsImEiOiJjbGt2NWFhcXQwNXZiM3BtejUzaW15cWN5In0.ljDeA9mdeOZUOsZkbnr2dQ';
 
-function MyMap({ className }: { className?: string }) {
+function SimpleMap({ className }: { className?: string }) {
   let mapContainer = useRef<HTMLDivElement>(null);
   let map = useRef<Map | null>(null) as React.MutableRefObject<Map | null>;
 
@@ -31,4 +31,4 @@ function MyMap({ className }: { className?: string }) {
   return <div className={cn('h-32 w-96', className)} ref={mapContainer} />;
 }
 
-export default MyMap;
+export default SimpleMap;
