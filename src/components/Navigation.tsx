@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Menu, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getSession } from '@auth0/nextjs-auth0';
 import { PrettyLink } from '@/components/ui/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
 

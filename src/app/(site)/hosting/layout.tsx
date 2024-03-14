@@ -1,5 +1,5 @@
 import React from 'react';
-import { HostNavbar, Navbar } from '@/components/Navigation';
+import { HostNavbar } from '@/components/Navigation';
 
 function Layout({ children }: { children: React.ReactNode[] }) {
   return (

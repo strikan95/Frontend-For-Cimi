@@ -5,7 +5,7 @@ import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DateInput, DateInputModal } from '@/components/ui/form-input';
+import { DateInputModal } from '@/components/ui/form-input';
 import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
