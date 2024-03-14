@@ -23,7 +23,7 @@ function SimpleMap({ className }: { className?: string }) {
       zoom: 14,
     });
 
-    const marker = new mapboxgl.Marker({ anchor: 'center' })
+    new mapboxgl.Marker({ anchor: 'center' })
       .setLngLat([-71.06, 42.36])
       .addTo(map.current);
   });

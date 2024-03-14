@@ -30,8 +30,6 @@ function DateInputModal({
 }) {
   const [open, setOpen] = React.useState(false);
 
-  function handleSelect() {}
-
   return (
     <FormField
       name={name}

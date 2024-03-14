@@ -165,7 +165,7 @@ function ImagesForm() {
           return [...acc, { id: photo.id, url: photo.thumbnailUrl }] as Photo[];
         }, []);
 
-        setPhotos((prevState) => {
+        setPhotos(() => {
           return photos;
         });
       }
@@ -200,7 +200,7 @@ function ImagesForm() {
       const res = await removeDraftImage('1', id);
       if (!res.error) {
         setPhotos((prevState) => {
-          return prevState.filter((value, index, array) => {
+          return prevState.filter((value) => {
             return value.id !== id;
           });
         });
@@ -208,10 +208,6 @@ function ImagesForm() {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  function handleNext() {
-    ref.send({ type: 'NEXT' });
   }
 
   return (

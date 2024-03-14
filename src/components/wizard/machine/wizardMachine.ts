@@ -141,7 +141,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'place-type',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -153,7 +153,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'amenities',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -168,7 +168,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'location',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -183,7 +183,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'images',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -198,7 +198,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'title',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -208,7 +208,7 @@ export const WizardMachine = setup({
           target: 'location',
         },
         UPDATED_IMAGES: {
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -220,7 +220,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'description',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -235,7 +235,7 @@ export const WizardMachine = setup({
       on: {
         NEXT: {
           target: 'pricing',
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
@@ -249,7 +249,7 @@ export const WizardMachine = setup({
     pricing: {
       on: {
         NEXT: {
-          actions: assign(({ context, event }) => {
+          actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
