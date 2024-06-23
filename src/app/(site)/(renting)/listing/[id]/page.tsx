@@ -79,6 +79,7 @@ async function Page({ params }: { params: { id: string } }) {
   }
 
   const listing = data.result;
+  console.log(listing);
 
   return (
     <div
@@ -183,7 +184,11 @@ async function Page({ params }: { params: { id: string } }) {
       <Separator />
       <div>
         <h1 className={'pb-2 text-xl font-bold'}>Location</h1>
-        <SimpleMap className={'h-96 w-full'} />
+        <SimpleMap
+          className={'h-96 w-full'}
+          latitude={listing.location.latitude}
+          longitude={listing.location.longitude}
+        />
       </div>
     </div>
   );

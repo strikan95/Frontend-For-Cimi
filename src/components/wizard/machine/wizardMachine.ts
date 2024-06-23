@@ -7,7 +7,6 @@ import { getDraft } from '@/components/wizard/actions';
 
 async function fetchDraftData(id: string) {
   let res = null;
-  console.log(id);
   try {
     res = await getDraft(id);
   } catch (e) {
@@ -33,7 +32,6 @@ export const WizardMachine = setup({
   actors: {
     childMachine: ChildMachine,
     fetchDraft: fromPromise(({ input }: { input: { id: string } }) => {
-      console.log('calling fetch draft');
       return fetchDraftData(input.id);
     }),
     redirectToForm: fromCallback<EventObject, { lastUpdatedStep?: string }>(
@@ -84,8 +82,6 @@ export const WizardMachine = setup({
       invoke: {
         src: 'fetchDraft',
         input: ({ context }) => {
-          console.log(context.draftId);
-
           return {
             id: context.draftId,
           };
@@ -144,6 +140,9 @@ export const WizardMachine = setup({
         },
         PRICING: {
           target: 'pricing',
+        },
+        FINALISE: {
+          target: 'finalise',
         },
       },
     },
@@ -270,6 +269,7 @@ export const WizardMachine = setup({
         },
       },
     },
+    finalise: {},
     working: {
       invoke: {
         src: 'childMachine',

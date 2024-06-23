@@ -154,15 +154,13 @@ function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
   );
 }
 
-function ImagesForm({ draftId }: { draftId: string }) {
+function ImagesForm({ draftId }: { draftId?: string }) {
   const ref = WizardMachineContext.useActorRef();
   const state = WizardMachineContext.useSelector((s) => s);
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
     getDraftImages(state.context.draftId).then(async (res) => {
-      console.log(res);
-
       if (res.result) {
         const photos = res.result?.reduce((acc: Photo[], photo) => {
           return [...acc, { id: photo.id, url: photo.thumbnailUrl }] as Photo[];

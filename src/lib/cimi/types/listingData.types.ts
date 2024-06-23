@@ -26,4 +26,5 @@ export type Listing = {
   amenities: { name: string; iconUrl: string }[];
   rentPeriods: { startDate: string; endDate: string }[];
   status: 'approved' | 'draft' | 'pending';
+  location: { latitude: number; longitude: number };
 };

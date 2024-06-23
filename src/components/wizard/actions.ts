@@ -126,7 +126,6 @@ export async function getDraftImages(
     });
 
     if (!res.ok) {
-      console.log(res);
       return { error: 'Ops, something went wrong.', result: null };
     }
 

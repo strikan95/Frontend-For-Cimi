@@ -9,6 +9,7 @@ export async function getListing(
   try {
     const res = await fetch(`http://localhost:8080/api/v1/listings/${id}`, {
       method: 'GET',
+      cache: 'no-cache',
     });
 
     if (!res.ok) {
