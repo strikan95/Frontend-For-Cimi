@@ -23,6 +23,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import GeocoderMap from '@/components/map/GeocoderMap';
 import { getAddress } from '@/lib/utils';
+import { bool } from 'prop-types';
 
 const formSchema = z.object({
   street: z.string().max(48),
@@ -66,8 +67,12 @@ function LocationForm() {
   const ref = WizardMachineContext.useActorRef();
   const state = WizardMachineContext.useSelector((s) => s);
 
-  const [selected, setSelected] = useState<undefined | MapboxGeocoder.Result>(
-    undefined
+  const hasOldData =
+    state.context.draft?.location?.latitude != undefined &&
+    state.context.draft?.location?.longitude != undefined;
+
+  const [selected, setSelected] = useState<boolean | MapboxGeocoder.Result>(
+    hasOldData
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,17 +80,17 @@ function LocationForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       // state.context.draft?.location?.street ||
-      street: '',
+      street: state.context.draft?.location?.street || '',
       // state.context.draft?.location?.streetNumber ||
-      streetNumber: '',
+      streetNumber: state.context.draft?.location?.streetNumber || '',
       // state.context.draft?.location?.zipCode ||
-      postCode: '',
+      postCode: state.context.draft?.location?.postCode || '',
       // state.context.draft?.location?.city ||
-      city: '',
+      city: state.context.draft?.location?.city || '',
       // state.context.draft?.location?.country ||
-      country: '',
-      latitude: undefined,
-      longitude: undefined,
+      country: state.context.draft?.location?.country || '',
+      latitude: state.context.draft?.location?.latitude || undefined,
+      longitude: state.context.draft?.location?.longitude || undefined,
     },
   });
 
@@ -93,7 +98,11 @@ function LocationForm() {
     setIsLoading(true);
 
     try {
-      const res = await updateDraft(values as Partial<Draft>, '1', 'location');
+      const res = await updateDraft(
+        values as Partial<Draft>,
+        state.context.draftId,
+        'location'
+      );
 
       if (res.error) {
         //bla bla resolve backend errors
@@ -174,7 +183,17 @@ function LocationForm() {
                 />
               </Transition>
             }
-            <GeocoderMap onSelect={handleSelection} />
+            <GeocoderMap
+              onSelect={handleSelection}
+              oldData={
+                hasOldData
+                  ? {
+                      latitude: form.getValues('latitude'),
+                      longitude: form.getValues('longitude'),
+                    }
+                  : undefined
+              }
+            />
           </FormWrapper>
         </form>
       </Form>

@@ -69,11 +69,6 @@ function AvailabilityCalendar({
           fromMonth={new Date('today')}
         />
       </div>
-      <div className={'w-full md:w-1/4'}>
-        {availableRanges.map((range, i) => {
-          return <div key={i}>1</div>;
-        })}
-      </div>
     </div>
   );
 }

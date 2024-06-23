@@ -7,6 +7,9 @@ const nextConfig = {
             },
         ],
     },
+    env: {
+        chat_api_key: process.env.NEXT_PUBLIC_GET_STREAM_API_KEY
+    }
 };
 
-export default nextConfig;
+export default nextConfig

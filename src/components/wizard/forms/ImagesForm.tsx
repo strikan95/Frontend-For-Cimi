@@ -154,12 +154,15 @@ function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
   );
 }
 
-function ImagesForm() {
+function ImagesForm({ draftId }: { draftId: string }) {
   const ref = WizardMachineContext.useActorRef();
+  const state = WizardMachineContext.useSelector((s) => s);
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
-    getDraftImages('1').then(async (res) => {
+    getDraftImages(state.context.draftId).then(async (res) => {
+      console.log(res);
+
       if (res.result) {
         const photos = res.result?.reduce((acc: Photo[], photo) => {
           return [...acc, { id: photo.id, url: photo.thumbnailUrl }] as Photo[];
@@ -177,7 +180,7 @@ function ImagesForm() {
       const formData = new FormData();
       formData.append('image', file);
 
-      const res = await addDraftImage(formData, '1');
+      const res = await addDraftImage(formData, state.context.draftId);
 
       if (!res.error) {
         setPhotos((prevState) => {
@@ -197,7 +200,7 @@ function ImagesForm() {
 
   async function removePhoto(id: string) {
     try {
-      const res = await removeDraftImage('1', id);
+      const res = await removeDraftImage(state.context.draftId, id);
       if (!res.error) {
         setPhotos((prevState) => {
           return prevState.filter((value) => {

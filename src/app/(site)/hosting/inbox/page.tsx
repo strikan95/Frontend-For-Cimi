@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import ChatBox from '@/app/(site)/hosting/_components/chat/ChatBox';
 
 async function InboxList() {
   const messages = [
@@ -53,12 +54,10 @@ async function InboxList() {
   );
 }
 
-function Page() {
+async function Page() {
   return (
-    <div
-      className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
-    >
-      <InboxList />
+    <div className={'min-h-[calc(100svh-4rem)]'}>
+      <ChatBox apiKey={process.env.GET_STREAM_API_KEY!} />
     </div>
   );
 }

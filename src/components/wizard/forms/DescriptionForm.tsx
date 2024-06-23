@@ -41,7 +41,7 @@ function DescriptionForm() {
     try {
       const res = await updateDraft(
         values as Partial<Draft>,
-        '1',
+        state.context.draftId,
         'description'
       );
 

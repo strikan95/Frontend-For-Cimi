@@ -23,16 +23,29 @@ type ListingSearchResponseData = {
 
 export type QueryParams = {
   poi: string;
+  priceMax: string;
+  priceMin: string;
 };
 
 export async function searchListings(
   params: Partial<QueryParams>
 ): Promise<ServerActionResponse<ListingSearchResponseData[]>> {
   try {
+    let paramList = `poi=${params.poi}`;
+
+    if (params.priceMax) {
+      paramList += '&priceMax=' + params.priceMax;
+    }
+
+    if (params.priceMin) {
+      paramList += '&priceMin=' + params.priceMin;
+    }
+
     const res = await fetch(
-      `http://localhost:8080/api/v1/search?poi=${params.poi}`,
+      `http://localhost:8080/api/v1/search?` + paramList,
       {
         method: 'GET',
+        cache: 'no-cache',
       }
     );
 

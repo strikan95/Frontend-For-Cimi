@@ -1,3 +1,5 @@
+'use client';
+
 import { assign, EventObject, fromCallback, fromPromise, setup } from 'xstate';
 import { ChildMachine } from '@/components/wizard/machine/childMachine';
 import { Draft } from '@/lib/cimi/types/draftData.types';
@@ -5,6 +7,7 @@ import { getDraft } from '@/components/wizard/actions';
 
 async function fetchDraftData(id: string) {
   let res = null;
+  console.log(id);
   try {
     res = await getDraft(id);
   } catch (e) {
@@ -29,9 +32,10 @@ export const WizardMachine = setup({
   },
   actors: {
     childMachine: ChildMachine,
-    fetchDraft: fromPromise(({ input }: { input: { id: string } }) =>
-      fetchDraftData(input.id)
-    ),
+    fetchDraft: fromPromise(({ input }: { input: { id: string } }) => {
+      console.log('calling fetch draft');
+      return fetchDraftData(input.id);
+    }),
     redirectToForm: fromCallback<EventObject, { lastUpdatedStep?: string }>(
       ({ input, sendBack }) => {
         switch (input.lastUpdatedStep) {
@@ -79,7 +83,13 @@ export const WizardMachine = setup({
     loadingDraft: {
       invoke: {
         src: 'fetchDraft',
-        input: ({ context }) => ({ id: context.draftId }),
+        input: ({ context }) => {
+          console.log(context.draftId);
+
+          return {
+            id: context.draftId,
+          };
+        },
         onDone: {
           target: 'loaded',
           actions: assign({

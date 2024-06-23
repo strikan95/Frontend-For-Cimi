@@ -101,7 +101,7 @@ function Header({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={
-        'sticky right-0 top-0 z-50 border-b-2 border-gray-300 bg-[#EAEAEA]'
+        'sticky right-0 top-0 z-30 border-b-2 border-gray-300 bg-[#EAEAEA]'
       }
     >
       <div className={'md:mx-auto md:w-full md:max-w-[1400px] md:px-4'}>

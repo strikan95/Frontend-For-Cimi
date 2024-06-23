@@ -1,15 +1,21 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Map, { GeolocateControl, MapRef, NavigationControl } from 'react-map-gl';
+import Map, {
+  GeolocateControl,
+  MapRef,
+  Marker,
+  NavigationControl,
+} from 'react-map-gl';
 import GeocoderControl from '@/components/map/GeocoderControl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 type Props = {
+  oldData?: { latitude: number; longitude: number };
   onSelect: (selection: MapboxGeocoder.Result) => void;
 };
 
-function GeocoderMap({ onSelect }: Props) {
+function GeocoderMap({ onSelect, oldData }: Props) {
   const mapRef = useRef<MapRef>(null);
   const [selected, setSelected] = useState<MapboxGeocoder.Result>();
   const [flashHide, setFlashHide] = useState(false);
@@ -49,7 +55,7 @@ function GeocoderMap({ onSelect }: Props) {
         scrollZoom={!!selected}
         trackResize={true}
         style={
-          selected
+          oldData || selected
             ? {
                 width: '100%',
                 height: '250px',
@@ -64,9 +70,9 @@ function GeocoderMap({ onSelect }: Props) {
         }
         mapStyle="mapbox://styles/mapbox/streets-v12"
         initialViewState={{
-          latitude: 45.0044,
-          longitude: 16.3451,
-          zoom: 5.5,
+          latitude: oldData?.latitude || 45.0044,
+          longitude: oldData?.longitude || 16.3451,
+          zoom: oldData ? 15 : 5.5,
         }}
         maxZoom={20}
         minZoom={3}
@@ -87,6 +93,9 @@ function GeocoderMap({ onSelect }: Props) {
           position="top-left"
         />
         )
+        {oldData?.longitude && oldData?.latitude && (
+          <Marker longitude={oldData.longitude} latitude={oldData.latitude} />
+        )}
       </Map>
     </div>
   );

@@ -63,7 +63,7 @@ function StructureTypeForm() {
     setIsLoading(true);
 
     try {
-      const res = await updateDraft(values, '1', 'amenities');
+      const res = await updateDraft(values, state.context.draftId, 'amenities');
 
       if (res.error) {
         //bla bla resolve backend errors
@@ -95,10 +95,12 @@ function StructureTypeForm() {
               control={form.control}
               render={() => (
                 <FormItem>
-                  <div className="mb-4">
-                    <FormLabel className="text-base">Sidebar</FormLabel>
+                  <div className="my-4">
+                    <FormLabel className="text-base">
+                      Select multiple amenities that your property provides.
+                    </FormLabel>
                     <FormDescription>
-                      Select the items you want to display in the sidebar.
+                      You need to select at least 3 amenities.
                     </FormDescription>
                   </div>
                   <div
@@ -137,7 +139,7 @@ function StructureTypeForm() {
                                   >
                                     <Check className={'h-4 w-4'} />
                                   </Checkbox.Indicator>
-                                  <FormLabel className="text-sm font-normal">
+                                  <FormLabel className="pb-2 text-center text-sm font-normal">
                                     {option.name}
                                   </FormLabel>
                                   <img

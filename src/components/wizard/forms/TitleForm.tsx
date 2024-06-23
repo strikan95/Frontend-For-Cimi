@@ -40,7 +40,11 @@ function TitleForm() {
     setIsLoading(true);
 
     try {
-      const res = await updateDraft(values as Partial<Draft>, '1', 'title');
+      const res = await updateDraft(
+        values as Partial<Draft>,
+        state.context.draftId,
+        'title'
+      );
 
       if (res.error) {
         //bla bla resolve backend errors

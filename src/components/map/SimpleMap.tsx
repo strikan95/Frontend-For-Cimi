@@ -19,12 +19,12 @@ function SimpleMap({ className }: { className?: string }) {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-71.06, 42.36],
+      center: [18.67588, 45.560001],
       zoom: 14,
     });
 
     new mapboxgl.Marker({ anchor: 'center' })
-      .setLngLat([-71.06, 42.36])
+      .setLngLat([18.67588, 45.560001])
       .addTo(map.current);
   });
 

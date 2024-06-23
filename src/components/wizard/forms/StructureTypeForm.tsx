@@ -66,13 +66,16 @@ function StructureTypeForm() {
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-
+    console.log(values);
     try {
-      const res = await updateDraft(values, '1', 'structure-type');
+      const res = await updateDraft(
+        values,
+        state.context.draftId,
+        'structure-type'
+      );
 
       if (res.error) {
-        //bla bla resolve backend errors
-        form.setError('structureType', { message: 'description is wrong' });
+        form.setError('structureType', { message: 'Error.' });
         setIsLoading(false);
         return;
       }
@@ -108,8 +111,8 @@ function StructureTypeForm() {
                       className="flex w-fit flex-col gap-2.5"
                       onValueChange={field.onChange}
                       aria-label="View density"
-                      defaultChecked={true}
-                      defaultValue={'House'}
+                      defaultChecked={form.getValues('structureType') !== ''}
+                      defaultValue={form.getValues('structureType') || 'House'}
                     >
                       {options.length <= 0 ? (
                         <>Loading types....</>

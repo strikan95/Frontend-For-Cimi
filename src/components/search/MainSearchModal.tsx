@@ -27,7 +27,7 @@ function MainSearchModal() {
   const [accordionItem, setAccordionItem] = useState('one');
   const [searchDrawerState, setSearchDrawerState] = useState(false);
 
-  const { data, handleSearch, updateParams } = useFilter();
+  const { data, handleSearch, clearParams, updateParams } = useFilter();
 
   function dateToString(date?: Date) {
     if (!date) return undefined;
@@ -54,7 +54,7 @@ function MainSearchModal() {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
-          className={`fixed inset-0 z-40 bg-black/80 data-[state=open]:animate-in
+          className={`fixed inset-0 z-30 bg-black/80 data-[state=open]:animate-in
             data-[state=closed]:animate-out data-[state=closed]:fade-out-0
             data-[state=open]:fade-in-0`}
         />
@@ -146,7 +146,7 @@ function MainSearchModal() {
                       </span>
                     )}
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className={'flex justify-center'}>
                     <Calendar
                       showOutsideDays
                       fixedWeeks
@@ -168,9 +168,10 @@ function MainSearchModal() {
               </Accordion>
             </div>
           </div>
-          <button className={'fixed bottom-6 right-6'} onClick={handleSearch}>
-            Search
-          </button>
+          <div className={'fixed bottom-6 right-6 flex gap-4'}>
+            <Button onClick={clearParams}>Clear</Button>
+            <Button onClick={handleSearch}>Search</Button>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

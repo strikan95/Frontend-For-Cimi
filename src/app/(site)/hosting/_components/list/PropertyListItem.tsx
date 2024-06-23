@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import React from 'react';
+import React, { FormEvent } from 'react';
 import PropertyListItemStatusBadge from '@/app/(site)/hosting/_components/list/PropertyListItemBadge';
 import PropertyManagerMenu from '@/app/(site)/hosting/_components/property-manager/PropertyManagerMenu';
+import PropertyUpdateButton from '@/app/(site)/hosting/_components/list/PropertyUpdateButton';
 
 type Props = {
   className?: string;
@@ -50,9 +51,7 @@ function PropertyListItem({
         <PropertyListItemStatusBadge status={status} />
       </ul>
       <div className="font-light text-gray-600">{description}</div>
-      <button className="rounded-2xl bg-gray-800 py-1 text-white">
-        Edit Listing
-      </button>
+      <PropertyUpdateButton id={id} />
     </section>
   );
 }

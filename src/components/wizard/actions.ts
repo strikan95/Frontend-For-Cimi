@@ -33,21 +33,18 @@ export async function getStructureTypes(): Promise<
   ServerActionResponse<StructureType[]>
 > {
   try {
-    const res = await fetch(
-      `http://localhost:8080/api/v1/options/structure_type`,
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        cache: 'no-cache',
-      }
-    );
+    const res = await fetch(`http://localhost:8080/api/v1/structure-types`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-cache',
+    });
 
     if (!res.ok) {
       return { error: 'Ops, something went wrong.', result: null };
     }
 
     const data = await res.json();
-    return { error: null, result: [...data.options] };
+    return { error: null, result: [...data.structureTypes] };
   } catch (e) {
     console.error(e);
     return { error: 'Ops, something went wrong.', result: null };
@@ -129,6 +126,7 @@ export async function getDraftImages(
     });
 
     if (!res.ok) {
+      console.log(res);
       return { error: 'Ops, something went wrong.', result: null };
     }
 
@@ -196,8 +194,4 @@ export async function removeDraftImage(
     console.error(e);
     return { error: 'Network Error: Failed to fetch draft data', result: null };
   }
-}
-
-export async function loadTest(): Promise<ServerActionResponse<string[]>> {
-  return { error: null, result: ['1', '2', '3', '4'] };
 }

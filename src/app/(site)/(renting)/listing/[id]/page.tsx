@@ -57,7 +57,7 @@ function ListingTitleBar({
         <h1 className={'text-4xl font-bold'}>{title}</h1>
         <h2 className={'text-xl font-bold text-gray-500'}>{description}</h2>
       </div>
-      <div className={'flex items-center gap-4'}>
+      <div className={'hidden lg:flex lg:items-center lg:gap-4'}>
         <button className={'flex gap-2 align-bottom font-bold'}>
           Share
           <Share className={'inline h-5 w-5'} />
@@ -181,7 +181,10 @@ async function Page({ params }: { params: { id: string } }) {
         <AvailabilityCalendar disabled={listing.rentPeriods} />
       </div>
       <Separator />
-      <SimpleMap className={'h-96 w-full'} />
+      <div>
+        <h1 className={'pb-2 text-xl font-bold'}>Location</h1>
+        <SimpleMap className={'h-96 w-full'} />
+      </div>
     </div>
   );
 }
