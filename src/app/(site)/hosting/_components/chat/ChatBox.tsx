@@ -20,12 +20,12 @@ type Props = {
 };
 
 function ChatBox({ apiKey, userToken }: Props) {
-  const client = useChatClient({ apiKey: apiKey, userToken: userToken });
+  //const client = useChatClient({ apiKey: apiKey, userToken: userToken });
 
-  if (!client) return null;
+  //if (!client) return null;
 
   return (
-    <Chat client={client}>
+    <>
       <ChannelList />
       <Channel>
         <Window>
@@ -35,7 +35,7 @@ function ChatBox({ apiKey, userToken }: Props) {
         </Window>
         <Thread />
       </Channel>
-    </Chat>
+    </>
   );
 }
 

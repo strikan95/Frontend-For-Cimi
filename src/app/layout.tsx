@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { FilterProvider } from '@/lib/filter/useFilter';
 import React from 'react';
 import { Toaster } from '@/components/ui/toaster';
-
+import ChatContextProvider from '@/lib/chat/ChatProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -21,10 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
         <FilterProvider>
-          <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
-            {children}
-            <Toaster />
-          </body>
+          <ChatContextProvider>
+            <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
+              {children}
+              <Toaster />
+            </body>
+          </ChatContextProvider>
         </FilterProvider>
       </UserProvider>
     </html>
