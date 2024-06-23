@@ -32,4 +32,5 @@ export type Draft = {
   amenities: DraftAmenity[];
   location?: DraftLocation;
   images: DraftImage[];
+  status: 'approved' | 'draft' | 'pending';
 };

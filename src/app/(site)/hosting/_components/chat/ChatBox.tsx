@@ -16,10 +16,11 @@ import { useChatClient } from '@/app/(site)/hosting/_components/chat/useChatClie
 
 type Props = {
   apiKey: string;
+  userToken: string;
 };
 
-function ChatBox({ apiKey }: Props) {
-  const client = useChatClient({ apiKey: apiKey });
+function ChatBox({ apiKey, userToken }: Props) {
+  const client = useChatClient({ apiKey: apiKey, userToken: userToken });
 
   if (!client) return null;
 

@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import InquiryForm from '@/components/InquiryForm';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import SimpleMap from '@/components/map/SimpleMap';
+import { generateChatToken } from '@/lib/auth/chatTokenGenerator';
 
 function ListingGallery({
   images,
@@ -74,13 +75,14 @@ function ListingTitleBar({
 async function Page({ params }: { params: { id: string } }) {
   const data = await getListing(params.id);
 
+  const chatToken = await generateChatToken();
+
   if (data.error || !data.result) {
     throw Error('bla');
   }
 
   const listing = data.result;
-  console.log(listing);
-
+  const host = listing.host.userIdentity.sub;
   return (
     <div
       className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
@@ -172,7 +174,7 @@ async function Page({ params }: { params: { id: string } }) {
               'mx-2 rounded-lg border border-gray-300 bg-white p-8 shadow-lg lg:ml-16'
             }
           >
-            <InquiryForm />
+            <InquiryForm host={host} chatToken={chatToken} />
           </div>
         </div>
       </div>

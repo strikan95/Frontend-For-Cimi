@@ -4,17 +4,17 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 
 export const useChatClient = ({
   apiKey,
+  userToken,
 }: {
   apiKey: string;
+  userToken: string;
 }): StreamChat | undefined => {
   const [chatClient, setChatClient] = useState<StreamChat>();
-  const userToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ29vZ2xlLW9hdXRoMl8xMDA3MTUwNTAzMTUyNDU2NjI1NDgifQ.Wobrmd02toB2B0WMJ5nElJV4dfUlXi875YhkVcqETAc';
   const { user, error, isLoading } = useUser();
 
   useEffect(() => {
     if (user) {
-      const client = new StreamChat(apiKey);
+      const client = new StreamChat('fvx8ceem6g95');
       // prevents application from setting stale client (user changed, for example)
       let didUserConnectInterrupt = false;
 

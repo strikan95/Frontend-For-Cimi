@@ -27,4 +27,5 @@ export type Listing = {
   rentPeriods: { startDate: string; endDate: string }[];
   status: 'approved' | 'draft' | 'pending';
   location: { latitude: number; longitude: number };
+  host: { userIdentity: { sub: string } };
 };

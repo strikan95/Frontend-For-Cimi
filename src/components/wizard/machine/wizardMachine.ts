@@ -258,6 +258,7 @@ export const WizardMachine = setup({
     pricing: {
       on: {
         NEXT: {
+          target: 'finalise',
           actions: assign(({ event }) => {
             return {
               draft: event.draft,

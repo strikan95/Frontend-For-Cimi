@@ -37,12 +37,15 @@ function Page({ params }: { params: { id: string; step: string } }) {
       const products = await updateDraft(
         undefined,
         state.context.draftId,
-        'location'
+        'finalise'
       );
 
       router.push(`/listing/${params.id}`);
     };
-    finalise();
+
+    if (state.matches('finalise')) {
+      finalise();
+    }
   }, [state]);
 
   return <div>{params.step === state.value && Forms[state.value]}</div>;
