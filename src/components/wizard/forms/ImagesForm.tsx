@@ -10,6 +10,7 @@ import {
 } from '@/components/wizard/actions';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
+import { cn } from '@/lib/utils';
 
 type PhotoResponse = {
   id: string;
@@ -218,12 +219,19 @@ function ImagesForm({ draftId }: { draftId?: string }) {
       }
     >
       <FormWrapper
-        onNext={() => ref.send({ type: 'NEXT' })}
+        onNext={() => {
+          ref.send({ type: 'NEXT' });
+        }}
         onBack={() => ref.send({ type: 'BACK' })}
         isLoading={false}
         disabled={photos.length < 4}
       >
-        <div className={'grid grid-cols-1 gap-6 lg:grid-cols-2'}>
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-6',
+            photos.length == 0 ? 'lg:grid-cols-1' : 'lg:grid-cols-2'
+          )}
+        >
           {photos.map((photo, index) => {
             return (
               <ImagePreview

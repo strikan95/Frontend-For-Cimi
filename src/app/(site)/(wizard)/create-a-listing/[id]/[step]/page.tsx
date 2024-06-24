@@ -11,6 +11,7 @@ import DummyForm from '@/components/wizard/forms/DummyForm';
 import AmenitiesForm from '@/components/wizard/forms/AmenitiesForm';
 import { updateDraft } from '@/components/wizard/actions';
 import { Draft } from '@/lib/cimi/types/draftData.types';
+import PriceForm from '@/components/wizard/forms/PriceForm';
 
 const Forms: Record<string, React.ReactNode> = {
   'structure-type': <StructureTypeForm />,
@@ -20,7 +21,7 @@ const Forms: Record<string, React.ReactNode> = {
   images: <ImagesForm />,
   title: <TitleForm />,
   description: <DescriptionForm />,
-  pricing: <DummyForm step={'pricing'} />,
+  pricing: <PriceForm />,
 };
 function Page({ params }: { params: { id: string; step: string } }) {
   const state = WizardMachineContext.useSelector((s) => s);

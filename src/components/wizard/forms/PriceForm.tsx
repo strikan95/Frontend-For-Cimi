@@ -20,10 +20,10 @@ import { updateDraft } from '@/components/wizard/actions';
 import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
-  title: z.string().min(10).max(64),
+  price: z.coerce.number(),
 });
 
-function TitleForm() {
+function PriceForm() {
   const ref = WizardMachineContext.useActorRef();
   const state = WizardMachineContext.useSelector((s) => s);
 
@@ -34,7 +34,7 @@ function TitleForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: state.context.draft?.title || '',
+      price: state.context.draft?.price || undefined,
     },
   });
 
@@ -45,12 +45,12 @@ function TitleForm() {
       const res = await updateDraft(
         values as Partial<Draft>,
         state.context.draftId,
-        'title'
+        'pricing'
       );
 
       if (res.error) {
         //bla bla resolve backend errors
-        form.setError('title', { message: res.error });
+        form.setError('price', { message: res.error });
         setIsLoading(false);
         return;
       }
@@ -78,18 +78,19 @@ function TitleForm() {
           >
             <FormField
               control={form.control}
-              name="title"
+              name="price"
               render={({ field }) => (
                 <FormItem aria-autocomplete={'none'}>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Chose a title for your property..."
+                      type={'number'}
+                      placeholder="Select your monthly rent"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    This is a public title for your property listing
+                    This is the monthly rent for your property listing
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -102,4 +103,4 @@ function TitleForm() {
   );
 }
 
-export default TitleForm;
+export default PriceForm;

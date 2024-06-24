@@ -45,7 +45,6 @@ export async function addRentPeriod(
   id: string
 ): Promise<ServerActionResponse<string>> {
   const session = await getSession();
-  console.log(id);
   try {
     const res = await fetch(
       `http://localhost:8080/api/v1/listings/${id}/occupancy`,
@@ -61,7 +60,6 @@ export async function addRentPeriod(
     );
 
     if (!res.ok) {
-      //console.log(res);
       return { error: 'There was an error', result: null };
     }
 

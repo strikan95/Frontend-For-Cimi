@@ -74,7 +74,6 @@ function ListingTitleBar({
 
 async function Page({ params }: { params: { id: string } }) {
   const data = await getListing(params.id);
-  console.log(data.result?.rentPeriods);
 
   if (data.error || !data.result) {
     throw Error('bla');

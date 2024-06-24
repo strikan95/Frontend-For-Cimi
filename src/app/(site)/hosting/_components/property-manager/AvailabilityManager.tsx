@@ -26,10 +26,8 @@ function AvailabilityManager({ id }: { id: string }) {
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    console.log('submitting');
     try {
       const res = await addRentPeriod(values, id);
-      console.log(res);
       if (res.error) {
         //resolve backend errors
         setIsLoading(false);

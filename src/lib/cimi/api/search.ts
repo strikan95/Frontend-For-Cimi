@@ -25,6 +25,8 @@ export type QueryParams = {
   poi: string;
   priceMax: string;
   priceMin: string;
+  from: string;
+  to: string;
 };
 
 export async function searchListings(
@@ -39,6 +41,14 @@ export async function searchListings(
 
     if (params.priceMin) {
       paramList += '&priceMin=' + params.priceMin;
+    }
+
+    if (params.from) {
+      paramList += '&from=' + params.from;
+    }
+
+    if (params.to) {
+      paramList += '&to=' + params.to;
     }
 
     const res = await fetch(

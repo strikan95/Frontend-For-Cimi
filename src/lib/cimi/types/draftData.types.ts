@@ -27,6 +27,7 @@ export type Draft = {
   id: string;
   lastUpdatedStep: string;
   title?: string;
+  price?: number;
   description?: string;
   structureType?: DraftStructureType;
   amenities: DraftAmenity[];

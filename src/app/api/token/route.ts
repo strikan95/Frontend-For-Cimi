@@ -6,7 +6,7 @@ export async function GET() {
   const session = await getSession();
 
   if (!session?.user) {
-    return 'Error';
+    return Response.error();
   }
 
   const instance = StreamChat.getInstance(
@@ -20,4 +20,4 @@ export async function GET() {
   return Response.json({ token: token });
 }
 
-export async function DELETE() {}
+//export async function DELETE() {}
