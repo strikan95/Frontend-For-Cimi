@@ -21,12 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
         <FilterProvider>
-          <ChatContextProvider>
-            <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
+          <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
+            <ChatContextProvider>
               {children}
               <Toaster />
-            </body>
-          </ChatContextProvider>
+            </ChatContextProvider>
+          </body>
         </FilterProvider>
       </UserProvider>
     </html>

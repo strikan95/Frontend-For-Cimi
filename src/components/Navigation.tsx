@@ -42,7 +42,7 @@ function MainMenu() {
           <Link href={'/watchlist'}>Watchlist</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={'/messages'}>My Messages</Link>
+          <Link href={'/messenger'}>My Messages</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href={'/hosting'}>Switch to Hosting</Link>

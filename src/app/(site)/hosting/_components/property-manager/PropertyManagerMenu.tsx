@@ -50,7 +50,7 @@ function PropertyManagerMenu({ id }: { id: number }) {
           triggerChildren="Manage Availability"
           onOpenChange={handleDialogItemOpenChange}
         >
-          <AvailabilityManager />
+          <AvailabilityManager id={id.toString()} />
         </DropdownDialogItem>
 
         <DropdownMenuItem disabled={true}>View Calendar</DropdownMenuItem>

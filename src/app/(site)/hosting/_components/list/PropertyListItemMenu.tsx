@@ -25,7 +25,7 @@ function PropertyListItemMenu({ id }: Props) {
           <Link href={'/hosting'}>View Listing</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <AvailabilityManager />
+          <AvailabilityManager id={id.toString()} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href={'/hosting/inbox'}>View Calendar</Link>

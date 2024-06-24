@@ -74,8 +74,7 @@ function ListingTitleBar({
 
 async function Page({ params }: { params: { id: string } }) {
   const data = await getListing(params.id);
-
-  const chatToken = await generateChatToken();
+  console.log(data.result?.rentPeriods);
 
   if (data.error || !data.result) {
     throw Error('bla');
@@ -174,7 +173,7 @@ async function Page({ params }: { params: { id: string } }) {
               'mx-2 rounded-lg border border-gray-300 bg-white p-8 shadow-lg lg:ml-16'
             }
           >
-            <InquiryForm host={host} chatToken={chatToken} />
+            <InquiryForm hostId={listing.host.userIdentity.sub} />
           </div>
         </div>
       </div>

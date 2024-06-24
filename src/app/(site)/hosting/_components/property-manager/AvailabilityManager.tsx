@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
@@ -7,20 +7,40 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DateInputModal } from '@/components/ui/form-input';
 import { Button } from '@/components/ui/button';
+import { addRentPeriod } from '@/lib/cimi/api/host';
 
 const formSchema = z.object({
-  from: z.string(),
-  to: z.string(),
+  startDate: z.date(),
+  endDate: z.date(),
 });
 
-function AvailabilityManager() {
+function AvailabilityManager({ id }: { id: string }) {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      from: '',
-      to: '',
+      startDate: undefined,
+      endDate: undefined,
     },
   });
+
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    console.log('submitting');
+    try {
+      const res = await addRentPeriod(values, id);
+      console.log(res);
+      if (res.error) {
+        //resolve backend errors
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <div className={'flex flex-col gap-4'}>
@@ -32,19 +52,21 @@ function AvailabilityManager() {
         as occupied for the selected period.
       </Dialog.Description>
       <Form {...form}>
-        <DateInputModal
-          name={'from'}
-          label={'Start Date'}
-          placeholder={'mm/dd/yyyy'}
-        />
-        <DateInputModal
-          name={'to'}
-          label={'End Date'}
-          placeholder={'mm/dd/yyyy'}
-        />
-        <Button type={'submit'} className={'mt-6 w-full'}>
-          Submit
-        </Button>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <DateInputModal
+            name={'startDate'}
+            label={'Start Date'}
+            placeholder={'mm/dd/yyyy'}
+          />
+          <DateInputModal
+            name={'endDate'}
+            label={'End Date'}
+            placeholder={'mm/dd/yyyy'}
+          />
+          <Button type={'submit'} className={'mt-6 w-full'}>
+            Submit
+          </Button>
+        </form>
       </Form>
     </div>
   );
