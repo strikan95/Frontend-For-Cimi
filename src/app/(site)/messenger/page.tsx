@@ -19,8 +19,9 @@ function Page() {
   const chat = useChatContext();
   const { user, isLoading } = useUser();
 
-  const filters = { members: { $in: [user?.sub?.replace('|', '_')] } };
   const options = { limit: 10 };
+
+  const userId = user?.sub?.replace('|', '_');
 
   /*  React.useEffect(() => {
     if (user && user.sub) {
@@ -30,10 +31,10 @@ function Page() {
 
   return (
     <div className={'pb-16'}>
-      {!chat.isLoading && !isLoading && (
+      {chat.client != undefined && userId && (
         <>
           <ChannelList
-            filters={filters}
+            filters={{ members: { $in: [userId] } }}
             sort={{ last_message_at: -1 }}
             options={options}
             customActiveChannel={params.get('channel') || ''}
