@@ -21,6 +21,7 @@ function Scroller({
     initialData,
   ]);
   const [currentPage, setCurrentPage] = useState(1);
+  setCurrentPage(currentPage + 1);
   const [loading, setLoading] = useState(false);
 
   async function loadNext() {
