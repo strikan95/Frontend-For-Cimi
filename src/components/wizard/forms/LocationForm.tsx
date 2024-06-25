@@ -67,8 +67,6 @@ function LocationForm() {
   const ref = WizardMachineContext.useActorRef();
   const state = WizardMachineContext.useSelector((s) => s);
 
-  console.log(state.context);
-
   const hasOldData =
     state.context.draft?.location?.latitude != 0 &&
     state.context.draft?.location?.longitude != 0;

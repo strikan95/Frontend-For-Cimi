@@ -32,8 +32,6 @@ function InquiryForm({ hostId }: { hostId: string }) {
   const ctx = useChatContext();
   const router = useRouter();
 
-  console.log(ctx);
-
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     if (user != undefined && user.sub) {
       const userId = user.sub;

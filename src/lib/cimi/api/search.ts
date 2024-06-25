@@ -1,5 +1,8 @@
 'use server';
 
+import exp from 'node:constants';
+import { Listing } from '@/lib/cimi/types/listingData.types';
+
 type ServerActionResponse<T> = {
   error: string | null;
   result: T | null;
@@ -16,9 +19,9 @@ export type ListingSearchItem = {
   };
 };
 
-type ListingSearchResponseData = {
-  listing: ListingSearchItem;
-  distance: number;
+export type ListingSearchResponseData = {
+  listings: { listing: ListingSearchItem; distance: number }[];
+  pages: number;
 };
 
 export type QueryParams = {
@@ -27,11 +30,13 @@ export type QueryParams = {
   priceMin: string;
   from: string;
   to: string;
+  page: number;
 };
 
 export async function searchListings(
-  params: Partial<QueryParams>
-): Promise<ServerActionResponse<ListingSearchResponseData[]>> {
+  params: Partial<QueryParams>,
+  page: 0 | number
+): Promise<ServerActionResponse<ListingSearchResponseData>> {
   try {
     let paramList = `poi=${params.poi}`;
 
@@ -51,6 +56,10 @@ export async function searchListings(
       paramList += '&to=' + params.to;
     }
 
+    if (page) {
+      paramList += '&page=' + page;
+    }
+
     const res = await fetch(
       `http://localhost:8080/api/v1/search?` + paramList,
       {
@@ -63,7 +72,8 @@ export async function searchListings(
       return { error: 'There was an error.', result: null };
     }
 
-    const data: ListingSearchResponseData[] = await res.json();
+    const data: ListingSearchResponseData = await res.json();
+
     return { error: null, result: data };
   } catch (e) {
     console.error(e);

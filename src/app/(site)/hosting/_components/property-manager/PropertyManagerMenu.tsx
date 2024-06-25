@@ -19,9 +19,7 @@ function PropertyManagerMenu({ id }: { id: number }) {
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
   const dropdownTriggerRef = React.useRef(null);
 
-  function handleDelete() {
-    console.log('deleted');
-  }
+  function handleDelete() {}
 
   function handleDialogItemOpenChange(open: boolean) {
     if (!open) {
