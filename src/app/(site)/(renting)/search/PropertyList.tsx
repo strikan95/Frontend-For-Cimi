@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   ListingSearchItem,
   QueryParams,
@@ -23,12 +23,14 @@ function PropertyListItem({
             'relative aspect-square overflow-hidden rounded-lg sm:max-w-full'
           }
         >
-          <Image
-            fill={true}
-            src={listing.coverImageUrl}
-            alt={''}
-            style={{ objectFit: 'cover' }}
-          />
+          <Suspense>
+            <Image
+              fill={true}
+              src={listing.coverImageUrl}
+              alt={''}
+              style={{ objectFit: 'cover' }}
+            />
+          </Suspense>
         </div>
         <h1 className={'text-md pt-2 font-bold text-gray-700'}>
           {listing.title}
