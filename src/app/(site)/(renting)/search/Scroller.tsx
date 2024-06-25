@@ -8,6 +8,7 @@ import {
 } from '@/lib/cimi/api/search';
 import { PropertyListSearchItem } from '@/app/(site)/(renting)/search/PropertyList';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 function Scroller({
   params,
@@ -21,7 +22,6 @@ function Scroller({
     initialData,
   ]);
   const [currentPage, setCurrentPage] = useState(1);
-  setCurrentPage(currentPage + 1);
   const [loading, setLoading] = useState(false);
 
   async function loadNext() {
@@ -83,6 +83,9 @@ function Scroller({
             ))
           )}
       </div>
+      <Button onClick={() => setCurrentPage((prevState) => prevState + 1)}>
+        Load more
+      </Button>
       {loading && <Loader2 className={'animate-spin pt-8'} />}
     </>
   );
