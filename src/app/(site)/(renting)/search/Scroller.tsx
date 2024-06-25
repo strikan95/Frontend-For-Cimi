@@ -16,6 +16,7 @@ function Scroller({
   params: Partial<QueryParams>;
   initialData: ListingSearchResponseData;
 }) {
+  console.log('scroller entry');
   const [pages, setPages] = useState<ListingSearchResponseData[]>([
     initialData,
   ]);
@@ -23,6 +24,7 @@ function Scroller({
   const [loading, setLoading] = useState(false);
 
   async function loadNext() {
+    console.log('loading next');
     setLoading(true);
     const data = await searchListings(params, currentPage + 1);
 
@@ -36,12 +38,14 @@ function Scroller({
 
   useEffect(() => {
     if (currentPage > 1 && currentPage < initialData.pages) {
+      console.log('starting load');
       loadNext();
     }
   }, [currentPage]);
 
   useEffect(() => {
     const handleScroll = async () => {
+      console.log('handling scroll');
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
@@ -56,6 +60,10 @@ function Scroller({
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]);
+
+  useEffect(() => {
+    console.log('Pages: ' + pages);
+  }, [pages]);
 
   return (
     <>
