@@ -9,6 +9,7 @@ import {
 } from '@/lib/cimi/api/search';
 import { PropertyListSearchItem } from '@/app/(site)/(renting)/search/PropertyList';
 import { Loader2 } from 'lucide-react';
+import { Property } from 'csstype';
 
 function Scroller({
   params,
