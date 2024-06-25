@@ -2,14 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  ListingSearchItem,
   ListingSearchResponseData,
   QueryParams,
   searchListings,
 } from '@/lib/cimi/api/search';
 import { PropertyListSearchItem } from '@/app/(site)/(renting)/search/PropertyList';
 import { Loader2 } from 'lucide-react';
-import { Property } from 'csstype';
 
 function Scroller({
   params,
@@ -18,50 +16,38 @@ function Scroller({
   params: Partial<QueryParams>;
   initialData: ListingSearchResponseData;
 }) {
-  const pageCount = initialData.pages;
+  const [pages, setPages] = useState<ListingSearchResponseData[]>([
+    initialData,
+  ]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [data, setData] = React.useState<ListingSearchItem[]>(
-    reduceTo(initialData.listings)
-  );
-  function reduceTo(data: { listing: ListingSearchItem; distance: number }[]) {
-    return data?.reduce((acc: ListingSearchItem[], item) => {
-      return [...acc, item.listing];
-    }, []);
-  }
 
-  function appendResults(results: ListingSearchResponseData) {
-    setData((prevState) => {
-      return [...prevState, ...reduceTo(results.listings)];
-    });
-  }
-
-  async function loadMore() {
+  async function loadNext() {
     setLoading(true);
-    const data = await searchListings(params, page);
+    const data = await searchListings(params, currentPage + 1);
 
-    if (!data.error && data?.result) {
-      appendResults(data?.result);
+    if (!data.error && data.result) {
+      const newData = data.result;
+      setPages((prevState) => [...prevState, newData]);
     }
 
     setLoading(false);
   }
 
   useEffect(() => {
-    if (page > 1 && page < pageCount) {
-      loadMore();
+    if (currentPage > 1 && currentPage < initialData.pages) {
+      loadNext();
     }
-  }, [page]);
+  }, [currentPage]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = async () => {
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
 
-      // Check if user has scrolled to near bottom of the page (e.g., 80% of the document height)
-      if (scrollTop + windowHeight >= documentHeight * 0.9 && !loading) {
-        setPage((prevState) => prevState + 1);
+      if (!loading && scrollTop + windowHeight >= documentHeight * 0.8) {
+        setCurrentPage((prevState) => prevState + 1);
       }
     };
 
@@ -69,7 +55,7 @@ function Scroller({
 
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [loading, loadMore]);
+  }, [loading]);
 
   return (
     <>
@@ -77,13 +63,15 @@ function Scroller({
         className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
           lg:grid-cols-5`}
       >
-        {data?.map((result, index) => (
-          <PropertyListSearchItem
-            className={'col-span-1'}
-            key={index}
-            listing={result}
-          />
-        ))}
+        {pages?.map((page, index) =>
+          page.listings.map((item) => (
+            <PropertyListSearchItem
+              className={'col-span-1'}
+              key={index}
+              listing={item.listing}
+            />
+          ))
+        )}
       </div>
       {loading && <Loader2 className={'animate-spin pt-8'} />}
     </>

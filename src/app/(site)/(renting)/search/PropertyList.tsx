@@ -16,8 +16,6 @@ export function PropertyListSearchItem({
   className?: string;
   listing: ListingSearchItem;
 }) {
-  console.log(listing);
-
   return (
     <div className={cn('', className)}>
       <Link className={'flex h-full flex-col'} href={`/listing/${listing.id}`}>
