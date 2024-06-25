@@ -36,6 +36,12 @@ function Scroller({
   }
 
   useEffect(() => {
+    if (initialData && pages.length <= 0) {
+      setPages((prevState) => [...prevState, initialData]);
+    }
+  }, [initialData]);
+
+  useEffect(() => {
     if (currentPage > 1 && currentPage < initialData.pages) {
       console.log('starting load');
       loadNext();
@@ -70,16 +76,9 @@ function Scroller({
         className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
           lg:grid-cols-5`}
       >
-        {initialData?.listings?.map((item, index) => (
-          <PropertyListSearchItem
-            className={'col-span-1'}
-            key={index}
-            listing={item.listing}
-          />
-        ))}
         {pages.length > 0 &&
-          pages?.map((page, index) =>
-            page?.listings?.map((item) => (
+          pages.map((page, index) =>
+            page.listings.map((item) => (
               <PropertyListSearchItem
                 className={'col-span-1'}
                 key={index}
