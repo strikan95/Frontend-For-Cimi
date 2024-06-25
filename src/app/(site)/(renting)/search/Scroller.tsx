@@ -26,9 +26,9 @@ function Scroller({
   const [data, setData] = React.useState<ListingSearchItem[]>(
     reduceTo(initialData.listings)
   );
-  function reduceTo(data: ListingSearchItem[]) {
+  function reduceTo(data: { listing: ListingSearchItem; distance: number }[]) {
     return data.reduce((acc: ListingSearchItem[], item) => {
-      return [...acc, item];
+      return [...acc, item.listing];
     }, []);
   }
 
@@ -83,7 +83,7 @@ function Scroller({
           <PropertyListSearchItem
             className={'col-span-1'}
             key={index}
-            listing={result.listing}
+            listing={result}
           />
         ))}
       </div>
