@@ -45,7 +45,7 @@ function Scroller({
 
   useEffect(() => {
     const handleScroll = async () => {
-      console.log('handling scroll');
+      console.log('handling scroll here');
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
