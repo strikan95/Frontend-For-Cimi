@@ -18,9 +18,7 @@ function Scroller({
   initialData: ListingSearchResponseData;
 }) {
   console.log('scroller entry');
-  const [pages, setPages] = useState<ListingSearchResponseData[]>([
-    initialData,
-  ]);
+  const [pages, setPages] = useState<ListingSearchResponseData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -72,6 +70,13 @@ function Scroller({
         className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
           lg:grid-cols-5`}
       >
+        {initialData?.listings?.map((item, index) => (
+          <PropertyListSearchItem
+            className={'col-span-1'}
+            key={index}
+            listing={item.listing}
+          />
+        ))}
         {pages.length > 0 &&
           pages?.map((page, index) =>
             page?.listings?.map((item) => (
