@@ -72,7 +72,7 @@ function Scroller({
           lg:grid-cols-5`}
       >
         {pages?.map((page, index) =>
-          page.listings.map((item) => (
+          page?.listings?.map((item) => (
             <PropertyListSearchItem
               className={'col-span-1'}
               key={index}
