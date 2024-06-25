@@ -24,7 +24,7 @@ function Scroller({
     reduceTo(initialData.listings)
   );
   function reduceTo(data: { listing: ListingSearchItem; distance: number }[]) {
-    return data.reduce((acc: ListingSearchItem[], item) => {
+    return data?.reduce((acc: ListingSearchItem[], item) => {
       return [...acc, item.listing];
     }, []);
   }
@@ -39,8 +39,8 @@ function Scroller({
     setLoading(true);
     const data = await searchListings(params, page);
 
-    if (!data.error && data.result) {
-      appendResults(data.result);
+    if (!data.error && data?.result) {
+      appendResults(data?.result);
     }
 
     setLoading(false);
