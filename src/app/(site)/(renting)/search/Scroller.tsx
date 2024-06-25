@@ -71,15 +71,16 @@ function Scroller({
         className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
           lg:grid-cols-5`}
       >
-        {pages?.map((page, index) =>
-          page?.listings?.map((item) => (
-            <PropertyListSearchItem
-              className={'col-span-1'}
-              key={index}
-              listing={item.listing}
-            />
-          ))
-        )}
+        {pages.length > 0 &&
+          pages?.map((page, index) =>
+            page?.listings?.map((item) => (
+              <PropertyListSearchItem
+                className={'col-span-1'}
+                key={index}
+                listing={item.listing}
+              />
+            ))
+          )}
       </div>
       {loading && <Loader2 className={'animate-spin pt-8'} />}
     </>
