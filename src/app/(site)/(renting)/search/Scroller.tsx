@@ -8,10 +8,7 @@ import {
   searchListings,
 } from '@/lib/cimi/api/search';
 import { PropertyListSearchItem } from '@/app/(site)/(renting)/search/PropertyList';
-import { Button } from '@/components/ui/button';
-import { handleScroll } from 'react-remove-scroll/dist/es5/handleScroll';
 import { Loader2 } from 'lucide-react';
-import { delay } from '@/lib/utils';
 
 function Scroller({
   params,
