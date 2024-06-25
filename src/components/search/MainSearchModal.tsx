@@ -25,7 +25,9 @@ import { format, parse } from 'date-fns';
 
 function MainSearchModal() {
   const [accordionItem, setAccordionItem] = useState('one');
-  const [searchDrawerState, setSearchDrawerState] = useState(false);
+  const [searchDrawerState, setSearchDrawerState] = useState<boolean>(false);
+
+  const [modalState, setModalState] = useState<boolean | undefined>(undefined);
 
   const { data, handleSearch, clearParams, updateParams } = useFilter();
 
@@ -39,7 +41,7 @@ function MainSearchModal() {
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={modalState} onOpenChange={setModalState}>
       <Dialog.Trigger asChild>
         <Button
           className={'flex h-fit w-full justify-start rounded-lg p-2'}
@@ -170,7 +172,14 @@ function MainSearchModal() {
           </div>
           <div className={'fixed bottom-6 right-6 flex gap-4'}>
             <Button onClick={clearParams}>Clear</Button>
-            <Button onClick={handleSearch}>Search</Button>
+            <Button
+              onClick={() => {
+                handleSearch();
+                setModalState(false);
+              }}
+            >
+              Search
+            </Button>
           </div>
         </Dialog.Content>
       </Dialog.Portal>

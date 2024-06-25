@@ -19,6 +19,10 @@ function PropertyManagerMenu({ id }: { id: number }) {
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
   const dropdownTriggerRef = React.useRef(null);
 
+  function handleDelete() {
+    console.log('deleted');
+  }
+
   function handleDialogItemOpenChange(open: boolean) {
     if (!open) {
       setDropdownOpen(false);
@@ -63,7 +67,15 @@ function PropertyManagerMenu({ id }: { id: number }) {
           <Dialog.Description>
             Are you sure you want to delete this record?
           </Dialog.Description>
-          <Button variant={'destructive'}>Delete</Button>
+          <Dialog.Close asChild={true}>
+            <Button
+              onClick={handleDelete}
+              className={'w-full'}
+              variant={'destructive'}
+            >
+              Delete
+            </Button>
+          </Dialog.Close>
         </DropdownDialogItem>
 
         <DropdownMenuArrow />

@@ -19,14 +19,14 @@ function Page() {
   const chat = useChatContext();
   const { user, isLoading } = useUser();
 
-  let filters = {};
+  const filters = { members: { $in: [user?.sub?.replace('|', '_')] } };
   const options = { limit: 10 };
 
-  React.useEffect(() => {
+  /*  React.useEffect(() => {
     if (user && user.sub) {
-      filters = { members: { $in: [user?.sub?.replace('|', '_')] } };
+      filters = { members: { $in: [user.sub.replace('|', '_')] } };
     }
-  }, [isLoading]);
+  }, [isLoading]);*/
 
   return (
     <div className={'pb-16'}>

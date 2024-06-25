@@ -1,0 +1,8 @@
+callbacks
+http://192.168.1.12:3000/api/auth/callback, http://localhost:3000/api/auth/callback, https://oauth.pstmn.io/v1/callback
+
+logout
+http://192.168.1.12:3000, http://192.168.1.12:3000/api/auth/logout, http://localhost:3000/api/auth/logout, http://localhost:3000
+
+origin
+http://192.168.1.12:3000, http://localhost:3000
