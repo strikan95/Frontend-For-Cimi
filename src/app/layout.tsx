@@ -5,9 +5,8 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { cn } from '@/lib/utils';
 import { FilterProvider } from '@/lib/filter/useFilter';
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import Header from '@/components/Header';
-
+import { Toaster } from '@/components/ui/toaster';
+import ChatContextProvider from '@/lib/chat/ChatProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,21 +18,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={'h-full bg-gray-100'}>
+    <html lang="en">
       <UserProvider>
         <FilterProvider>
-          <body className={cn(inter.className, 'h-full antialiased')}>
-            <div className="min-h-full">
-              <Navbar />
-              <div className="py-10">
-                <Header />
-                <main>
-                  <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {children}
-                  </div>
-                </main>
-              </div>
-            </div>
+          <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
+            <ChatContextProvider>
+              {children}
+              <Toaster />
+            </ChatContextProvider>
           </body>
         </FilterProvider>
       </UserProvider>
