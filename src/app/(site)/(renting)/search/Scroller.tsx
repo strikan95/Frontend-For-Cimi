@@ -57,6 +57,10 @@ function Scroller({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]);
 
+  useEffect(() => {
+    console.log(pages);
+  }, [pages]);
+
   return (
     <>
       <div
