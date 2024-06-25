@@ -84,7 +84,7 @@ function HostMainMenu() {
           <Link href={'/hosting/listings'}>Manage Listings</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={'/hosting/inbox'}>Inbox</Link>
+          <Link href={'/messenger'}>Inbox</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href={'/profile'}>Profile</Link>
@@ -145,7 +145,7 @@ export function HostNavbar() {
           >
             <PrettyLink href={'/hosting'}>Dashboard</PrettyLink>
             <PrettyLink href={'/hosting/listings'}>My Listings</PrettyLink>
-            <PrettyLink href={'/hosting/inbox'}>Inbox</PrettyLink>
+            <PrettyLink href={'/messenger'}>Inbox</PrettyLink>
           </div>
         </div>
       </div>
