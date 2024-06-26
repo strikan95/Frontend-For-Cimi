@@ -34,6 +34,37 @@ async function getListings(
   }
 }
 
+export async function deleteListing(
+  id: string | number
+): Promise<ServerActionResponse<Listing[]>> {
+  const session = await getSession();
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/v1/listings/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+      cache: 'no-cache',
+    });
+
+    if (!res.ok) {
+      const content = await res.json();
+      const message = content.error.message;
+
+      return { error: message, result: null };
+    }
+
+    const message = await res.json();
+
+    return { error: null, result: message };
+  } catch (e) {
+    console.error(e);
+    return { error: 'There was an error', result: null };
+  }
+}
+
 export async function getCurrentHostListings(): Promise<
   ServerActionResponse<Listing[]>
 > {

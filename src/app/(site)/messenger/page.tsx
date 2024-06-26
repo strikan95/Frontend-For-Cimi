@@ -29,9 +29,13 @@ function Page() {
     }
   }, [isLoading]);*/
 
+  if (!chat.client) {
+    return <div>Loading chat ...</div>;
+  }
+
   return (
     <div className={'pb-16'}>
-      {chat.client != undefined && userId && (
+      {userId && (
         <>
           <ChannelList
             filters={{ members: { $in: [userId] } }}
