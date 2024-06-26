@@ -1,14 +1,58 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import {
+  ListingSearchItem,
   ListingSearchResponseData,
   QueryParams,
   searchListings,
 } from '@/lib/cimi/api/search';
-import { PropertyListSearchItem } from '@/app/(site)/(renting)/search/PropertyList';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import Image from 'next/image';
+
+function PropertyListSearchItem({
+  className,
+  listing,
+}: {
+  className?: string;
+  listing: ListingSearchItem;
+}) {
+  return (
+    <div className={cn('', className)}>
+      <Link className={'flex h-full flex-col'} href={`/listing/${listing.id}`}>
+        <div
+          className={
+            'relative aspect-square overflow-hidden rounded-lg sm:max-w-full'
+          }
+        >
+          <Suspense>
+            <Image
+              fill={true}
+              src={listing.coverImageUrl}
+              alt={''}
+              style={{ objectFit: 'cover' }}
+            />
+          </Suspense>
+        </div>
+        <h1 className={'text-md pt-2 font-bold text-gray-700'}>
+          {listing?.title}
+        </h1>
+        <p className={'text-sm text-gray-500'}>
+          {listing?.location?.city}, {listing?.location?.country}
+        </p>
+        <p className={'text-sm text-gray-500'}>Avaliable from 1. Jul.</p>
+        <p
+          className={`flex grow flex-col justify-end place-self-end pt-2 font-bold text-gray-700`}
+        >
+          {listing?.price}€ a month
+        </p>
+      </Link>
+    </div>
+  );
+}
 
 function Scroller({
   params,
@@ -18,7 +62,9 @@ function Scroller({
   initialData: ListingSearchResponseData;
 }) {
   console.log('scroller entry');
-  const [pages, setPages] = useState<ListingSearchResponseData[]>([]);
+  const [pages, setPages] = useState<ListingSearchResponseData[]>([
+    initialData,
+  ]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -34,12 +80,6 @@ function Scroller({
 
     setLoading(false);
   }
-
-  useEffect(() => {
-    if (initialData && pages.length <= 0) {
-      setPages((prevState) => [...prevState, initialData]);
-    }
-  }, [initialData]);
 
   useEffect(() => {
     if (currentPage > 1 && currentPage < initialData.pages) {
@@ -65,10 +105,6 @@ function Scroller({
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]);
-
-  useEffect(() => {
-    console.log('Pages: ' + pages);
-  }, [pages]);
 
   return (
     <>
