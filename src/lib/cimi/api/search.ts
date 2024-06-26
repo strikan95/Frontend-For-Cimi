@@ -17,8 +17,8 @@ export type ListingSearchItem = {
 };
 
 type ListingSearchResponseData = {
-  listing: ListingSearchItem;
-  distance: number;
+  listings: { listing: ListingSearchItem; distance: number }[];
+  page: number;
 };
 
 export type QueryParams = {
@@ -31,7 +31,7 @@ export type QueryParams = {
 
 export async function searchListings(
   params: Partial<QueryParams>
-): Promise<ServerActionResponse<ListingSearchResponseData[]>> {
+): Promise<ServerActionResponse<ListingSearchResponseData>> {
   try {
     let paramList = `poi=${params.poi}`;
 
@@ -63,7 +63,7 @@ export async function searchListings(
       return { error: 'There was an error.', result: null };
     }
 
-    const data: ListingSearchResponseData[] = await res.json();
+    const data: ListingSearchResponseData = await res.json();
     return { error: null, result: data };
   } catch (e) {
     console.error(e);

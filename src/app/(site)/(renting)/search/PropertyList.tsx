@@ -28,6 +28,7 @@ function PropertyListItem({
               fill={true}
               src={listing.coverImageUrl}
               alt={''}
+              sizes={'500px'}
               style={{ objectFit: 'cover' }}
             />
           </Suspense>
@@ -56,20 +57,21 @@ async function PropertyList({ params }: { params: Partial<QueryParams> }) {
     return <div>{data.error}</div>;
   }
 
-  const results = data.result;
+  const listings = data.result.listings;
 
   return (
     <div
       className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
         lg:grid-cols-5`}
     >
-      {results.map((result, index) => (
-        <PropertyListItem
-          className={'col-span-1'}
-          key={index}
-          listing={result.listing}
-        />
-      ))}
+      {listings.length > 0 &&
+        listings.map((result, index) => (
+          <PropertyListItem
+            className={'col-span-1'}
+            key={index}
+            listing={result.listing}
+          />
+        ))}
     </div>
   );
 }

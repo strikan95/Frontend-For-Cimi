@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Suspense } from 'react';
-import { StreamChat } from 'stream-chat';
+import { ConnectionOpen, DefaultGenerics, StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
