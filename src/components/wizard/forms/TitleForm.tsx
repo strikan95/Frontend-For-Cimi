@@ -29,8 +29,6 @@ function TitleForm() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {}, [state]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
