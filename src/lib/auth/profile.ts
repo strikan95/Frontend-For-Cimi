@@ -53,11 +53,8 @@ export async function finishUserProfile(
     });
 
     if (!res.ok) {
-      console.log(res);
       return { error: 'There was an error', result: null };
     }
-
-    console.log(res);
 
     const json: ApiProfile = await res.json();
 
@@ -88,7 +85,6 @@ export const getUserProfileData = async (): Promise<
     });
 
     if (!res.ok) {
-      console.log(res);
       return { error: 'There was an error', result: null };
     }
 

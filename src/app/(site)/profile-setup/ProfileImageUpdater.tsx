@@ -8,20 +8,16 @@ function ProfileImageUpdater({ picture }: { picture: string }) {
 
   async function handleOnFileInput(event: React.FormEvent<HTMLInputElement>) {
     const currentFile = event.currentTarget?.files?.[0];
-    console.log('currentFile ', currentFile);
 
     if (currentFile) {
       setIsUploading(true);
       try {
         const formData = new FormData();
         formData.set('image', currentFile);
-        console.log('formData ' + formData);
 
         const res = await updateUserProfileImage(formData);
-        console.log(res);
 
         if (!res.error) {
-          console.log(res.result);
         }
       } catch (e) {
         console.error(e);

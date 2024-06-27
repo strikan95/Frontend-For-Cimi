@@ -29,8 +29,6 @@ export default withMiddlewareAuthRequired(async (req: NextRequest) => {
 
       const data: ApiProfile = await apiRes.json();
 
-      console.log(data);
-
       if (
         data.roles.includes('ROLE_HOST') ||
         data.roles.includes('ROLE_STUDENT')
