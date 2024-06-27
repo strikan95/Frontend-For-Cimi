@@ -65,7 +65,7 @@ const ChatContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isLoading, user]);
 
   if (!chatClient) {
-    return <Suspense fallback={<div>Loading</div>}>{children}</Suspense>;
+    return <Suspense>{children}</Suspense>;
   }
 
   const startDM = async (props: StartDMProps) => {

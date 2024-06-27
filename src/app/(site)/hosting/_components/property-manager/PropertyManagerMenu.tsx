@@ -13,14 +13,42 @@ import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
 import AvailabilityManager from '@/app/(site)/hosting/_components/property-manager/AvailabilityManager';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { revalidatePath } from 'next/cache';
+import { usePathname, useRouter } from 'next/navigation';
+import { deleteListing } from '@/lib/cimi/api/host';
+import { useToast } from '@/components/ui/use-toast';
+import { delay } from '@/lib/utils';
+import { ToastAction, ToastActionElement } from '@/components/ui/toast';
 
-function PropertyManagerMenu({ id }: { id: number }) {
+type Props = {
+  id: number;
+};
+
+function PropertyManagerMenu({ id }: Props) {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
   const dropdownTriggerRef = React.useRef(null);
 
-  function handleDelete() {
-    console.log('deleted');
+  const toast = useToast();
+
+  const currentPath = usePathname();
+
+  async function handleDelete() {
+    const res = await deleteListing(id);
+
+    const isError = res.error;
+    if (isError) {
+      toast.toast({
+        title: 'Failure',
+        description: res.error,
+      });
+      return;
+    }
+
+    toast.toast({
+      title: 'Success',
+      description: 'Listing deleted!',
+    });
   }
 
   function handleDialogItemOpenChange(open: boolean) {
