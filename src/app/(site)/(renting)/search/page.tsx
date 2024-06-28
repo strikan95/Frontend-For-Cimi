@@ -15,6 +15,7 @@ async function Page({
     lon: string;
     from: string;
     to: string;
+    page: string;
   }>;
 }) {
   return (

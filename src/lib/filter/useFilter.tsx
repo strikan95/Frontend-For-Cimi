@@ -27,11 +27,16 @@ type TAmenities = {
   amenities: string[];
 };
 
+type TPaginator = {
+  page: string;
+};
+
 export type TFilterParams = TLocation &
   TPoi &
   TDateRange &
   TPriceRange &
-  TAmenities;
+  TAmenities &
+  TPaginator;
 
 const FilterContext = React.createContext<
   | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]
@@ -41,6 +46,7 @@ const FilterContext = React.createContext<
 export function FilterProvider({ children }: { children: React.ReactNode }) {
   const [filterData, setFilterData] = React.useState<TFilterParams>({
     amenities: [],
+    page: '1',
   });
 
   return (
@@ -79,7 +85,10 @@ export function useFilter(initialValues?: TFilterParams) {
   };
 
   const clearParams = () => {
-    setFilterData({ amenities: [] });
+    setFilterData({
+      amenities: [],
+      page: filterData.page,
+    });
   };
 
   function handleSearch() {

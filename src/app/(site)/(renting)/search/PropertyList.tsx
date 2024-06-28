@@ -7,6 +7,7 @@ import {
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Paginator from '@/app/(site)/(renting)/search/Paginator';
 
 function PropertyListItem({
   className,
@@ -53,6 +54,8 @@ function PropertyListItem({
 async function PropertyList({ params }: { params: Partial<QueryParams> }) {
   const data = await searchListings(params);
 
+  console.log('search data', data);
+
   if (data.error || !data.result) {
     return <div>{data.error}</div>;
   }
@@ -60,18 +63,23 @@ async function PropertyList({ params }: { params: Partial<QueryParams> }) {
   const listings = data.result.listings;
 
   return (
-    <div
-      className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
-        lg:grid-cols-5`}
-    >
-      {listings.length > 0 &&
-        listings.map((result, index) => (
-          <PropertyListItem
-            className={'col-span-1'}
-            key={index}
-            listing={result.listing}
-          />
-        ))}
+    <div>
+      <div
+        className={`flex w-full flex-col gap-8 pt-8 sm:grid sm:grid-cols-2 md:grid-cols-3 md:pt-16
+          lg:grid-cols-5`}
+      >
+        {listings.length > 0 &&
+          listings.map((result, index) => (
+            <PropertyListItem
+              className={'col-span-1'}
+              key={index}
+              listing={result.listing}
+            />
+          ))}
+      </div>
+      <div className={'w-full pt-16'}>
+        <Paginator pages={data.result.pages} />
+      </div>
     </div>
   );
 }

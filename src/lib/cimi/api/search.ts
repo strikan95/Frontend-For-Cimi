@@ -18,7 +18,7 @@ export type ListingSearchItem = {
 
 type ListingSearchResponseData = {
   listings: { listing: ListingSearchItem; distance: number }[];
-  page: number;
+  pages: number;
 };
 
 export type QueryParams = {
@@ -27,6 +27,7 @@ export type QueryParams = {
   priceMin: string;
   from: string;
   to: string;
+  page: number;
 };
 
 export async function searchListings(
@@ -49,6 +50,10 @@ export async function searchListings(
 
     if (params.to) {
       paramList += '&to=' + params.to;
+    }
+
+    if (params.page) {
+      paramList += '&page=' + params.page;
     }
 
     const res = await fetch(
