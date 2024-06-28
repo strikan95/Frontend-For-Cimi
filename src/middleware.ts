@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import {
   withMiddlewareAuthRequired,
   getSession,
+  updateSession,
 } from '@auth0/nextjs-auth0/edge';
 import { ApiProfile } from '@/lib/cimi/types/profile.types';
 
@@ -33,6 +34,10 @@ export default withMiddlewareAuthRequired(async (req: NextRequest) => {
         data.roles.includes('ROLE_HOST') ||
         data.roles.includes('ROLE_STUDENT')
       ) {
+        await updateSession(req, res, {
+          ...user,
+          user: { ...user.user, roles: data.roles, picture: data.picture },
+        });
         return res;
       }
 

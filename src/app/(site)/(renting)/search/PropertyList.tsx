@@ -54,8 +54,6 @@ function PropertyListItem({
 async function PropertyList({ params }: { params: Partial<QueryParams> }) {
   const data = await searchListings(params);
 
-  console.log('search data', data);
-
   if (data.error || !data.result) {
     return <div>{data.error}</div>;
   }

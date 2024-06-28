@@ -11,11 +11,13 @@ import {
 import { Menu, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PrettyLink } from '@/components/ui/link';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { UserProfile, useUser } from '@auth0/nextjs-auth0/client';
+import { ApiProfile } from '@/lib/cimi/types/profile.types';
 
 function MainMenu() {
   const session = useUser();
-  const user = session?.user;
+  const user: (UserProfile & ApiProfile) | undefined =
+    session?.user as UserProfile & ApiProfile;
 
   if (null == session?.user) {
     return <Link href={'/api/auth/login'}>Sign in</Link>;
@@ -30,7 +32,7 @@ function MainMenu() {
         >
           <Menu />
           <Avatar>
-            <AvatarImage src={'' && user?.picture} alt={''} />
+            <AvatarImage src={user?.picture || ''} alt={''} />
             <AvatarFallback>
               <User />
             </AvatarFallback>
@@ -44,9 +46,11 @@ function MainMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/messenger'}>My Messages</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={'/hosting'}>Switch to Hosting</Link>
-        </DropdownMenuItem>
+        {user.roles.includes('ROLE_HOST') && (
+          <DropdownMenuItem asChild>
+            <Link href={'/hosting'}>Switch to Hosting</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href={'/profile'}>Profile</Link>
         </DropdownMenuItem>
