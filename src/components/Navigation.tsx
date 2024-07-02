@@ -164,7 +164,7 @@ export function Navbar() {
 
   return (
     <Header>
-      {user?.roles.includes('ROLE_HOST') && (
+      {user?.roles?.includes('ROLE_HOST') && (
         <Link
           className={
             'rounded-xl border border-gray-400 px-2 py-3 hover:bg-blue-400 hover:text-white'
