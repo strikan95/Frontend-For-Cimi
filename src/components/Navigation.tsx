@@ -158,8 +158,22 @@ export function HostNavbar() {
 }
 
 export function Navbar() {
+  const session = useUser();
+  const user: (UserProfile & ApiProfile) | undefined =
+    session?.user as UserProfile & ApiProfile;
+
   return (
     <Header>
+      {user?.roles.includes('ROLE_HOST') && (
+        <Link
+          className={
+            'rounded-xl border border-gray-400 px-2 py-3 hover:bg-blue-400 hover:text-white'
+          }
+          href={'/hosting'}
+        >
+          Switch to Hosting
+        </Link>
+      )}
       <MainMenu />
     </Header>
   );

@@ -23,12 +23,6 @@ function Page() {
 
   const userId = user?.sub?.replace('|', '_');
 
-  /*  React.useEffect(() => {
-    if (user && user.sub) {
-      filters = { members: { $in: [user.sub.replace('|', '_')] } };
-    }
-  }, [isLoading]);*/
-
   if (!chat.client) {
     return <div>Loading chat ...</div>;
   }

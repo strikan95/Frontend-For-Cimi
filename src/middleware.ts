@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import {
-  withMiddlewareAuthRequired,
-  getSession,
-  updateSession,
-} from '@auth0/nextjs-auth0/edge';
+import { getSession, updateSession } from '@auth0/nextjs-auth0/edge';
 import { ApiProfile } from '@/lib/cimi/types/profile.types';
 
 // This function can be marked `async` if using `await` inside
-export default withMiddlewareAuthRequired(async (req: NextRequest) => {
+export default async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
   const user = await getSession(req, res);
@@ -36,8 +32,17 @@ export default withMiddlewareAuthRequired(async (req: NextRequest) => {
       ) {
         await updateSession(req, res, {
           ...user,
-          user: { ...user.user, roles: data.roles, picture: data.picture },
+          user: {
+            ...user.user,
+            roles: data.roles,
+            picture: data.picture,
+            userDetails: {
+              firstName: data.userDetails.firstName,
+              lastName: data.userDetails.lastName,
+            },
+          },
         });
+
         return res;
       }
 
@@ -48,7 +53,7 @@ export default withMiddlewareAuthRequired(async (req: NextRequest) => {
     }
   }
   return res;
-});
+}
 
 // See "Matching Paths" below to learn more
 export const config = {

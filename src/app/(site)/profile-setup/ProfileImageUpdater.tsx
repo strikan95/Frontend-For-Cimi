@@ -1,8 +1,13 @@
-import React, { useRef } from 'react';
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
 import { updateUserProfileImage } from '@/lib/auth/profile';
-import { Loader2 } from 'lucide-react';
+import { Loader2, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 function ProfileImageUpdater({ picture }: { picture: string }) {
+  const [file, setFile] = useState<File | undefined>();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = React.useState(false);
 
@@ -18,6 +23,7 @@ function ProfileImageUpdater({ picture }: { picture: string }) {
         const res = await updateUserProfileImage(formData);
 
         if (!res.error) {
+          setFile(currentFile);
         }
       } catch (e) {
         console.error(e);
@@ -36,12 +42,22 @@ function ProfileImageUpdater({ picture }: { picture: string }) {
         onInput={handleOnFileInput}
       />
       <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
-        <img
+        <Avatar className={'h-32 w-32'}>
+          <AvatarImage
+            src={file ? URL.createObjectURL(file) : picture}
+            alt={''}
+          />
+          <AvatarFallback>
+            <User className={'h-full w-full p-4'} />
+          </AvatarFallback>
+        </Avatar>
+
+        {/*        <img
           className="h-40 w-40 rounded-full object-cover p-1 ring-2 ring-indigo-300
             dark:ring-indigo-500"
           src={picture}
           alt="Bordered avatar"
-        />
+        />*/}
 
         <div className="flex flex-col space-y-5 sm:ml-8">
           <button
