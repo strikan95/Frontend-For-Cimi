@@ -46,7 +46,7 @@ function MainMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/messenger'}>My Messages</Link>
         </DropdownMenuItem>
-        {user.roles.includes('ROLE_HOST') && (
+        {user?.roles?.includes('ROLE_HOST') && (
           <DropdownMenuItem asChild>
             <Link href={'/hosting'}>Switch to Hosting</Link>
           </DropdownMenuItem>
