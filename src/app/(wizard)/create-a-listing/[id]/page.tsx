@@ -1,7 +1,9 @@
 'use client';
+
 import React, { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
+import { Loader2 } from 'lucide-react';
 
 function Page({ params }: { params: { id: string } }) {
   const state = WizardMachineContext.useSelector((s) => s);
@@ -15,7 +17,11 @@ function Page({ params }: { params: { id: string } }) {
     }
   }, [state]);
 
-  return <div>{params.id}</div>;
+  return (
+    <div className={'flex h-screen w-screen justify-center'}>
+      <Loader2 className={'animate-spin'} />
+    </div>
+  );
 }
 
 export default Page;

@@ -1,6 +1,5 @@
 import React from 'react';
 import ChatBox from '@/app/(site)/hosting/_components/chat/ChatBox';
-import { getSession } from '@auth0/nextjs-auth0';
 import { generateChatToken } from '@/lib/auth/chatTokenGenerator';
 
 async function Page() {

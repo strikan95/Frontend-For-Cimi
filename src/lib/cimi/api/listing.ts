@@ -13,7 +13,7 @@ export async function getListing(
     });
 
     if (!res.ok) {
-      return { error: 'There was an error', result: null };
+      return { error: 'There was an error ' + res.status, result: null };
     }
 
     const data: Listing = await res.json();
@@ -21,6 +21,6 @@ export async function getListing(
     return { error: null, result: data };
   } catch (e) {
     console.error(e);
-    return { error: 'There was an error', result: null };
+    return { error: 'There was an error ' + e?.toString(), result: null };
   }
 }

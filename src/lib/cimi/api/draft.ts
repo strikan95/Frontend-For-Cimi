@@ -1,8 +1,14 @@
 'use server';
 
-import { getSession } from '@auth0/nextjs-auth0';
 import { Draft, DraftImage } from '@/lib/cimi/types/draftData.types';
-import { Amenity, StructureType } from '@/lib/cimi/types/listingData.types';
+import {
+  Amenity,
+  Listing,
+  StructureType,
+} from '@/lib/cimi/types/listingData.types';
+import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 type ServerActionResponse<T> = {
   error: string | null;
@@ -51,17 +57,45 @@ export async function getStructureTypes(): Promise<
   }
 }
 
+export async function startWizardProcess(): Promise<
+  ServerActionResponse<number>
+> {
+  const session = await getServerSession(authOptions);
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/v1/draft`, {
+      method: 'POST',
+      headers: {
+        ContentType: 'application/json',
+        Authorization: `Bearer ${session?.token}`,
+      },
+      cache: 'no-cache',
+    });
+
+    if (!res.ok) {
+      return { error: 'There was an error', result: null };
+    }
+
+    const data: Listing = await res.json();
+
+    return { error: null, result: data.id };
+  } catch (e) {
+    console.error(e);
+    return { error: 'There was an error', result: null };
+  }
+}
+
 export async function getDraft(
   id: string
 ): Promise<ServerActionResponse<Draft>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(`http://localhost:8080/api/v1/draft/${id}`, {
       method: 'GET',
       headers: {
         ContentType: 'application/json',
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${session?.token}`,
       },
       cache: 'no-cache',
     });
@@ -84,7 +118,7 @@ export async function updateDraft(
   id: string,
   step: string
 ): Promise<ServerActionResponse<Draft>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(
@@ -94,7 +128,7 @@ export async function updateDraft(
         body: JSON.stringify(data),
         headers: {
           ContentType: 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.token}`,
         },
         cache: 'no-cache',
       }
@@ -114,13 +148,13 @@ export async function updateDraft(
 export async function getDraftImages(
   id: string
 ): Promise<ServerActionResponse<DraftImage[]>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(`http://localhost:8080/api/v1/draft/${id}/image`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${session?.token}`,
       },
       cache: 'no-cache',
     });
@@ -140,7 +174,7 @@ export async function addDraftImage(
   data: FormData,
   id: string
 ): Promise<ServerActionResponse<{ message: string }>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(`http://localhost:8080/api/v1/draft/${id}/image`, {
@@ -148,7 +182,7 @@ export async function addDraftImage(
       body: data,
       headers: {
         ContentType: 'multipart/form',
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${session?.token}`,
       },
       cache: 'no-cache',
     });
@@ -168,7 +202,7 @@ export async function removeDraftImage(
   id: string,
   imgId: string
 ): Promise<ServerActionResponse<Draft>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(
@@ -178,7 +212,7 @@ export async function removeDraftImage(
         body: null,
         headers: {
           ContentType: 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.token}`,
         },
         cache: 'no-cache',
       }

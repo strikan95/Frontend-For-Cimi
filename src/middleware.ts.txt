@@ -1,3 +1,4 @@
+/*
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getSession, updateSession } from '@auth0/nextjs-auth0/edge';
@@ -63,3 +64,4 @@ export const config = {
     },
   ],
 };
+*/

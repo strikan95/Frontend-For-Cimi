@@ -3,7 +3,7 @@
 import React, { Suspense } from 'react';
 import { ConnectionOpen, DefaultGenerics, StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useSession } from 'next-auth/react';
 
 export type InitialMessage = {
   message: string;
@@ -28,27 +28,31 @@ const ChatContext = React.createContext<{
 });
 
 const ChatContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, isLoading } = useUser();
+  const { data, status } = useSession();
   const [chatClient, setChatClient] = React.useState<StreamChat>();
   const [isChatLoading, setIsChatLoading] = React.useState(true);
 
   React.useEffect(() => {
     const initChat = async () => {
-      if (!isLoading && user && user.sub) {
+      if (status == 'authenticated') {
         const client = StreamChat.getInstance('fvx8ceem6g95');
         let didUserConnectInterrupt = false;
 
         const tokenResponse = await fetch('/api/token', { method: 'GET' });
         const token = await tokenResponse.json();
 
-        const status = await client.connectUser(
-          {
-            id: user.sub.replace('|', '_'),
-            name: user.name || 'Anon',
-            image: user.avatarUrl,
-          },
-          token.token
-        );
+        try {
+          const chatStatus = await client.connectUser(
+            {
+              id: data?.user.id.toString(),
+              name: data?.user.name || 'Anon',
+              image: data?.user.image,
+            },
+            token.token
+          );
+        } catch (e) {
+          console.error(e);
+        }
 
         setChatClient(client);
         setIsChatLoading(false);
@@ -62,15 +66,15 @@ const ChatContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initChat();
-  }, [isLoading, user]);
+  }, [status, data]);
 
   if (!chatClient) {
     return <Suspense>{children}</Suspense>;
   }
 
   const startDM = async (props: StartDMProps) => {
-    const userId = props.userId.replace('|', '_');
-    const hostId = props.hostId.replace('|', '_');
+    const userId = props.userId.toString();
+    const hostId = props.hostId.toString();
 
     const channel = chatClient?.channel('messaging', {
       members: [userId, hostId],

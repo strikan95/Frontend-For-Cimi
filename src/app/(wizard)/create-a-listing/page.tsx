@@ -1,5 +1,5 @@
-import { startWizardProcess } from '@/lib/cimi/api/host';
 import { redirect } from 'next/navigation';
+import { startWizardProcess } from '@/lib/cimi/api/draft';
 
 async function Page() {
   const data = await startWizardProcess();
@@ -7,11 +7,7 @@ async function Page() {
     redirect(`/create-a-listing/${data.result}`);
   }
 
-  return (
-    <>
-      <div>Spinner here</div>
-    </>
-  );
+  return null;
 }
 
 export default Page;

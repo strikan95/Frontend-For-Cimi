@@ -3,7 +3,7 @@
 import { assign, EventObject, fromCallback, fromPromise, setup } from 'xstate';
 import { ChildMachine } from '@/components/wizard/machine/childMachine';
 import { Draft } from '@/lib/cimi/types/draftData.types';
-import { getDraft } from '@/components/wizard/actions';
+import { getDraft } from '@/lib/cimi/api/draft';
 
 async function fetchDraftData(id: string) {
   let res = null;
@@ -120,9 +120,6 @@ export const WizardMachine = setup({
         STRUCTURETYPE: {
           target: 'structure-type',
         },
-        PLACETYPE: {
-          target: 'place-type',
-        },
         AMENITIES: {
           target: 'amenities',
         },
@@ -149,27 +146,12 @@ export const WizardMachine = setup({
     'structure-type': {
       on: {
         NEXT: {
-          target: 'place-type',
-          actions: assign(({ event }) => {
-            return {
-              draft: event.draft,
-            };
-          }),
-        },
-      },
-    },
-    'place-type': {
-      on: {
-        NEXT: {
           target: 'amenities',
           actions: assign(({ event }) => {
             return {
               draft: event.draft,
             };
           }),
-        },
-        BACK: {
-          target: 'structure-type',
         },
       },
     },
@@ -184,7 +166,7 @@ export const WizardMachine = setup({
           }),
         },
         BACK: {
-          target: 'place-type',
+          target: 'structure-type',
         },
       },
     },

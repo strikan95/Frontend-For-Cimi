@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { cn } from '@/lib/utils';
 import { FilterProvider } from '@/lib/filter/useFilter';
 import React from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import ChatContextProvider from '@/lib/chat/ChatProvider';
+import SessionWrapper from '@/lib/auth/SessionWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <UserProvider>
+      <SessionWrapper>
         <FilterProvider>
           <body className={cn(inter.className, 'bg-gray-100 antialiased')}>
             <ChatContextProvider>
@@ -28,7 +28,7 @@ export default function RootLayout({
             </ChatContextProvider>
           </body>
         </FilterProvider>
-      </UserProvider>
+      </SessionWrapper>
     </html>
   );
 }

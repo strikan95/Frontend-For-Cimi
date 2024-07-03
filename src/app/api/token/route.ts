@@ -1,9 +1,10 @@
 import 'server-only';
-import { getSession } from '@auth0/nextjs-auth0';
 import { StreamChat } from 'stream-chat';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function GET() {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user) {
     return Response.error();
@@ -15,7 +16,7 @@ export async function GET() {
     { browser: false }
   );
 
-  const token = instance.createToken(session?.user.sub!.replace('|', '_'));
+  const token = instance.createToken(session?.user.id.toString());
 
   return Response.json({ token: token });
 }

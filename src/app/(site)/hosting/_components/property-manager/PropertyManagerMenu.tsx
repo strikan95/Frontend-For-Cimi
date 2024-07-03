@@ -13,12 +13,9 @@ import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
 import AvailabilityManager from '@/app/(site)/hosting/_components/property-manager/AvailabilityManager';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { revalidatePath } from 'next/cache';
 import { usePathname, useRouter } from 'next/navigation';
 import { deleteListing } from '@/lib/cimi/api/host';
 import { useToast } from '@/components/ui/use-toast';
-import { delay } from '@/lib/utils';
-import { ToastAction, ToastActionElement } from '@/components/ui/toast';
 
 type Props = {
   id: number;

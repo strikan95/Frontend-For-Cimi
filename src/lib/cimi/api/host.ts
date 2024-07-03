@@ -1,12 +1,13 @@
 'use server';
 import { ServerActionResponse } from '@/types/serverAction.types';
 import { Listing } from '@/lib/cimi/types/listingData.types';
-import { getSession } from '@auth0/nextjs-auth0';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 async function getListings(
   id: string | 'me'
 ): Promise<ServerActionResponse<Listing[]>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(
@@ -15,7 +16,7 @@ async function getListings(
         method: 'GET',
         headers: {
           ContentType: 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.token}`,
         },
         cache: 'no-cache',
       }
@@ -37,14 +38,14 @@ async function getListings(
 export async function deleteListing(
   id: string | number
 ): Promise<ServerActionResponse<Listing[]>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
 
   try {
     const res = await fetch(`http://localhost:8080/api/v1/listings/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${session?.token}`,
       },
       cache: 'no-cache',
     });
@@ -75,7 +76,7 @@ export async function addRentPeriod(
   data: unknown,
   id: string
 ): Promise<ServerActionResponse<string>> {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   try {
     const res = await fetch(
       `http://localhost:8080/api/v1/listings/${id}/occupancy`,
@@ -84,7 +85,7 @@ export async function addRentPeriod(
         body: JSON.stringify(data),
         headers: {
           ContentType: 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
+          Authorization: `Bearer ${session?.token}`,
         },
         cache: 'no-cache',
       }
@@ -95,34 +96,6 @@ export async function addRentPeriod(
     }
 
     return { error: null, result: 'Success' };
-  } catch (e) {
-    console.error(e);
-    return { error: 'There was an error', result: null };
-  }
-}
-
-export async function startWizardProcess(): Promise<
-  ServerActionResponse<number>
-> {
-  const session = await getSession();
-
-  try {
-    const res = await fetch(`http://localhost:8080/api/v1/draft`, {
-      method: 'POST',
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-      cache: 'no-cache',
-    });
-
-    if (!res.ok) {
-      return { error: 'There was an error', result: null };
-    }
-
-    const data: Listing = await res.json();
-
-    return { error: null, result: data.id };
   } catch (e) {
     console.error(e);
     return { error: 'There was an error', result: null };

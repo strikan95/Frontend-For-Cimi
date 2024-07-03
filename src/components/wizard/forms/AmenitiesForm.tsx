@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/form';
 import React, { useEffect, useState } from 'react';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { getAmenities, updateDraft } from '@/components/wizard/actions';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { Check } from 'lucide-react';
 import { Amenity } from '@/lib/cimi/types/listingData.types';
+import { getAmenities, updateDraft } from '@/lib/cimi/api/draft';
 
 const formSchema = z.object({
   amenities: z.array(z.string()).refine((value) => value.some((item) => item), {

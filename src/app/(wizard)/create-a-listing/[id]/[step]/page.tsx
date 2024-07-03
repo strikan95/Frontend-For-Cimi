@@ -7,15 +7,12 @@ import TitleForm from '@/components/wizard/forms/TitleForm';
 import StructureTypeForm from '@/components/wizard/forms/StructureTypeForm';
 import LocationForm from '@/components/wizard/forms/LocationForm';
 import ImagesForm from '@/components/wizard/forms/ImagesForm';
-import DummyForm from '@/components/wizard/forms/DummyForm';
 import AmenitiesForm from '@/components/wizard/forms/AmenitiesForm';
-import { updateDraft } from '@/components/wizard/actions';
-import { Draft } from '@/lib/cimi/types/draftData.types';
 import PriceForm from '@/components/wizard/forms/PriceForm';
+import { updateDraft } from '@/lib/cimi/api/draft';
 
 const Forms: Record<string, React.ReactNode> = {
   'structure-type': <StructureTypeForm />,
-  'place-type': <DummyForm step={'place-type'} />,
   amenities: <AmenitiesForm />,
   location: <LocationForm />,
   images: <ImagesForm />,

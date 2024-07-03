@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import {
   addDraftImage,
   getDraftImages,
   removeDraftImage,
-} from '@/components/wizard/actions';
+} from '@/lib/cimi/api/draft';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import { cn } from '@/lib/utils';
@@ -33,46 +33,92 @@ function ImagePreview(props: { src: string; onRemove: () => Promise<void> }) {
   }
 
   return (
-    <>
-      {isRemoving && <Loader2 className={'h-32 w-32 animate-spin'} />}
-      <div className={'aspect-square w-64'}>
-        <div className={'col-span-1 h-64 w-64 object-contain'}>
-          <div className="flex w-full items-center justify-center">
-            <label
-              className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
-                justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
-                hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
-                dark:hover:border-gray-500 dark:hover:bg-gray-600"
-            >
-              <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
-                <img
-                  src={props.src}
-                  alt="Uploaded"
-                  className="rounded-lg object-cover"
+    <div className={'col-span-1 h-64 w-64 object-contain'}>
+      <div className="flex w-full items-center justify-center">
+        <label
+          className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
+            justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
+            hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
+            dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          <div className="z-10 flex h-full w-full flex-col items-center justify-center">
+            <div className={'relative h-full w-full'}>
+              {isRemoving && (
+                <Loader2
+                  className={'absolute left-2 top-2 m-0 animate-spin p-0'}
                 />
-                <Button
-                  className={'absolute right-2 top-2'}
-                  type={'button'}
-                  onClick={onRemoveHandler}
-                >
-                  X
-                </Button>
-              </div>
-            </label>
+              )}
+              <div
+                className={cn(
+                  'absolute right-0 top-0 h-full w-full bg-gray-500',
+                  isRemoving ? 'bg-opacity-50' : 'bg-opacity-0'
+                )}
+              ></div>
+              <img
+                src={props.src}
+                alt="Uploaded"
+                className="h-full w-full rounded-lg object-cover"
+              />
+              <Button
+                className={'absolute right-2 top-2'}
+                type={'button'}
+                hidden={isRemoving}
+                onClick={onRemoveHandler}
+              >
+                X
+              </Button>
+            </div>
           </div>
-        </div>
+        </label>
       </div>
-    </>
+    </div>
+    /*    <>
+            <div className={'aspect-square w-64'}>
+              <div className={'col-span-1 h-64 w-64 object-contain'}>
+                <div className="flex w-full items-center justify-center">
+                  <label
+                    className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
+                      justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
+                      hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
+                      dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  >
+                    <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
+                      {isRemoving && <Loader2 className={'h-32 w-32 animate-spin'} />}
+                      <img
+                        src={props.src}
+                        alt="Uploaded"
+                        className="rounded-lg object-cover"
+                      />
+                      <Button
+                        className={'absolute right-2 top-2'}
+                        type={'button'}
+                        onClick={onRemoveHandler}
+                      >
+                        X
+                      </Button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </>*/
   );
 }
 
 function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
+  const ref = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
   const [isUploading, setIsUploading] = useState(false);
 
   function clear() {
     setFile(undefined);
     setIsUploading(false);
+
+    if (ref.current) {
+      ref.current.value = '';
+      ref.current.type = 'text';
+      ref.current.type = 'file';
+    }
   }
 
   async function onUploadHandler(event: React.FormEvent<HTMLInputElement>) {
@@ -142,10 +188,11 @@ function ImageUploader(props: { onUpload: (file: File) => Promise<void> }) {
             )}
             <form>
               <input
+                ref={ref}
                 type="file"
                 name="image"
                 className="hidden"
-                onInput={onUploadHandler}
+                onChange={onUploadHandler}
               />
             </form>
           </div>

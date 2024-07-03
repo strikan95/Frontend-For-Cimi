@@ -1,26 +1,21 @@
 import React from 'react';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import ProfileImageUpdater from '@/app/(site)/profile-setup/ProfileImageUpdater';
-import ProfileForm from '@/app/(site)/profile/ProfileForm';
-import { UserProfile, useUser } from '@auth0/nextjs-auth0/client';
-import { ApiProfile } from '@/lib/cimi/types/profile.types';
+import ProfileForm from '@/components/profile/ProfileForm';
+import { getUserProfileData } from '@/lib/cimi/api/profile';
 
 async function Page() {
-  const session = await getSession();
-  const user: (UserProfile & ApiProfile) | undefined =
-    session?.user as UserProfile & ApiProfile;
+  const res = await getUserProfileData();
 
-  if (!user) {
-    return <>Error.</>;
+  if (res.error || res.result == null) {
+    throw new Error(res.error || 'Error getting profile data');
   }
 
   return (
     <div
       className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
     >
-      <ProfileForm apiUserData={user} />
+      <ProfileForm profileData={res.result} />
     </div>
   );
 }
 
-export default withPageAuthRequired(Page, { returnTo: '/' });
+export default Page;

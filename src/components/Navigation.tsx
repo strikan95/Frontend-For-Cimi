@@ -11,16 +11,18 @@ import {
 import { Menu, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PrettyLink } from '@/components/ui/link';
-import { UserProfile, useUser } from '@auth0/nextjs-auth0/client';
-import { ApiProfile } from '@/lib/cimi/types/profile.types';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 function MainMenu() {
-  const session = useUser();
-  const user: (UserProfile & ApiProfile) | undefined =
-    session?.user as UserProfile & ApiProfile;
+  const { data } = useSession();
 
-  if (null == session?.user) {
-    return <Link href={'/api/auth/login'}>Sign in</Link>;
+  if (null == data?.user) {
+    return (
+      <>
+        <button onClick={() => signIn()}>Sign in</button>
+        <Link href={'/auth/register'}>Signup</Link>
+      </>
+    );
   }
 
   return (
@@ -32,7 +34,7 @@ function MainMenu() {
         >
           <Menu />
           <Avatar>
-            <AvatarImage src={user?.picture || ''} alt={''} />
+            <AvatarImage src={data.user.image || ''} alt={''} />
             <AvatarFallback>
               <User />
             </AvatarFallback>
@@ -43,7 +45,7 @@ function MainMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/messenger'}>My Messages</Link>
         </DropdownMenuItem>
-        {user?.roles?.includes('ROLE_HOST') && (
+        {data.user.roles?.includes('ROLE_HOST') && (
           <DropdownMenuItem asChild>
             <Link href={'/hosting'}>Switch to Hosting</Link>
           </DropdownMenuItem>
@@ -51,8 +53,8 @@ function MainMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/profile'}>Profile</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={'/api/auth/logout'}>Log out</Link>
+        <DropdownMenuItem>
+          <button onClick={() => signOut()}>Log out</button>;
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -60,11 +62,11 @@ function MainMenu() {
 }
 
 function HostMainMenu() {
-  const session = useUser();
-  const user = session?.user;
+  const { data } = useSession();
+  const user = data?.user;
 
-  if (null == session?.user) {
-    return <Link href={'/api/auth/login'}>Sign in</Link>;
+  if (null == data?.user) {
+    return <button onClick={() => signIn()}>Sign in</button>;
   }
 
   return (
@@ -90,8 +92,8 @@ function HostMainMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/profile'}>Profile</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={'/api/auth/logout'}>Log out</Link>
+        <DropdownMenuItem>
+          <button onClick={() => signOut()}>Log out</button>;
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -155,13 +157,11 @@ export function HostNavbar() {
 }
 
 export function Navbar() {
-  const session = useUser();
-  const user: (UserProfile & ApiProfile) | undefined =
-    session?.user as UserProfile & ApiProfile;
+  const { data } = useSession();
 
   return (
     <Header>
-      {user?.roles?.includes('ROLE_HOST') && (
+      {/*      {user?.roles?.includes('ROLE_HOST') && (
         <Link
           className={
             'rounded-xl border border-gray-400 px-2 py-3 hover:bg-blue-400 hover:text-white'
@@ -170,7 +170,7 @@ export function Navbar() {
         >
           Switch to Hosting
         </Link>
-      )}
+      )}*/}
       <MainMenu />
     </Header>
   );

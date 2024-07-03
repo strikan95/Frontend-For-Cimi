@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -13,38 +13,49 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
-import { ApiProfile } from '@/lib/cimi/types/profile.types';
 import { Button } from '@/components/ui/button';
-import { finishUserProfile } from '@/lib/auth/profile';
-import ProfileImageUpdater from '@/app/(site)/profile-setup/ProfileImageUpdater';
-import { useRouter } from 'next/navigation';
+import ProfileImageUpdater from '@/components/profile/ProfileImageUpdater';
+import { CimiApiProfile } from '@/lib/cimi/types/profile.types';
+import { updateUserProfile } from '@/lib/cimi/api/profile';
+import { useToast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
-  userDetails: z.object({
-    firstName: z.string().min(2).max(64),
-    lastName: z.string().min(2).max(64),
-  }),
+  firstName: z.string().min(2).max(64),
+  lastName: z.string().min(2).max(64),
 });
 
-function ProfileForm({ apiUserData }: { apiUserData: ApiProfile }) {
-  const router = useRouter();
+function ProfileForm({ profileData }: { profileData: CimiApiProfile }) {
+  const [isUpdating, setIsUpdating] = React.useState(false);
+  const toast = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userDetails: {
-        firstName: apiUserData.userDetails.firstName,
-        lastName: apiUserData.userDetails.lastName,
-      },
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
     },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    const res = await finishUserProfile(values);
+    setIsUpdating(true);
+    const res = await updateUserProfile(values);
+    if (res.error) {
+      toast.toast({
+        title: 'Failure',
+        description: res.error,
+      });
+    } else {
+      toast.toast({
+        title: 'Success',
+        description: 'Profile updated!',
+      });
+    }
+    setIsUpdating(false);
   }
 
   return (
     <div className="mx-auto mt-8 grid max-w-2xl">
-      <ProfileImageUpdater picture={apiUserData.picture} />
+      <ProfileImageUpdater picture={profileData.picture} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="mt-8 items-center text-[#202142] sm:mt-14">
@@ -54,7 +65,7 @@ function ProfileForm({ apiUserData }: { apiUserData: ApiProfile }) {
             >
               <FormField
                 control={form.control}
-                name="userDetails.firstName"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem aria-autocomplete={'none'}>
                     <FormLabel>First Name</FormLabel>
@@ -68,7 +79,7 @@ function ProfileForm({ apiUserData }: { apiUserData: ApiProfile }) {
 
               <FormField
                 control={form.control}
-                name="userDetails.lastName"
+                name="lastName"
                 render={({ field }) => (
                   <FormItem aria-autocomplete={'none'}>
                     <FormLabel>Last Name</FormLabel>
@@ -81,8 +92,12 @@ function ProfileForm({ apiUserData }: { apiUserData: ApiProfile }) {
               />
             </div>
           </div>
-          <Button type={'submit'} className={'w-full'}>
-            Save
+          <Button className={'mt-4 w-full'} type="submit">
+            {isUpdating ? (
+              <Loader2 className={'animate-spin'} />
+            ) : (
+              'Update Profile Information'
+            )}
           </Button>
         </form>
       </Form>

@@ -1,10 +1,13 @@
-export type ApiProfile = {
+export type CimiApiProfile = {
   id: number;
-  picture: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  picture: string;
   roles: string[];
-  userDetails: {
-    firstName: string;
-    lastName: string;
-  };
+};
+
+export type CimiUpdateProfileDto = {
+  firstName: string;
+  lastName: string;
 };

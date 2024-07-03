@@ -14,7 +14,9 @@ function AvailabilityCalendar({
   disabled: { startDate: string; endDate: string }[];
 }) {
   const [matches, setMatches] = useState(
-    window.matchMedia('(min-width: 768px)').matches
+    typeof window !== 'undefined'
+      ? window.matchMedia('(min-width: 768px)').matches
+      : undefined
   );
 
   useEffect(() => {
@@ -32,23 +34,6 @@ function AvailabilityCalendar({
     },
     []
   );
-
-  function getAvailableRanges(
-    disabledRanges: { startDate: string; endDate: string }[]
-  ) {
-    let prev = new Date();
-    let ranges = [];
-    for (let i = 0; i < disabledRanges.length; i++) {
-      ranges.push({ from: prev, to: new Date(disabledRanges[i].startDate) });
-      prev = new Date(disabledRanges[i].endDate);
-    }
-
-    ranges.push({ from: prev, to: null });
-
-    return ranges;
-  }
-
-  const availableRanges = getAvailableRanges(disabled);
 
   return (
     <div className={'flex flex-wrap-reverse justify-start gap-4'}>

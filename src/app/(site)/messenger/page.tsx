@@ -12,16 +12,16 @@ import {
 } from 'stream-chat-react';
 import { useSearchParams } from 'next/navigation';
 import { useChatContext } from '@/lib/chat/ChatProvider';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useSession } from 'next-auth/react';
 
 function Page() {
   const params = useSearchParams();
   const chat = useChatContext();
-  const { user, isLoading } = useUser();
+  const { data, status } = useSession();
 
   const options = { limit: 10 };
 
-  const userId = user?.sub?.replace('|', '_');
+  const userId = data?.user?.email.replace('.', '_');
 
   if (!chat.client) {
     return <div>Loading chat ...</div>;

@@ -16,7 +16,7 @@ import { Control, FieldPath, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Draft } from '@/lib/cimi/types/draftData.types';
-import { updateDraft } from '@/components/wizard/actions';
+import { updateDraft } from '@/lib/cimi/api/draft';
 import { Transition } from '@headlessui/react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
