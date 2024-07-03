@@ -41,9 +41,6 @@ function MainMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 border-gray-200 p-1">
         <DropdownMenuItem asChild>
-          <Link href={'/watchlist'}>Watchlist</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
           <Link href={'/messenger'}>My Messages</Link>
         </DropdownMenuItem>
         {user?.roles?.includes('ROLE_HOST') && (
