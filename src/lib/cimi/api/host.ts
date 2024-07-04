@@ -3,6 +3,7 @@ import { ServerActionResponse } from '@/types/serverAction.types';
 import { Listing } from '@/lib/cimi/types/listingData.types';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/authOptions';
+import { revalidatePath } from 'next/cache';
 
 async function getListings(
   id: string | 'me'
@@ -58,7 +59,7 @@ export async function deleteListing(
     }
 
     const message = await res.json();
-
+    revalidatePath('/hosting/listings', 'page');
     return { error: null, result: message };
   } catch (e) {
     console.error(e);
