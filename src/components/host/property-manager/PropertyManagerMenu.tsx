@@ -10,15 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
-import AvailabilityManager from '@/components/host/property-manager/AvailabilityManager';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { addRentPeriod, deleteListing } from '@/lib/cimi/api/host';
 import { useToast } from '@/components/ui/use-toast';
 import { Form } from '@/components/ui/form';
 import { DateInputModal } from '@/components/ui/form-input';
-import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
