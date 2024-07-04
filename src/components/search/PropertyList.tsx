@@ -73,9 +73,7 @@ async function PropertyList({ params }: { params: Partial<QueryParams> }) {
             />
           ))}
       </div>
-      <div className={'w-full pt-16'}>
-        <Paginator pages={data.result.pages} />
-      </div>
+      <Paginator pages={data.result.pages} />
     </div>
   );
 }

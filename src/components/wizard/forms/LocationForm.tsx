@@ -23,14 +23,13 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import GeocoderMap from '@/components/map/GeocoderMap';
 import { getAddress } from '@/lib/utils';
-import { bool } from 'prop-types';
 
 const formSchema = z.object({
-  street: z.string().max(48),
-  streetNumber: z.string().max(16),
-  postCode: z.string(),
-  city: z.string().max(24),
-  country: z.string().max(24),
+  street: z.string().min(1).max(48),
+  streetNumber: z.string().min(1).max(16),
+  postCode: z.string().min(1).max(24),
+  city: z.string().min(1).max(24),
+  country: z.string().min(1).max(24),
   latitude: z.number(),
   longitude: z.number(),
 });
@@ -79,15 +78,10 @@ function LocationForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // state.context.draft?.location?.street ||
       street: state.context.draft?.location?.street || '',
-      // state.context.draft?.location?.streetNumber ||
       streetNumber: state.context.draft?.location?.streetNumber || '',
-      // state.context.draft?.location?.zipCode ||
       postCode: state.context.draft?.location?.postCode || '',
-      // state.context.draft?.location?.city ||
       city: state.context.draft?.location?.city || '',
-      // state.context.draft?.location?.country ||
       country: state.context.draft?.location?.country || '',
       latitude: state.context.draft?.location?.latitude || undefined,
       longitude: state.context.draft?.location?.longitude || undefined,
@@ -105,8 +99,6 @@ function LocationForm() {
       );
 
       if (res.error) {
-        //bla bla resolve backend errors
-        form.setError('street', { message: 'description is wrong' });
         setIsLoading(false);
         return;
       }

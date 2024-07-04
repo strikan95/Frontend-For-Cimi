@@ -20,19 +20,19 @@ export function getAddress(selection: MapboxGeocoder.Result): {
     streetNumber: selection.address || '',
     postCode:
       selection.context
-        .filter((value: { id: string; text: string }) =>
+        ?.filter((value: { id: string; text: string }) =>
           value.id.includes('postcode')
         )
         .pop()?.text || '',
     city:
       selection.context
-        .filter((value: { id: string; text: string }) =>
+        ?.filter((value: { id: string; text: string }) =>
           value.id.includes('place')
         )
         .pop()?.text || '',
     country:
       selection.context
-        .filter((value: { id: string; text: string }) =>
+        ?.filter((value: { id: string; text: string }) =>
           value.id.includes('country')
         )
         .pop()?.text || '',

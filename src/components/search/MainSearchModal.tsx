@@ -29,7 +29,7 @@ function MainSearchModal() {
 
   const [modalState, setModalState] = useState<boolean | undefined>(undefined);
 
-  const { data, handleSearch, clearParams, updateParams } = useFilter();
+  const { data, handleSearch, updateParams } = useFilter();
 
   function dateToString(date?: Date) {
     if (!date) return undefined;
@@ -171,10 +171,9 @@ function MainSearchModal() {
             </div>
           </div>
           <div className={'fixed bottom-6 right-6 flex gap-4'}>
-            <Button onClick={clearParams}>Clear</Button>
             <Button
               onClick={() => {
-                handleSearch();
+                handleSearch(true);
                 setModalState(false);
               }}
             >

@@ -9,6 +9,7 @@ import Map, {
 } from 'react-map-gl';
 import GeocoderControl from '@/components/map/GeocoderControl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { getAddress } from '@/lib/utils';
 
 type Props = {
   oldData?: { latitude: number; longitude: number };
@@ -22,19 +23,6 @@ function GeocoderMap({ onSelect, oldData }: Props) {
 
   function handleSelection(event: MapboxGeocoder.Result) {
     setFlashHide(true);
-    mapRef?.current?.resize();
-    mapRef?.current?.flyTo({
-      center: {
-        lon: event.geometry.coordinates[0],
-        lat: event.geometry.coordinates[1],
-      },
-      zoom: 15,
-      speed: 5,
-      curve: 1,
-      easing(t) {
-        return t;
-      },
-    });
     setSelected(event);
     onSelect(event);
   }
@@ -43,7 +31,22 @@ function GeocoderMap({ onSelect, oldData }: Props) {
     if (flashHide) {
       setTimeout(() => {
         setFlashHide(false);
-      }, 100);
+        if (selected) {
+          mapRef?.current?.resize();
+          mapRef?.current?.flyTo({
+            center: {
+              lon: selected?.geometry.coordinates[0],
+              lat: selected?.geometry.coordinates[1],
+            },
+            zoom: 15,
+            //speed: 5,
+            //curve: 1,
+            //easing(t) {
+            //  return t;
+            //},
+          });
+        }
+      }, 500);
     }
   }, [flashHide]);
 

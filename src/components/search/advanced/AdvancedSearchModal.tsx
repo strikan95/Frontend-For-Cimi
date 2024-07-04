@@ -9,8 +9,7 @@ import { useFilter } from '@/lib/filter/useFilter';
 
 function AdvancedSearchModal({ children }: { children: React.ReactNode }) {
   const [searchDrawerState, setSearchDrawerState] = useState(false);
-  const { data, handleSearch, clearParams, updateParams, canDoAdvanced } =
-    useFilter();
+  const { data, handleSearch, updateParams, canDoAdvanced } = useFilter();
 
   return (
     <Dialog.Root open={searchDrawerState} onOpenChange={setSearchDrawerState}>
@@ -50,10 +49,9 @@ function AdvancedSearchModal({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className={'fixed bottom-6 right-6 flex gap-4'}>
-            <Button onClick={clearParams}>Clear</Button>
             <Button
               onClick={() => {
-                handleSearch();
+                handleSearch(true);
                 setSearchDrawerState(false);
               }}
             >

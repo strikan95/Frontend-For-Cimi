@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import page from '@/app/(site)/search/page';
 
 type TLocation = {
   query?: string;
@@ -27,11 +28,16 @@ type TAmenities = {
   amenities: string[];
 };
 
+type TPaginator = {
+  page: number;
+};
+
 export type TFilterParams = TLocation &
   TPoi &
   TDateRange &
   TPriceRange &
-  TAmenities;
+  TAmenities &
+  TPaginator;
 
 const FilterContext = React.createContext<
   | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]
@@ -40,7 +46,8 @@ const FilterContext = React.createContext<
 
 export function FilterProvider({ children }: { children: React.ReactNode }) {
   const [filterData, setFilterData] = React.useState<TFilterParams>({
-    amenities: [],
+    amenities: new Array(0),
+    page: 1,
   });
 
   return (
@@ -52,26 +59,41 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
 
 export function useFilter(initialValues?: TFilterParams) {
   const [filterData, setFilterData] = React.useContext(FilterContext) || [];
-  const [page, setPage] = React.useState(1);
   const router = useRouter();
   const params = useSearchParams();
+  const pathname = usePathname();
 
   React.useEffect(() => {
+    let amenities = new Array(0);
     params.forEach((value, key) => {
-      if (key === 'page') {
-        setPage(parseInt(value));
+      if (key === 'amenities') {
+        amenities.push(value);
       }
+    });
 
+    params.forEach((value, key) => {
       let param: Partial<TFilterParams> = {};
       // @ts-ignore
       param[key] = value;
+      if (key === 'page') {
+        param[key] = parseInt(value);
+      }
+      if (key === 'amenities') return;
       updateParams(param);
     });
+
+    updateParams({ amenities: amenities });
 
     if (initialValues) {
       updateParams(initialValues);
     }
   }, []);
+
+  React.useEffect(() => {
+    if (pathname === '/search' && filterData?.page && filterData.page >= 1) {
+      handleSearch(false);
+    }
+  }, [filterData?.page]);
 
   if (filterData === undefined || setFilterData === undefined) {
     throw new Error('useFilter must be used within a FilterProvider');
@@ -85,12 +107,12 @@ export function useFilter(initialValues?: TFilterParams) {
 
   const clearParams = () => {
     setFilterData({
-      amenities: [],
+      amenities: new Array(0),
+      page: 1,
     });
-    setPage(1);
   };
 
-  function handleSearch(page?: number) {
+  function handleSearch(reset: boolean) {
     if (filterData) {
       const query = Object.keys(filterData)
         .filter((key: string) => {
@@ -101,14 +123,16 @@ export function useFilter(initialValues?: TFilterParams) {
           );
         })
         .map((key: string) => {
-          if (key === 'page') {
-            return '';
-          }
           const value = filterData[key as keyof typeof filterData];
+
+          if (reset && key === 'page') {
+            updateParams({ page: 1 });
+            return `${key}=${encodeURIComponent('1')}`;
+          }
 
           if (Array.isArray(value)) {
             return value
-              .map((item) => `${key}[]=${encodeURIComponent(item as string)}`)
+              .map((item) => `${key}=${encodeURIComponent(item as string)}`)
               .join('&');
           }
 
@@ -116,15 +140,12 @@ export function useFilter(initialValues?: TFilterParams) {
         })
         .join('&');
 
-      setPage(page || 1);
-
-      router.push(`/search?${query}&page=${page || 1}`);
+      router.push(`/search?${query}`);
     }
   }
 
   return {
     data: filterData,
-    page: page,
     updateParams,
     clearParams,
     handleSearch,
