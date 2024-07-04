@@ -24,15 +24,13 @@ function PropertyListItem({
             'relative aspect-square overflow-hidden rounded-lg sm:max-w-full'
           }
         >
-          <Suspense>
-            <Image
-              fill={true}
-              src={listing.coverImageUrl}
-              alt={''}
-              sizes={'500px'}
-              style={{ objectFit: 'cover' }}
-            />
-          </Suspense>
+          <Image
+            fill={true}
+            src={listing.coverImageUrl}
+            alt={''}
+            sizes={'500px'}
+            style={{ objectFit: 'cover' }}
+          />
         </div>
         <h1 className={'text-md pt-2 font-bold text-gray-700'}>
           {listing.title}
