@@ -49,6 +49,7 @@ function InputField({
           <FormControl>
             <Input className={'h-16'} placeholder={placeholder} {...field} />
           </FormControl>
+          <FormMessage />
           <FormDescription></FormDescription>
         </FormItem>
       )}

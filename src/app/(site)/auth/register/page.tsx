@@ -1,7 +1,3 @@
-'use client';
-
-import { FormEvent } from 'react';
-import { Button } from '@/components/ui/button';
 import RegisterForm from '@/components/profile/RegisterForm';
 
 export default function Home() {
