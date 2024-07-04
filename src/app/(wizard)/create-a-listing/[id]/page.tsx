@@ -18,7 +18,7 @@ function Page({ params }: { params: { id: string } }) {
   }, [state]);
 
   return (
-    <div className={'flex h-screen w-screen justify-center'}>
+    <div className={'flex h-screen w-screen items-center justify-center'}>
       <Loader2 className={'animate-spin'} />
     </div>
   );

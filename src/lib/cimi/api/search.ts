@@ -1,3 +1,5 @@
+import { delay } from '@/lib/utils';
+
 type ServerActionResponse<T> = {
   error: string | null;
   result: T | null;
@@ -31,6 +33,7 @@ export type QueryParams = {
 export async function searchListings(
   params: Partial<QueryParams>
 ): Promise<ServerActionResponse<ListingSearchResponseData>> {
+  await delay(5000);
   try {
     let paramList = `poi=${params.poi}`;
 

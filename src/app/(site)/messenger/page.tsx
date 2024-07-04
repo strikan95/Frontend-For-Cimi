@@ -21,7 +21,7 @@ function Page() {
 
   const options = { limit: 10 };
 
-  const userId = data?.user?.email.replace('.', '_');
+  const userId = data?.user?.id?.toString();
 
   if (!chat.client) {
     return <div>Loading chat ...</div>;

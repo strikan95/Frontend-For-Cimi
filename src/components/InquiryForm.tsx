@@ -33,7 +33,7 @@ function InquiryForm({ hostId }: { hostId: string }) {
   if (user) {
     async function handleSubmit(values: z.infer<typeof formSchema>) {
       if (user != undefined && user.email) {
-        const userId = user.email.replace('.', '_');
+        const userId = user.id.toString();
         const message = values as InitialMessage;
         const channelId = await ctx.startDM({ hostId, userId, message });
         router.push(`/messenger?channel=${channelId}`);

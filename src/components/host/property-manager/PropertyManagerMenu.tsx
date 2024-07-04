@@ -23,6 +23,7 @@ type Props = {
 };
 
 function PropertyManagerMenu({ id, status }: Props) {
+  const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
   const dropdownTriggerRef = React.useRef(null);
@@ -72,8 +73,11 @@ function PropertyManagerMenu({ id, status }: Props) {
         className="w-56 border-gray-200 p-1"
         hidden={hasOpenDialog}
       >
-        <DropdownMenuItem disabled={status != 'approved'}>
-          <Link href={`/listing/${id}`}>View Listing</Link>
+        <DropdownMenuItem
+          onClick={() => router.push(`/listing/${id}`)}
+          disabled={status != 'approved'}
+        >
+          View Listing
         </DropdownMenuItem>
 
         <DropdownDialogItem
@@ -85,7 +89,7 @@ function PropertyManagerMenu({ id, status }: Props) {
         </DropdownDialogItem>
 
         {/*        <DropdownMenuItem disabled={true}>View Calendar</DropdownMenuItem>*/}
-        <DropdownMenuItem disabled={true}>Suspend</DropdownMenuItem>
+        {/*        <DropdownMenuItem disabled={true}>Suspend</DropdownMenuItem>*/}
         <DropdownDialogItem
           triggerChildren="Delete"
           onOpenChange={handleDialogItemOpenChange}

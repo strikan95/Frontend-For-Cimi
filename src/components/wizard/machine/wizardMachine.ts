@@ -38,9 +38,6 @@ export const WizardMachine = setup({
       ({ input, sendBack }) => {
         switch (input.lastUpdatedStep) {
           case 'structure-type':
-            sendBack({ type: 'PLACETYPE' });
-            break;
-          case 'place-type':
             sendBack({ type: 'AMENITIES' });
             break;
           case 'amenities':
@@ -59,7 +56,7 @@ export const WizardMachine = setup({
             sendBack({ type: 'PRICING' });
             break;
           case 'pricing':
-            //sendBack({ type: 'PRICING' });
+            sendBack({ type: 'PRICING' });
             break;
           default:
             sendBack({ type: 'STRUCTURETYPE' });

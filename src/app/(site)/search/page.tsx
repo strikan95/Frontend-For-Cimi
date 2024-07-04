@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropertyList from '@/components/search/PropertyList';
 import { QueryParams } from '@/lib/cimi/api/search';
 import MainSearchModal from '@/components/search/MainSearchModal';
 import AdvancedSearchModal from '@/components/search/advanced/AdvancedSearchModal';
 import AmenitiesFilter from '@/components/search/advanced/amenity/AmenitiesFilter';
 import PriceFilter from '@/components/search/advanced/price/PriceFilter';
+import SearchSkeleton from '@/components/search/SearchSkeleton';
 
 async function Page({
   searchParams,
@@ -32,7 +33,9 @@ async function Page({
           <AmenitiesFilter />
         </AdvancedSearchModal>
       </div>
-      <PropertyList params={searchParams as Partial<QueryParams>} />
+      <Suspense fallback={<SearchSkeleton />}>
+        <PropertyList params={searchParams as Partial<QueryParams>} />
+      </Suspense>
     </div>
   );
 }
