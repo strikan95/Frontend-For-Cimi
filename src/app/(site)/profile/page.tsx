@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ProfileForm from '@/components/profile/ProfileForm';
 import { getUserProfileData } from '@/lib/cimi/api/profile';
 
@@ -13,7 +13,9 @@ async function Page() {
     <div
       className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
     >
-      <ProfileForm profileData={res.result} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProfileForm profileData={res.result} />
+      </Suspense>
     </div>
   );
 }

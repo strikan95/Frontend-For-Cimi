@@ -4,6 +4,7 @@ import { ServerActionResponse } from '@/types/serverAction.types';
 import { CimiApiProfile } from '@/lib/cimi/types/profile.types';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/authOptions';
+import { revalidatePath } from 'next/cache';
 
 export async function updateUserProfile(formData: {
   firstName: string;
@@ -27,7 +28,7 @@ export async function updateUserProfile(formData: {
     }
 
     const data = (await res.json()) as CimiApiProfile;
-
+    revalidatePath('/profile', 'page');
     return { error: null, result: data };
   } catch (e) {
     console.error(e);
@@ -59,7 +60,7 @@ export async function updateUserProfileImage(
     }
 
     const data = (await res.json()) as CimiApiProfile;
-
+    revalidatePath('/profile', 'page');
     return { error: null, result: data };
   } catch (e) {
     console.error(e);
