@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import React, { FormEvent } from 'react';
-import PropertyListItemStatusBadge from '@/app/(site)/hosting/_components/list/PropertyListItemBadge';
-import PropertyManagerMenu from '@/app/(site)/hosting/_components/property-manager/PropertyManagerMenu';
-import PropertyUpdateButton from '@/app/(site)/hosting/_components/list/PropertyUpdateButton';
+import PropertyListItemStatusBadge from '@/components/host/list/PropertyListItemBadge';
+import PropertyManagerMenu from '@/components/host/property-manager/PropertyManagerMenu';
+import PropertyUpdateButton from '@/components/host/list/PropertyUpdateButton';
 
 type Props = {
   className?: string;
@@ -44,7 +44,7 @@ function PropertyListItem({
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">{title}</h3>
         <div className="font-extrabold">
-          <PropertyManagerMenu id={id} />
+          <PropertyManagerMenu id={id} status={status} />
         </div>
       </div>
       <ul className="flex space-x-2">

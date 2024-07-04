@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import SaveAndReturnButton from '@/components/wizard/SaveAndReturnButton';
 
 function FormWrapper({
   onNext,
@@ -42,6 +43,7 @@ function FormWrapper({
         >
           {isLoading ? <Loader2 className={'animate-spin'} /> : 'Next'}
         </Button>
+        <SaveAndReturnButton />
       </div>
     </>
   );

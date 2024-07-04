@@ -6,9 +6,8 @@ import {
   Listing,
   StructureType,
 } from '@/lib/cimi/types/listingData.types';
-import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth/authOptions';
 
 type ServerActionResponse<T> = {
   error: string | null;
@@ -20,7 +19,7 @@ export async function getAmenities(): Promise<ServerActionResponse<Amenity[]>> {
     const res = await fetch(`http://localhost:8080/api/v1/amenities`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-cache',
+      cache: 'force-cache',
     });
 
     if (!res.ok) {
@@ -42,7 +41,7 @@ export async function getStructureTypes(): Promise<
     const res = await fetch(`http://localhost:8080/api/v1/structure-types`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      cache: 'no-cache',
+      cache: 'force-cache',
     });
 
     if (!res.ok) {

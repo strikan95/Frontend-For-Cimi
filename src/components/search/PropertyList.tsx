@@ -7,7 +7,7 @@ import {
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import Paginator from '@/app/(site)/(renting)/search/Paginator';
+import Paginator from '@/components/search/Paginator';
 
 function PropertyListItem({
   className,
@@ -40,7 +40,7 @@ function PropertyListItem({
         <p className={'text-sm text-gray-500'}>
           {listing.location.city}, {listing.location.country}
         </p>
-        <p className={'text-sm text-gray-500'}>Avaliable from 1. Jul.</p>
+        {/*        <p className={'text-sm text-gray-500'}>Avaliable from 1. Jul.</p>*/}
         <p
           className={`flex grow flex-col justify-end place-self-end pt-2 font-bold text-gray-700`}
         >

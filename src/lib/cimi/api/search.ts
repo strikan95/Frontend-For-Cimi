@@ -1,5 +1,3 @@
-'use server';
-
 type ServerActionResponse<T> = {
   error: string | null;
   result: T | null;
@@ -65,7 +63,8 @@ export async function searchListings(
     );
 
     if (!res.ok) {
-      return { error: 'There was an error.', result: null };
+      console.log(res.text());
+      return { error: 'There was an error. ' + res.status, result: null };
     }
 
     const data: ListingSearchResponseData = await res.json();

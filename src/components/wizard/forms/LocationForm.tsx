@@ -131,7 +131,11 @@ function LocationForm() {
   }
 
   return (
-    <div className={'flex min-h-svh flex-col items-center justify-center'}>
+    <div
+      className={
+        'flex min-h-svh flex-col items-center justify-center lg:mx-auto lg:max-w-lg'
+      }
+    >
       <Form {...form}>
         <form
           className={'flex w-full flex-col px-8 lg:max-w-lg'}
@@ -142,6 +146,10 @@ function LocationForm() {
             onBack={() => ref.send({ type: 'BACK' })}
             isLoading={isLoading}
           >
+            <div className={'self-start pb-2'}>
+              <h1 className={'font-bold'}>Where is your property located?</h1>
+              <p>Use search to find the location of your property.</p>
+            </div>
             {
               <Transition
                 show={!!selected}

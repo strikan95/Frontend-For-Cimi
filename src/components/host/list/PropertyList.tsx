@@ -1,6 +1,6 @@
 import { getCurrentHostListings } from '@/lib/cimi/api/host';
 import React from 'react';
-import PropertyListItem from '@/app/(site)/hosting/_components/list/PropertyListItem';
+import PropertyListItem from '@/components/host/list/PropertyListItem';
 
 async function PropertyList() {
   const data = await getCurrentHostListings();

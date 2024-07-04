@@ -2,7 +2,7 @@
 import { ServerActionResponse } from '@/types/serverAction.types';
 import { Listing } from '@/lib/cimi/types/listingData.types';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth/authOptions';
 
 async function getListings(
   id: string | 'me'

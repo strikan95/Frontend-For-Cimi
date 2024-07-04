@@ -8,6 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import InquiryForm from '@/components/InquiryForm';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import SimpleMap from '@/components/map/SimpleMap';
+import ShowMoreAmenities from '@/components/listing/ShowMoreAmenities';
+import ShowMoreDescription from '@/components/listing/ShowMoreDescription';
 
 function ListingGallery({
   images,
@@ -44,20 +46,13 @@ function ListingGallery({
   );
 }
 
-function ListingTitleBar({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
+function ListingTitleBar({ title }: { title: string }) {
   return (
     <div className={'flex justify-between'}>
       <div>
         <h1 className={'text-4xl font-bold'}>{title}</h1>
-        <h2 className={'text-xl font-bold text-gray-500'}>{description}</h2>
       </div>
-      <div className={'hidden lg:flex lg:items-center lg:gap-4'}>
+      {/*      <div className={'hidden lg:flex lg:items-center lg:gap-4'}>
         <button className={'flex gap-2 align-bottom font-bold'}>
           Share
           <Share className={'inline h-5 w-5'} />
@@ -66,7 +61,7 @@ function ListingTitleBar({
           Save
           <Heart className={'inline h-5 w-5'} />
         </button>
-      </div>
+      </div>*/}
     </div>
   );
 }
@@ -83,40 +78,26 @@ async function Page({ params }: { params: { id: string } }) {
     <div
       className={'relative flex min-h-[calc(100svh-4rem)] flex-col gap-6 pt-8'}
     >
-      <ListingTitleBar
-        title={listing.title}
-        description={listing.description}
-      />
+      <ListingTitleBar title={listing.title} />
       <ListingGallery images={listing.images} />
       <Separator />
       {/* Basic Info Box */}
       <div>
-        <h1 className={'text-3xl'}>A room in Zagreb, Croatia</h1>
-        <p className={'text-lg text-gray-500'}>
+        <h1 className={'text-3xl'}>
+          A room in {listing.location.city}, {listing.location.country}
+        </h1>
+        {/*        <p className={'text-lg text-gray-500'}>
           2 Bedrooms - 1 Bathroom - 1 Water Closet
-        </p>
+        </p>*/}
       </div>
       <div className={'flex flex-wrap'}>
         <div className={'flex w-full flex-col gap-6 lg:w-[70%]'}>
           <div>
             <h2 className={'pb-2 text-xl font-bold'}>About this property:</h2>
-            <p className={'pb-4'}>
-              Affordable, modern design in an incredible First Hill location.
-              That&aposs the promise of The Rise on Madison. Our selection of
-              income-restricted studio, one, two, and three-bedroom apartment
-              homes offers Seattle living at its most vibrant. While our
-              location doesn&apost have on-site parking, there is limited street
-              parking available. Fortunately, our location is extremely
-              walkable, bike-friendly, and conveniently close to public
-              transportation options! Grocery, medical facilities, schools,
-              restaurants, shopping...
-            </p>
-            <Button
-              variant={'outline'}
-              className={'border-2 border-black bg-[#EAEAEA]'}
-            >
-              Read more
-            </Button>
+            <p className={'pb-4'}>{listing.description}</p>
+            {listing.description.length > 256 && (
+              <ShowMoreDescription description={listing.description} />
+            )}
           </div>
           <Separator />
           {/* Amenities Info Box */}
@@ -147,14 +128,7 @@ async function Page({ params }: { params: { id: string } }) {
                   </div>
                 ))}
               {listing.amenities.length > 8 && (
-                <div className={'w-full'}>
-                  <Button
-                    variant={'outline'}
-                    className={'border-2 border-black bg-[#EAEAEA]'}
-                  >
-                    Show more
-                  </Button>
-                </div>
+                <ShowMoreAmenities amenities={listing.amenities} />
               )}
             </div>
           </div>

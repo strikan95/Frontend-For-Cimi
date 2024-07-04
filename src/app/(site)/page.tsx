@@ -1,6 +1,5 @@
 import React from 'react';
 import MainSearchModal from '@/components/search/MainSearchModal';
-import { Navbar } from '@/components/Navigation';
 
 export default function Home() {
   return (
@@ -28,11 +27,6 @@ export default function Home() {
             </div>
           </div>
           <div className={'w-full sm:w-2/5 lg:w-3/5'}></div>
-        </div>
-      </div>
-      <div className={'bg-[#252a34] text-white'}>
-        <div className={'md:mx-auto md:w-full md:max-w-[1400px] md:px-4'}>
-          <div className={'flex h-16 items-center py-2'}>Footer</div>
         </div>
       </div>
     </>

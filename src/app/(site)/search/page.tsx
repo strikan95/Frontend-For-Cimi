@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertyList from '@/app/(site)/(renting)/search/PropertyList';
+import PropertyList from '@/components/search/PropertyList';
 import { QueryParams } from '@/lib/cimi/api/search';
 import MainSearchModal from '@/components/search/MainSearchModal';
 import AdvancedSearchModal from '@/components/search/advanced/AdvancedSearchModal';

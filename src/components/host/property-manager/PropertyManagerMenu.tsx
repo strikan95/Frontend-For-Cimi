@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
-import AvailabilityManager from '@/app/(site)/hosting/_components/property-manager/AvailabilityManager';
+import AvailabilityManager from '@/components/host/property-manager/AvailabilityManager';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
@@ -19,9 +19,10 @@ import { useToast } from '@/components/ui/use-toast';
 
 type Props = {
   id: number;
+  status: 'draft' | 'pending' | 'approved';
 };
 
-function PropertyManagerMenu({ id }: Props) {
+function PropertyManagerMenu({ id, status }: Props) {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false);
   const dropdownTriggerRef = React.useRef(null);
@@ -71,18 +72,19 @@ function PropertyManagerMenu({ id }: Props) {
         className="w-56 border-gray-200 p-1"
         hidden={hasOpenDialog}
       >
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled={status != 'approved'}>
           <Link href={`/listing/${id}`}>View Listing</Link>
         </DropdownMenuItem>
 
         <DropdownDialogItem
           triggerChildren="Manage Availability"
+          disabled={status != 'approved'}
           onOpenChange={handleDialogItemOpenChange}
         >
           <AvailabilityManager id={id.toString()} />
         </DropdownDialogItem>
 
-        <DropdownMenuItem disabled={true}>View Calendar</DropdownMenuItem>
+        {/*        <DropdownMenuItem disabled={true}>View Calendar</DropdownMenuItem>*/}
         <DropdownMenuItem disabled={true}>Suspend</DropdownMenuItem>
         <DropdownDialogItem
           triggerChildren="Delete"

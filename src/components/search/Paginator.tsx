@@ -10,12 +10,10 @@ type Props = {
 };
 
 function Paginator({ pages }: Props) {
-  const { data, updateParams, handleSearch } = useFilter();
-  const currentPage = parseInt(data.page);
+  const { data, updateParams, handleSearch, page: currentPage } = useFilter();
 
   function handlePageChange(page: number) {
-    updateParams({ page: page.toString() });
-    handleSearch();
+    handleSearch(page);
   }
 
   const isFirstPage = 1 === currentPage;

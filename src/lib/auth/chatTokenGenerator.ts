@@ -1,7 +1,7 @@
 import 'server-only';
 import { StreamChat } from 'stream-chat';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth/authOptions';
 
 export const generateChatToken = async () => {
   const session = await getServerSession(authOptions);

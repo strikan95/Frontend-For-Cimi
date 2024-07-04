@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import PropertyList from '@/app/(site)/hosting/_components/list/PropertyList';
+import PropertyList from '@/components/host/list/PropertyList';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 

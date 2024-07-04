@@ -72,36 +72,6 @@ function ImagePreview(props: { src: string; onRemove: () => Promise<void> }) {
         </label>
       </div>
     </div>
-    /*    <>
-            <div className={'aspect-square w-64'}>
-              <div className={'col-span-1 h-64 w-64 object-contain'}>
-                <div className="flex w-full items-center justify-center">
-                  <label
-                    className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center
-                      justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50
-                      hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700
-                      dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                  >
-                    <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
-                      {isRemoving && <Loader2 className={'h-32 w-32 animate-spin'} />}
-                      <img
-                        src={props.src}
-                        alt="Uploaded"
-                        className="rounded-lg object-cover"
-                      />
-                      <Button
-                        className={'absolute right-2 top-2'}
-                        type={'button'}
-                        onClick={onRemoveHandler}
-                      >
-                        X
-                      </Button>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </>*/
   );
 }
 
@@ -273,6 +243,10 @@ function ImagesForm({ draftId }: { draftId?: string }) {
         isLoading={false}
         disabled={photos.length < 4}
       >
+        <div className={'self-start pb-2'}>
+          <h1 className={'font-bold'}>Upload photos of your property</h1>
+          <p>Upload at least 4 photos.</p>
+        </div>
         <div
           className={cn(
             'grid grid-cols-1 gap-6',

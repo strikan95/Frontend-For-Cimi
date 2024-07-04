@@ -27,16 +27,11 @@ type TAmenities = {
   amenities: string[];
 };
 
-type TPaginator = {
-  page: string;
-};
-
 export type TFilterParams = TLocation &
   TPoi &
   TDateRange &
   TPriceRange &
-  TAmenities &
-  TPaginator;
+  TAmenities;
 
 const FilterContext = React.createContext<
   | [TFilterParams, React.Dispatch<React.SetStateAction<TFilterParams>>]
@@ -46,7 +41,6 @@ const FilterContext = React.createContext<
 export function FilterProvider({ children }: { children: React.ReactNode }) {
   const [filterData, setFilterData] = React.useState<TFilterParams>({
     amenities: [],
-    page: '1',
   });
 
   return (
@@ -58,11 +52,16 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
 
 export function useFilter(initialValues?: TFilterParams) {
   const [filterData, setFilterData] = React.useContext(FilterContext) || [];
+  const [page, setPage] = React.useState(1);
   const router = useRouter();
   const params = useSearchParams();
 
   React.useEffect(() => {
     params.forEach((value, key) => {
+      if (key === 'page') {
+        setPage(parseInt(value));
+      }
+
       let param: Partial<TFilterParams> = {};
       // @ts-ignore
       param[key] = value;
@@ -87,11 +86,11 @@ export function useFilter(initialValues?: TFilterParams) {
   const clearParams = () => {
     setFilterData({
       amenities: [],
-      page: filterData.page,
     });
+    setPage(1);
   };
 
-  function handleSearch() {
+  function handleSearch(page?: number) {
     if (filterData) {
       const query = Object.keys(filterData)
         .filter((key: string) => {
@@ -102,6 +101,9 @@ export function useFilter(initialValues?: TFilterParams) {
           );
         })
         .map((key: string) => {
+          if (key === 'page') {
+            return '';
+          }
           const value = filterData[key as keyof typeof filterData];
 
           if (Array.isArray(value)) {
@@ -114,13 +116,15 @@ export function useFilter(initialValues?: TFilterParams) {
         })
         .join('&');
 
-      router.push(`/search?${query}`);
-    }
+      setPage(page || 1);
 
-    //Show some error...
+      router.push(`/search?${query}&page=${page || 1}`);
+    }
   }
+
   return {
     data: filterData,
+    page: page,
     updateParams,
     clearParams,
     handleSearch,

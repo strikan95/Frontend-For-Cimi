@@ -10,6 +10,7 @@ import ImagesForm from '@/components/wizard/forms/ImagesForm';
 import AmenitiesForm from '@/components/wizard/forms/AmenitiesForm';
 import PriceForm from '@/components/wizard/forms/PriceForm';
 import { updateDraft } from '@/lib/cimi/api/draft';
+import SaveAndReturnButton from '@/components/wizard/SaveAndReturnButton';
 
 const Forms: Record<string, React.ReactNode> = {
   'structure-type': <StructureTypeForm />,

@@ -8,7 +8,7 @@ function Layout({ children }: { children: React.ReactNode[] }) {
         {/* Nav */}
         <Navbar />
 
-        <div className={'px-4 pb-16 md:mx-auto md:w-full md:max-w-[1400px]'}>
+        <div className={'px-4 md:mx-auto md:w-full md:max-w-[1400px]'}>
           {children}
         </div>
         <div className={'bg-[#252a34] text-white'}>

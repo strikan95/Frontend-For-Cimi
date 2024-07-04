@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import AvailabilityManager from '@/app/(site)/hosting/_components/property-manager/AvailabilityManager';
+import AvailabilityManager from '@/components/host/property-manager/AvailabilityManager';
 
 type Props = {
   id: number;

@@ -3,7 +3,7 @@
 import { ServerActionResponse } from '@/types/serverAction.types';
 import { CimiApiProfile } from '@/lib/cimi/types/profile.types';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth/authOptions';
 
 export async function updateUserProfile(formData: {
   firstName: string;
