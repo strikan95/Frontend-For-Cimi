@@ -15,10 +15,14 @@ const formSchema = z.object({
   endDate: z.date(),
 });
 
-function AvailabilityManager({ id }: { id: string }) {
-  const [dialogState, setDialogState] = React.useState<boolean | undefined>(
-    undefined
-  );
+function AvailabilityManager({
+  id,
+  rentPeriods,
+}: {
+  id: string;
+  rentPeriods: string[];
+}) {
+  const [dialogState, setDialogState] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,7 +34,7 @@ function AvailabilityManager({ id }: { id: string }) {
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    try {
+    /*    try {
       const res = await addRentPeriod(values, id);
       if (res.error) {
         //resolve backend errors
@@ -38,14 +42,15 @@ function AvailabilityManager({ id }: { id: string }) {
         return;
       }
 
-      setIsLoading(false);
-
       if (!res.error) {
         setDialogState(false);
       }
     } catch (e) {
       console.error(e);
-    }
+    }*/
+
+    setDialogState(false);
+    setIsLoading(false);
   }
 
   return (
@@ -74,13 +79,15 @@ function AvailabilityManager({ id }: { id: string }) {
               label={'End Date'}
               placeholder={'mm/dd/yyyy'}
             />
-            <Button
-              className={'mt-6 w-full'}
-              type={'submit'}
-              disabled={isLoading}
-            >
-              {isLoading ? <Loader2 className={'animate-spin'} /> : 'Submit'}
-            </Button>
+            <Dialog.Close asChild>
+              <Button
+                className={'mt-6 w-full'}
+                type={'submit'}
+                disabled={isLoading}
+              >
+                {isLoading ? <Loader2 className={'animate-spin'} /> : 'Submit'}
+              </Button>
+            </Dialog.Close>
           </form>
         </Form>
       </div>

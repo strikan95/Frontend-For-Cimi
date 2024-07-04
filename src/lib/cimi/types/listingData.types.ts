@@ -15,6 +15,11 @@ export type Amenities = {
   iconUrl: string;
 };
 
+export type RentPeriods = {
+  startDate: string;
+  endDate: string;
+};
+
 export type Listing = {
   id: number;
   title: string;
@@ -23,7 +28,7 @@ export type Listing = {
   structureType: { name: string; iconUrl: string };
   images: { id: string; thumbnailUrl: string }[];
   amenities: Amenities[];
-  rentPeriods: { startDate: string; endDate: string }[];
+  rentPeriods: RentPeriods[];
   status: 'approved' | 'draft' | 'pending';
   location: {
     city: string;

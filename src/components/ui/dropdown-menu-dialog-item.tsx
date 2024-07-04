@@ -50,7 +50,7 @@ const DropdownDialogItem = React.forwardRef<
             sm:rounded-lg sm:border sm:shadow-lg`}
         >
           <div className={'w-full'}>{children}</div>
-          <Dialog.Close>
+          <Dialog.Close asChild>
             <Button className={'w-full'}>Cancel</Button>
           </Dialog.Close>
         </Dialog.Content>

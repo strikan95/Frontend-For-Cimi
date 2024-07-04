@@ -18,15 +18,23 @@ import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import React from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { RentPeriods } from '@/lib/cimi/types/listingData.types';
+
+type DisabledRange = {
+  from: Date;
+  to: Date;
+};
 
 function DateInputModal({
   name,
   label,
   placeholder,
+  disabled,
 }: {
   name: string;
   label: string;
   placeholder: string;
+  disabled: RentPeriods[];
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -63,6 +71,16 @@ function DateInputModal({
                   field.onChange(event);
                   setOpen(false);
                 }}
+                disabled={disabled.reduce((acc: DisabledRange[], item) => {
+                  return [
+                    ...acc,
+                    {
+                      from: new Date(item.startDate),
+                      to: new Date(item.endDate),
+                    },
+                  ];
+                }, [])}
+                modifiersStyles={{ disabled: { color: 'red' } }}
                 fixedWeeks={true}
                 showOutsideDays={true}
                 initialFocus

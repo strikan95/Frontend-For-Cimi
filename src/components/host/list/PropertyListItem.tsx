@@ -4,6 +4,7 @@ import React, { FormEvent } from 'react';
 import PropertyListItemStatusBadge from '@/components/host/list/PropertyListItemBadge';
 import PropertyManagerMenu from '@/components/host/property-manager/PropertyManagerMenu';
 import PropertyUpdateButton from '@/components/host/list/PropertyUpdateButton';
+import { RentPeriods } from '@/lib/cimi/types/listingData.types';
 
 type Props = {
   className?: string;
@@ -12,6 +13,7 @@ type Props = {
   description: string;
   coverImageUrl: string;
   status: 'draft' | 'pending' | 'approved';
+  rentPeriods: RentPeriods[];
 };
 
 function PropertyListItem({
@@ -21,6 +23,7 @@ function PropertyListItem({
   description,
   coverImageUrl,
   status,
+  rentPeriods,
 }: Props) {
   return (
     <section
@@ -54,7 +57,11 @@ function PropertyListItem({
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">{title}</h3>
         <div className="font-extrabold">
-          <PropertyManagerMenu id={id} status={status} />
+          <PropertyManagerMenu
+            id={id}
+            status={status}
+            rentPeriods={rentPeriods}
+          />
         </div>
       </div>
       <ul className="flex space-x-2">
