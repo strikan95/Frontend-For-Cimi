@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FormWrapper from '@/components/wizard/forms/FormWrapper';
 import { WizardMachineContext } from '@/components/wizard/machine/WizardMachineContext';
 import {
@@ -19,7 +19,7 @@ import { Draft } from '@/lib/cimi/types/draftData.types';
 import { updateDraft } from '@/lib/cimi/api/draft';
 
 const formSchema = z.object({
-  title: z.string().min(10).max(64),
+  title: z.string().min(6).max(64),
 });
 
 function TitleForm() {
@@ -46,8 +46,6 @@ function TitleForm() {
       );
 
       if (res.error) {
-        //bla bla resolve backend errors
-        form.setError('title', { message: res.error });
         setIsLoading(false);
         return;
       }
@@ -85,7 +83,7 @@ function TitleForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className={'text-center'}>
                     This is a public title for your property listing
                   </FormDescription>
                   <FormMessage />
