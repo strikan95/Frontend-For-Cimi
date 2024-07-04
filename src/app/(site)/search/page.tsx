@@ -16,7 +16,8 @@ async function Page({
     lon: string;
     from: string;
     to: string;
-    page: string;
+    page: number;
+    amenities: string[];
   }>;
 }) {
   return (
@@ -33,7 +34,10 @@ async function Page({
           <AmenitiesFilter />
         </AdvancedSearchModal>
       </div>
-      <Suspense fallback={<SearchSkeleton />}>
+      <Suspense
+        key={JSON.stringify(searchParams)}
+        fallback={<SearchSkeleton />}
+      >
         <PropertyList params={searchParams as Partial<QueryParams>} />
       </Suspense>
     </div>

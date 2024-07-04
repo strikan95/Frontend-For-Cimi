@@ -28,6 +28,7 @@ export type QueryParams = {
   from: string;
   to: string;
   page: number;
+  amenities: string[];
 };
 
 export async function searchListings(
@@ -57,6 +58,19 @@ export async function searchListings(
       paramList += '&page=' + params.page;
     }
 
+    if (params.amenities && params.amenities.length > 0) {
+      if (Array.isArray(params.amenities)) {
+        for (const param in params.amenities) {
+          paramList +=
+            '&amenities[]=' +
+            encodeURIComponent(params.amenities[param] as string);
+        }
+      } else {
+        paramList +=
+          '&amenities[]=' + encodeURIComponent(params.amenities as string);
+      }
+    }
+
     const res = await fetch(
       `http://localhost:8080/api/v1/search?` + paramList,
       {
@@ -66,7 +80,6 @@ export async function searchListings(
     );
 
     if (!res.ok) {
-      console.log(res.text());
       return { error: 'There was an error. ' + res.status, result: null };
     }
 

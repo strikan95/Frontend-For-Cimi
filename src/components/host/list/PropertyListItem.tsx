@@ -34,12 +34,22 @@ function PropertyListItem({
         className="relative h-32 w-full rounded-xl object-cover transition hover:brightness-75
           hover:filter"
       >
-        <Image
-          fill={true}
-          src={coverImageUrl}
-          alt={''}
-          style={{ objectFit: 'cover' }}
-        />
+        {coverImageUrl ? (
+          <Image
+            fill={true}
+            src={coverImageUrl}
+            alt={''}
+            style={{ objectFit: 'cover' }}
+          />
+        ) : (
+          <div
+            className={
+              'flex h-full items-center justify-center rounded border border-gray-300'
+            }
+          >
+            No property images yet...
+          </div>
+        )}
       </div>
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">{title}</h3>

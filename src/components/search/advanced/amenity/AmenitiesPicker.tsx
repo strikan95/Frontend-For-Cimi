@@ -2,27 +2,23 @@
 
 import React from 'react';
 import { CheckIcon } from 'lucide-react';
-import { Amenity } from '@/lib/cimi/types/listingData.types';
+import { Amenities, Amenity } from '@/lib/cimi/types/listingData.types';
 import { useFilter } from '@/lib/filter/useFilter';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
-function Item(props: {
-  item: string;
-  handleSelect: (item: string) => void;
-  handleClear?: () => void;
-}) {
+function Item(props: { item: Amenity; onClick: () => void }) {
   const [selected, setSelected] = React.useState<boolean>(false);
   const { data } = useFilter();
 
   React.useEffect(() => {
-    if (data.amenities.includes(props.item)) {
-      setSelected(true);
-    } else {
+    if (!data?.amenities?.includes(props.item.id.toString())) {
       setSelected(false);
+      return;
     }
-  }, [data.amenities]);
+    setSelected(true);
+  }, [data]);
 
   return (
     <li
@@ -30,13 +26,13 @@ function Item(props: {
         'mr-4 flex justify-between rounded border px-2 py-1',
         selected ? 'border-blue-400' : 'border-gray-300'
       )}
-      key={props.item}
+      key={props.item.id}
     >
       <button
         className={'h-full w-full text-start'}
-        onClick={() => props.handleSelect(props.item)}
+        onClick={() => props.onClick()}
       >
-        {props.item}
+        {props.item.name}
       </button>
       {selected && <CheckIcon />}
     </li>
@@ -46,25 +42,24 @@ function Item(props: {
 function AmenitiesPicker(props: { amenities: Amenity[] }) {
   const { data, updateParams } = useFilter();
 
-  function handleSelect(amenity: string): void {
-    const prevState = data.amenities;
-    if (prevState?.includes(amenity)) {
-      const newState = prevState?.filter((item) => {
-        return item !== amenity;
+  function handleSelect(amenity: Amenity): void {
+    let prevData = data.amenities as string[];
+    const amenityId = amenity.id.toString();
+    if (prevData?.includes(amenityId)) {
+      prevData = prevData?.filter((item) => {
+        return item !== amenityId;
       });
-
-      updateParams({ amenities: [...newState] });
-      return;
+    } else {
+      prevData?.push(amenityId);
     }
-
-    updateParams({ amenities: [...prevState, amenity] });
+    updateParams({ amenities: prevData });
   }
 
   return (
     <ScrollArea type={'always'} className={'h-48'}>
       <ul className={'flex flex-col gap-2'}>
         {props.amenities.map((item, index) => (
-          <Item key={index} item={item.name} handleSelect={handleSelect} />
+          <Item key={item.id} item={item} onClick={() => handleSelect(item)} />
         ))}
       </ul>
     </ScrollArea>
